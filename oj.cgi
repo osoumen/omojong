@@ -9,16 +9,6 @@ use DBI;
 #GKDB面雀 2.0
 $version = '2.0';
 
-#  [ 設置例 ]
-#
-#  cgi-bin [755]
-#       |
-#       +-- ojcgi / [707]（必須）
-#             |        oj.cgi       [705]
-#             |        kaitou.dat   [600]
-#             |
-#             +-- past / [700]（必須）
-
 #「今思い浮かんだ言葉」フォーム設置方法
 
 #<form action="http://サイトのURL/cgi-bin/ojcgi/oj.cgi" method="post">
@@ -49,9 +39,6 @@ $g_css_url = 'css/default.css';
 my $g_database = 'omojong';
 my $g_dbuser = 'ojbot';
 my $g_dbpassword = 'korogottu';
-
-$g_kaitoufile = 'kaitou.dat';		#解答を記録するファイル（600）
-$g_pastlogdir = './past';			#過去ログを補完するディレクトリ（700）
 
 #mentionによる通知を使用する(1=YES 0=NO)
 $usenotification = 0;
@@ -105,9 +92,7 @@ elsif ($mode eq "answer") {&mode_answer;}
 elsif ($mode eq "giveup") {&mode_giveup;}
 elsif ($mode eq "vote") {&mode_vote;}
 elsif ($mode eq "addword") {&mode_addword;}
-elsif ($mode eq "get") {&mode_get;}
 elsif ($mode eq "pastlog") {&mode_pastlog;}
-elsif ($mode eq "help") {&mode_help;}
 elsif ($phase eq "sanka") {&phase_sanka;}
 elsif ($phase eq "toukou") {&phase_toukou;}
 elsif ($phase eq "kekka") {&phase_kekka;}
@@ -165,12 +150,18 @@ sub phase_kekka {
 	&load_words_table;
 	
 	&html_header;
-	print<<"_EOF_";
-<hr>
-<a href="$g_script?mode=help" TARGET=_top>[使い方]</a>
-<a href="$g_script?mode=pastlog">[過去の記録]</a>
-<hr>
-_EOF_
+	
+	#データベースに接続
+	my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
+	or &error("DB error : $DBI::errstr");
+	$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
+
+	if ( &is_exist_table( $dbh, "kaitou_0" ) ) {
+		print "<hr><a href=\"$g_script?mode=pastlog\">[過去の記録]</a><hr>";
+	}
+	
+	#データベースを切断
+	$dbh->disconnect();
 
 	print_kekka(-1);
 	
@@ -190,14 +181,19 @@ sub phase_sanka {
 	&load_words_table;
 	
 	&html_header;
-	print<<"_EOF_";
-<hr>
-<a href="$g_script?mode=help" TARGET=_top>[使い方]</a>
-<a href="$g_script?mode=pastlog">[過去の記録]</a>
-<hr>
-<h2>求む！参加者</h2>
-_EOF_
+	#データベースに接続
+	my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
+	or &error("DB error : $DBI::errstr");
+	$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
+
+	if ( &is_exist_table( $dbh, "kaitou_0" ) ) {
+		print "<hr><a href=\"$g_script?mode=pastlog\">[過去の記録]</a><hr>";
+	}
 	
+	#データベースを切断
+	$dbh->disconnect();
+
+	print "<h2>参加募集中</h2>";
 	print "<table border=0>\n";
 	print "<tr><th>参加者</th></tr>\n";
 	foreach (@members) {
@@ -249,20 +245,26 @@ _EOF_
 
 #解答受付状態での処理
 sub phase_toukou {
-	my($ans,$kaitousya,@anslist,$sentence,@kaitoufiledata,$nametext,$word);
+	my($ans,$sentence,$nametext,$word,@href);
 
 	&get_cookie;
 	&load_words_table;
 	
 	&html_header;
-	print<<"_EOF_";
-<hr>
-<a href="$g_script?mode=help" TARGET=_top>[使い方]</a>
-<a href="$g_script?mode=pastlog">[過去の記録]</a>
-<hr>
-<h3>参加者熟考中</h3>
-_EOF_
+	
+	#データベースに接続
+	my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
+	or &error("DB error : $DBI::errstr");
+	$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
 
+	if ( &is_exist_table( $dbh, "kaitou_0" ) ) {
+		print "<hr><a href=\"$g_script?mode=pastlog\">[過去の記録]</a><hr>";
+	}
+	
+	#データベースを切断
+	$dbh->disconnect();
+
+	print "<h3>解答して下さい</h3>";
 	print "<table border=0>\n";
 	print "<tr><th>参加者</th><th>解答状況</th></tr>\n";
 	foreach (@members) {
@@ -302,19 +304,28 @@ _EOF_
 	else {
 		#参加者である場合
 		#既に投稿した解答を表示
-		if ($#kaitoufiledata < 0) {
-			open IN, "$g_kaitoufile";
-			@kaitoufiledata = <IN>;
-			close IN;
+		
+		#データベースに接続
+		my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
+		or &error("DB error : $DBI::errstr");
+		$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
+		
+		#自分の解答を読み込んで表示
+		$result = $dbh->prepare("SELECT content FROM kaitou WHERE author = '$c_username';") or &error("DB error : $DBI::errstr");
+		$result->execute() or &error("DB error : $DBI::errstr");
+		@sentence = ();
+		while ( @href = $result->fetchrow_array() ) {
+			push( @sentence, $href[0] );
 		}
+		$result->finish() or &error("DB error : $DBI::errstr");
+		
+		#データベースを切断
+		$dbh->disconnect();
+		
 		print "<table border=0>\n";
 		print "<tr><th>$c_username さんが投稿した解答</th></tr>\n";
-		foreach (@kaitoufiledata) {
-			chomp;
-			(undef,$ans,$kaitousya) = split(/<>/);
-			@anslist = split(/,/,$ans);
-			$sentence = numlist2sentence(@anslist);
-			if ($kaitousya eq $c_username) {print "<tr><th>$sentence</th></tr>\n";}
+		foreach (@sentence) {
+			print "<tr><th>$_</th></tr>\n";
 		}
 		print "</table><br>\n";
 		
@@ -490,6 +501,27 @@ _EOF_
 			$changerest{$in{'username'}} = $in{'change_quant'};
 			$change_amount{$in{'username'}} = $in{'change_amount'};
 			
+			#データベースに接続
+			my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
+			or &error("DB error : $DBI::errstr");
+			$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
+
+			#テーブルが無ければ作成する
+			if ( &is_exist_table( $dbh, "kaitou" ) eq 0 ) {
+				my $result = $dbh->do('CREATE TABLE kaitou (
+				id int,
+				content text,
+				wordlist text,
+				author text,
+				date date,
+				votes int
+				);')
+				or &error("DB error : $DBI::errstr");
+			}
+			
+			#データベースを切断
+			$dbh->disconnect();
+			
 			#ウェルカム通知
 			if ($usenotification) {
 				commit_mention($in{'username'},$notifymsg0);
@@ -526,15 +558,25 @@ sub mode_pastlog {
 		$in{'num'} = 0;
 	}
 	
+	#データベースに接続
+	my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
+	or &error("DB error : $DBI::errstr");
+	$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
+	
 	$nextlog = $in{'num'}+1;
 	$prevlog = $in{'num'}-1;
+	my $exist_next = &is_exist_table($dbh, "kaitou_$nextlog");
+	my $exist_prev = &is_exist_table($dbh, "kaitou_$prevlog");
+	
+	#データベースを切断
+	$dbh->disconnect();
 	
 	&html_header;
 	print "<hr>\n";
-	if (-e "$g_pastlogdir/$g_kaitoufile.$nextlog") {
+	if ( $exist_next ) {
 		print "<a href=\"$g_script?mode=pastlog&num=$nextlog\">[←もっと古い記録] </a>";
 	}
-	if ((-e "$g_pastlogdir/$g_kaitoufile.$prevlog") and ($prevlog >= 0)) {
+	if ( $exist_prev and ($prevlog >= 0) ) {
 		print "<a href=\"$g_script?mode=pastlog&num=$prevlog\"> [もっと新しい記録→]</a>";
 	}
 	print "<br><hr>\n";
@@ -544,6 +586,19 @@ sub mode_pastlog {
 <a href="$g_script" target=_top>[戻る]</a>
 _EOF_
 	&html_footer;
+}
+
+sub is_exist_table {
+	my ($dbh, $table_name) = @_;
+	
+	#存在チェック
+	my $result = $dbh->prepare("SHOW TABLES WHERE Tables_in_$g_database = '$table_name';")
+	or &error("DB error : $DBI::errstr");
+	$result->execute() or &error("DB error : $DBI::errstr");
+	my $exists = $result->rows;
+	$result->finish() or &error("DB error : $DBI::errstr");
+	
+	return $exists;
 }
 
 sub mode_join {
@@ -665,12 +720,11 @@ sub mode_joincancel {
 	
 	#メンバーリストから取り除く
 	@members = grep($_ ne $c_username,@members);
-	
 	&store_session_table;
 	
 	#$c_username = "";
 	$c_passwd = "";
-	&set_cookie;	
+	&set_cookie;
 	
 	&html_header;
 	print<<"_EOF_";
@@ -821,8 +875,9 @@ sub mode_answer {
 		if (++$count{$_} > 1) { &error("同じ札が２枚以上使われています。"); }
 	}
 	
+	$sentence = numlist2sentence(@anslist);
+	
 	if ($in{'confirm'}) {
-		$sentence = numlist2sentence(@anslist);
 		&html_header;
 		print<<"_EOF_";
 <hr>
@@ -841,10 +896,36 @@ _EOF_
 	else {
 	#解答を登録
 	$in{'answer'} = join(",",@anslist);
-	&get_time;
-	open OUT, ">> $g_kaitoufile";
-	print OUT "0<>$in{'answer'}<>$c_username<>$date\n";
-	close OUT;
+	
+	#データベースに接続
+	my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
+	or &error("DB error : $DBI::errstr");
+	$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
+	
+	#登録されている回答数を取得する
+	$result = $dbh->prepare("SELECT id FROM kaitou;") or &error("DB error : $DBI::errstr");
+	$result->execute() or &error("DB error : $DBI::errstr");
+	my $kaitou_total = $result->rows;
+	$result->finish() or &error("DB error : $DBI::errstr");
+	
+	#解答を追加
+	$result = $dbh->do("INSERT INTO kaitou (
+	id,
+	content,
+	wordlist,
+	author,
+	date,
+	votes)
+	VALUES (
+	'$kaitou_total',
+	'$sentence',
+	'$in{'answer'}',
+	'$c_username',
+	NOW(),
+	0);") or &error("DB error : $DBI::errstr");
+
+	#データベースを切断
+	$dbh->disconnect();
 	
 	#使った札をストックから削除
 	foreach (@anslist) {
@@ -940,30 +1021,31 @@ _EOF_
 }
 
 sub mode_vote {
-	my(@kaitou,$foot,$hyousuu,$answer,@anslist,$sentence,@comments);
+	my(@kaitou,$foot,$hyousuu,$answer,@anslist,$sentence,@comments,@href);
 	if ($phase ne 'kekka') { &error("現在投票を受け付けていません。"); }
 	if (grep(/\D/,$in{'ansnum'})) {&error("投票は数値を指定してください。");}
 
 	if (($in{'comment'} eq "") or ($in{'comentator'} eq "")) {
+		#データベースに接続
+		my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
+		or &error("DB error : $DBI::errstr");
+		$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
+		
 		#解答ファイル中の得票数をインクリメントする
-		open FH, "+< $g_kaitoufile";
-		@kaitou = <FH>;
+		$result = $dbh->do("UPDATE kaitou SET votes = votes + $in{'increment'} WHERE id = $in{'ansnum'};")
+		or &error("範囲外の解答を指定しています。");
 		
-		if ($in{'ansnum'} > $#kaitou) {&error("範囲外の解答を指定しています。");}
+		#投票した解答を得る
+		$result = $dbh->prepare("SELECT content FROM kaitou WHERE id = $in{'ansnum'};")
+		or &error("DB error : $DBI::errstr");
+		$result->execute() or &error("DB error : $DBI::errstr");
+		while ( @href = $result->fetchrow_array() ) {
+			$sentence = $href[0];
+		}
+		$result->finish() or &error("DB error : $DBI::errstr");
 		
-		($hyousuu,$answer,$foot) = split(/<>/,$kaitou[$in{'ansnum'}],3);
-		$hyousuu = $hyousuu + $in{'increment'};
-		$kaitou[$in{'ansnum'}] = "$hyousuu<>$answer<>$foot";
-		seek FH,0,0;
-		print FH @kaitou;
-		close FH;
-		
-		&get_cookie;
-		if ($c_passwd ne $passwd{$c_username}) {$c_username = "";}
-		
-		@anslist = split(/,/,$answer);
-		&load_words_table;
-		$sentence = numlist2sentence(@anslist);
+		#データベースを切断
+		$dbh->disconnect();
 		
 		&html_header;
 		if ($in{'increment'}) {
@@ -979,74 +1061,6 @@ _EOF_
 	}
 }
 
-sub mode_help {
-	my($helptext);
-	
-	if ($phase eq 'kekka') {
-		$helptext =<<"_EOF_";
-■ランダムに配られた言葉を組み合わせて面白げな文を作るゲームです。<br>
-■投票＆コメント機能\付きです。<br>
-■始めるにはまずある程度、言葉を集める必要があります。<br>
-■札が少なすぎると開始できないことがあります。<br>
-■面白そうだと思った言葉を「札を追加」からどんどん入力してください。<br>
-■ただし、あまり狙い過ぎた言葉からは面白い文が出来難いです、注意。<br>
-■つまらない言葉同士で意外に面白い文が出来たりもします。<br>
-■つなげ難い言葉というのもあります。<br>
-■なるべくどんな言葉にもつながるような言葉を入れていくのがコツです。<br>
-■ゲームを始めるには「新しく始める」をクリックして参加者を募集してください。<br>
-■募集人数、配る単語数等を一人目の参加者が決めます。<br>
-■Usernameとパスワードがcookieに保存されます。<br>
-■cookieはパスワードを入力することで再発行ができます。<br>
-_EOF_
-	}
-	elsif ($phase eq 'sanka') {
-		$helptext =<<"_EOF_";
-■ランダムに配られた言葉を組み合わせて面白げな文を作るゲームです。<br>
-■投票＆コメント機能\付きです。<br>
-■面白そうだと思った言葉を「札を追加」からどんどん入力してください。<br>
-■ただし、あまり狙い過ぎた言葉からは面白い文が出来難いです、注意。<br>
-■つまらない言葉同士で意外に面白い文が出来たりもします。<br>
-■つなげ難い言葉というのもあります。<br>
-■なるべくどんな言葉にもつながるような言葉を入れていくのがコツです。<br>
-■名前と好きなパスワードを入力することでどなたでも参加できます。<br>
-■Usernameとパスワードがcookieに保存されます。<br>
-■所定の人数が参加すると参加者は解答できるようになります。<br>
-■入っている単語の中から、重複しないようにシャッフルされ、<br>
-　参加者に配分されます。<br>
-■もし参加しているのに参加フォームが現れる場合は、cookieの再発行をしてください。<br>
-_EOF_
-	}
-	elsif ($phase eq 'toukou') {
-		$helptext =<<"_EOF_";
-■ランダムに配られた言葉を組み合わせて面白げな文を作るゲームです。<br>
-■投票＆コメント機能\付きです。<br>
-■面白そうだと思った言葉を「札を追加」からどんどん入力してください。<br>
-■ただし、あまり狙い過ぎた言葉からは面白い文が出来難いです、注意。<br>
-■つまらない言葉同士で意外に面白い文が出来たりもします。<br>
-■つなげ難い言葉というのもあります。<br>
-■なるべくどんな言葉にもつながるような言葉を入れていくのがコツです。<br>
-■配られた単語を自由に使って文を作る事が出来ます。<br>
-■解答は半角数字で入力してください。<br>
-■参加者の方には、既に解答した解答が表\示されますが、<br>
-　全員が解答するまで、他の人には一切見えません。<br>
-■開始した人が途中参加を許可していれば、全員の解答が揃う前でなおかつ、<br>
-　残りの札があれば、解答中でも参加が可能\です。<br>
-_EOF_
-	}
-	&html_header;
-	print<<"_EOF_";
-<hr>
-<h3>使い方</h3>
-<table border=0>
-<tr><td>
-$helptext
-</td></tr>
-</table><br>
-<a href="$g_script" target=_top>[戻る]</a>
-_EOF_
-	&html_footer;
-}
-
 sub mode_addword {
 	my(@filedata,$today,$yday,$newword);
 	
@@ -1057,15 +1071,15 @@ sub mode_addword {
 	
 	#データベースに接続
 	my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
-	or &error("Can't execute : $DBI::errstr");
-	$dbh->do("SET NAMES utf8") or &error("Can't execute : $DBI::errstr");
+	or &error("DB error : $DBI::errstr");
+	$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
 	
 	#以前に同じ単語が入れられていないかチェック
 	if (!$in{'forceadd'}) {
-		$result = $dbh->prepare("SELECT word FROM words WHERE word = \'$newword\';") or &error("Can't execute : $DBI::errstr");
-		$result->execute() or &error("Can't execute : $DBI::errstr");
+		$result = $dbh->prepare("SELECT word FROM words WHERE word = '$newword';") or &error("DB error : $DBI::errstr");
+		$result->execute() or &error("DB error : $DBI::errstr");
 		my $found = $result->rows;
-		$result->finish() or &error("Can't execute : $DBI::errstr");
+		$result->finish() or &error("DB error : $DBI::errstr");
 		
 		if ( $found > 0 ) {
 			&html_header;
@@ -1089,7 +1103,7 @@ _EOF_
 	
 	#単語を書き込む
 	$result = $dbh->do("INSERT INTO words (word, date) VALUES ('$newword', NOW());")
-	or &error("Can't execute : $DBI::errstr");
+	or &error("DB error : $DBI::errstr");
 
 	#最大保持数を超えたら古い順に削除する
 #	while (((@filedata-1)>$g_maxwords) and ($g_maxwords ne 0)) {
@@ -1115,24 +1129,6 @@ _EOF_
 	$dbh->disconnect();
 }
 
-
-# オフラインでやりたくなったときのために札をcsv形式で書き出す
-sub mode_get {
-	local($cols);
-	print "Content-type: application/octet-stream\n";
-	print "Content-Disposition: attachment; filename=words.csv\n\n";
-	
-	&load_words_table;
-	
-	$cols=0;
-	foreach (@words) {
-		print "$_,";
-		$cols = ($cols+1)%4;
-		if ($cols == 0) {print "\n";}
-	}
-}
-
-
 sub supply_stock {
 	my(@wordnumber);
 	&load_words_table;
@@ -1149,21 +1145,29 @@ sub supply_stock {
 #使用可能な単語のリストを得る
 #要load_words_table
 sub get_availablewordlist {
-	my(@filedata,@usedlist,$ans,@wordnumber,@rnd);
+	my(@filedata,@usedlist,$ans,@wordnumber,@rnd,@href);
 	
 	#使われている札の番号の配列を得る
 	foreach (@members) {
 		push(@usedlist,split(/,/,$stock{$_}));
 	}
-	if (-s $g_kaitoufile) {
-		open IN, "$g_kaitoufile";
-		@filedata = <IN>;
-		close IN;
-		foreach (@filedata) {
-			(undef,$ans) = split(/<>/);
-			push(@usedlist,split(/,/,$ans));
-		}
+
+	#データベースに接続
+	my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
+	or &error("DB error : $DBI::errstr");
+	$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
+
+	#投稿されている中に使用された札リストを得る
+	$result = $dbh->prepare("SELECT wordlist FROM kaitou;") or &error("DB error : $DBI::errstr");
+	$result->execute() or &error("DB error : $DBI::errstr");
+	while ( @href = $result->fetchrow_array() ) {
+		push( @usedlist,split(/,/, $href[0]) );
 	}
+	$result->finish() or &error("DB error : $DBI::errstr");
+
+	#データベースを切断
+	$dbh->disconnect();
+	
 	#残っている札番号の配列を得る
 	@wordnumber = 0..($totalwords-1);
 	foreach (@usedlist) { $wordnumber[$_] = -1; }
@@ -1178,31 +1182,41 @@ sub get_availablewordlist {
 
 sub print_kekka {
 	local($pastno) = @_;
-	my(@filedata,$past,%kaitouhash,$hyousuu,$ansindex,$kt,$knum,$ans,$kaitousya,@sentence,@commenttext,$comment,$temp);
+	my($past,$hyousuu,$ansindex,$kaitousya,$sentence,$kekka_table,$result,@href);
 	
 	if ($pastno < 0) {$past = 0;}
 	else {$past = 1;}
 	
-	#解答データの読み込み
+	#読み込むテーブル名
 	if ($past) {
-		open IN, "$g_pastlogdir/$g_kaitoufile.$pastno";
+		$kekka_table = 'kaitou_'.$pastno;
 	}
 	else  {
-		open IN, "$g_kaitoufile";
+		$kekka_table = 'kaitou';
 	}
-	@filedata = <IN>;
-	close IN;
-	$knum=0;
-	foreach (@filedata) {
-		chomp;
-		($hyousuu,$kt) = split(/<>/,$_,2);
-		if ($past or $g_kekkasort) {
-			$kaitouhash{sprintf("%04d<>%04d",$hyousuu,$knum++)} = $kt;
-		}
-		else {
-			$kaitouhash{sprintf("%04d<>%04d",$knum++,$hyousuu)} = $kt;
-		}
+	
+	#データベースに接続
+	my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
+	or &error("DB error : $DBI::errstr");
+	$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
+
+	if ( &is_exist_table( $dbh, $kekka_table ) == 0 ) {
+		#データベースを切断
+		$dbh->disconnect();
+		return;
 	}
+
+	#解答データの読み込み
+	if ( $past or $g_kekkasort ) {
+		$result = $dbh->prepare("SELECT id,content,author,votes FROM $kekka_table ORDER BY votes DESC;")
+		or &error("DB error : $DBI::errstr");
+	}
+	else {
+		$result = $dbh->prepare("SELECT id,content,author,votes FROM $kekka_table;")
+		or &error("DB error : $DBI::errstr");
+	}
+	$result->execute() or &error("DB error : $DBI::errstr");
+	
 	#解答データの表示
 	if ($past) {
 		if ($pastno eq 0) {
@@ -1222,35 +1236,34 @@ sub print_kekka {
 		print "<th>投票</th>";
 	}
 	print "<th>投票数</th></tr>\n";
-	foreach (sort {$b cmp $a} keys %kaitouhash) {
-		if ($past or $g_kekkasort) {
-			($hyousuu,$ansindex) = split(/<>/);
-		}
-		else {
-			($ansindex,$hyousuu) = split(/<>/);
-		}
-		$hyousuu = $hyousuu*1.0;
-		$ansindex = $ansindex*1.0;
-		($ans,$kaitousya) = split(/<>/,$kaitouhash{$_});
+	
+	while ( @href = $result->fetchrow_array() ) {
+		$ansindex = $href[0];
+		$sentence = $href[1];
+		$kaitousya = $href[2];
+		$hyousuu = $href[3];
+		
 		if ($past) {
-			$sentence[$ansindex] = $ans;
-			print "<tr><th>$sentence[$ansindex]</th><th>$kaitousya</th><th>$hyousuu</th>\n";
+			print "<tr><th>$sentence</th><th>$kaitousya</th><th>$hyousuu</th>\n";
 		}
 		else {
-			@anslist = split(/,/,$ans);
-			$sentence[$ansindex] = numlist2sentence(@anslist);
-			print "<tr><th>$sentence[$ansindex]</th><th>$kaitousya</th>";
+			print "<tr><th>$sentence</th><th>$kaitousya</th>";
 			#Twitterにつぶやく
-			$tweet_msg = " 『$sentence[$ansindex]』by \@$kaitousya $g_scripturl ";
+			$tweet_msg = " 『$sentence』by \@$kaitousya $g_scripturl ";
 			$tweet_msg = url_encode($tweet_msg);
 			print "<th><a href=\"http://twitter.com/home?status=$tweet_msg\" target=\"_blank\">[つぶやく]</a></th>";
 			print "<th>";
-			print "<a href=\"$g_script?mode=vote&ansnum=$ansindex&increment=1\">[投票する]</a>";
+			print "<a href=\"$g_script?mode=vote&ansnum=$ansindex&increment=1\">[いいね！]</a>";
 			print "</th><th>$hyousuu</th>\n";
 		}
 		print "</tr>\n";
 	}
 	print "</table>\n";
+
+	$result->finish() or &error("DB error : $DBI::errstr");
+	
+	#データベースを切断
+	$dbh->disconnect();
 }
 
 sub print_addwordform {
@@ -1309,12 +1322,12 @@ sub load_session_table {
 	
 	#データベースに接続
 	my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
-	or &error("Can't execute : $DBI::errstr");
-	$dbh->do("SET NAMES utf8") or &error("Can't execute : $DBI::errstr");
+	or &error("DB error : $DBI::errstr");
+	$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
 
 	#セッション情報を読み込む
-	my $result = $dbh->prepare("SELECT * FROM session;") or &error("Can't execute : $DBI::errstr");
-	$result->execute() or &error("Can't execute : $DBI::errstr");
+	my $result = $dbh->prepare("SELECT * FROM session;") or &error("DB error : $DBI::errstr");
+	$result->execute() or &error("DB error : $DBI::errstr");
 	my $href = $result->fetchrow_hashref();
 	$session{'phase'} = $href->{'phase'};
 	$session{'ninzuu'} = $href->{'ninzuu'};
@@ -1322,11 +1335,11 @@ sub load_session_table {
 	$session{'maisuu'} = $href->{'maisuu'};
 	$session{'change_quant'} = $href->{'change_quant'};
 	$session{'change_amount'} = $href->{'change_amount'};
-	$result->finish() or &error("Can't execute : $DBI::errstr");
+	$result->finish() or &error("DB error : $DBI::errstr");
 	
 	#参加者情報を読み込む
-	$result = $dbh->prepare("SELECT * FROM members;") or &error("Can't execute : $DBI::errstr");
-	$result->execute() or &error("Can't execute : $DBI::errstr");
+	$result = $dbh->prepare("SELECT * FROM members;") or &error("DB error : $DBI::errstr");
+	$result->execute() or &error("DB error : $DBI::errstr");
 	while ( $href = $result->fetchrow_hashref() ) {
 		$username = $href->{'username'};
 		push(@members, $username);
@@ -1335,7 +1348,7 @@ sub load_session_table {
 		$changerest{$username} = $href->{'changerest'};
 		$change_amount{$username} = $href->{'change_amount'};
 	}
-	$result->finish() or &error("Can't execute : $DBI::errstr");
+	$result->finish() or &error("DB error : $DBI::errstr");
 
 	#データベースを切断
 	$dbh->disconnect();
@@ -1345,11 +1358,11 @@ sub load_session_table {
 sub store_session_table {
 	#データベースに接続
 	my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
-	or &error("Can't execute : $DBI::errstr");
-	$dbh->do("SET NAMES utf8") or &error("Can't execute : $DBI::errstr");
+	or &error("DB error : $DBI::errstr");
+	$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
 	
 	#セッション情報をクリアする
-	my $result = $dbh->do("DELETE FROM session;") or &error("Can't execute : $DBI::errstr");
+	my $result = $dbh->do("DELETE FROM session;") or &error("DB error : $DBI::errstr");
 	
 	#セッション情報を書き込む
 	$result = $dbh->do("INSERT INTO session VALUES(
@@ -1361,10 +1374,10 @@ sub store_session_table {
 	'$session{'maisuu'}',
 	'$session{'change_quant'}',
 	'$session{'change_amount'}'
-	);") or &error("Can't execute : $DBI::errstr");
+	);") or &error("DB error : $DBI::errstr");
 	
 	#参加者情報情報をクリアする
-	my $result = $dbh->do("DELETE FROM members;") or &error("Can't execute : $DBI::errstr");
+	my $result = $dbh->do("DELETE FROM members;") or &error("DB error : $DBI::errstr");
 	
 	#参加者情報を書き込む
 	foreach (@members) {
@@ -1374,7 +1387,7 @@ sub store_session_table {
 		'$stock{$_}',
 		'$changerest{$_}',
 		'$change_amount{$_}'
-		);") or &error("Can't execute : $DBI::errstr");
+		);") or &error("DB error : $DBI::errstr");
 	}
 	
 	#データベースを切断
@@ -1387,31 +1400,30 @@ sub load_words_table {
 	if (!defined(@words)) {
 		#データベースに接続
 		my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
-		or &error("Can't execute : $DBI::errstr");
-		$dbh->do("SET NAMES utf8") or &error("Can't execute : $DBI::errstr");
+		or &error("DB error : $DBI::errstr");
+		$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
 		
 		#単語を読み込む
-		$result = $dbh->prepare("SELECT word FROM words;") or &error("Can't execute : $DBI::errstr");
-		$result->execute() or &error("Can't execute : $DBI::errstr");
-		
+		$result = $dbh->prepare("SELECT word FROM words;") or &error("DB error : $DBI::errstr");
+		$result->execute() or &error("DB error : $DBI::errstr");
 		@words = ();
 		while ( @href = $result->fetchrow_array() ) {
 			push( @words, $href[0] );
 		}
-		$result->finish() or &error("Can't execute : $DBI::errstr");
+		$result->finish() or &error("DB error : $DBI::errstr");
 		$totalwords=@words;
 		
 		#今日追加された単語数を取得する
-		$result = $dbh->prepare("SELECT word FROM words WHERE TO_DAYS( NOW() ) = TO_DAYS( date );") or &error("Can't execute : $DBI::errstr");
-		$result->execute() or &error("Can't execute : $DBI::errstr");
+		$result = $dbh->prepare("SELECT word FROM words WHERE TO_DAYS( NOW() ) = TO_DAYS( date );") or &error("DB error : $DBI::errstr");
+		$result->execute() or &error("DB error : $DBI::errstr");
 		$todaywords = $result->rows;
-		$result->finish() or &error("Can't execute : $DBI::errstr");
+		$result->finish() or &error("DB error : $DBI::errstr");
 
 		#昨日追加された単語数を取得する
-		$result = $dbh->prepare("SELECT word FROM words WHERE TO_DAYS( NOW() ) - TO_DAYS( date ) = 1;") or &error("Can't execute : $DBI::errstr");
-		$result->execute() or &error("Can't execute : $DBI::errstr");
+		$result = $dbh->prepare("SELECT word FROM words WHERE TO_DAYS( NOW() ) - TO_DAYS( date ) = 1;") or &error("DB error : $DBI::errstr");
+		$result->execute() or &error("DB error : $DBI::errstr");
 		$yesterdaywords = $result->rows;
-		$result->finish() or &error("Can't execute : $DBI::errstr");
+		$result->finish() or &error("DB error : $DBI::errstr");
 
 		#データベースを切断
 		$dbh->disconnect();
@@ -1420,42 +1432,27 @@ sub load_words_table {
 
 
 sub refresh_kaitou_table {
-	my(@filedata,@anslist,$name,$ans,$dat,$hyousuu,$sentence,$hyoumax,$numlogs,$oldnum);
-	open FH, "+< $g_kaitoufile";
-	@filedata = <FH>;
-	truncate FH,0;
-	close FH;
+	my($numlogs,$oldnum);
+
+	#データベースに接続
+	my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
+	or &error("DB error : $DBI::errstr");
+	$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
 	
-	#過去ログのファイル名をひとつずつ送る
-	for ($numlogs=0; -e "$g_pastlogdir/$g_kaitoufile.$numlogs"; $numlogs++) {}
-	for (; $numlogs>0; $numlogs--) {
-		$oldnum = $numlogs-1;
-		rename("$g_pastlogdir/$g_kaitoufile.$oldnum","$g_pastlogdir/$g_kaitoufile.$numlogs");
-		rename("$g_pastlogdir/$commentfile.$oldnum","$g_pastlogdir/$commentfile.$numlogs");
-	}
-	
-	&load_words_table;
-	open OUT, "> $g_pastlogdir/$g_kaitoufile.0";
-	$hyoumax = 0;
-	foreach (@filedata) {
-		($hyousuu,$ans,$name,$dat) = split(/<>/);
-		@anslist = split(/,/,$ans);
-		$sentence = numlist2sentence(@anslist);
-		print OUT "$hyousuu<>$sentence<>$name\n";
-		if ($hyoumax <= $hyousuu) {
-			#前回の最高票をキーに使う
-			$hyoumax = $hyousuu;
+	if ( &is_exist_table( $dbh, "kaitou" ) ) {
+		#過去ログのファイル名をひとつずつ送る
+		for ($numlogs=0; &is_exist_table($dbh, "kaitou_$numlogs"); $numlogs++) {}
+		for (; $numlogs>0; $numlogs--) {
+			$oldnum = $numlogs-1;
+			$dbh->do("ALTER TABLE kaitou_$oldnum RENAME TO kaitou_$numlogs;")
+			or &error("DB error : $DBI::errstr");
 		}
+		$dbh->do("ALTER TABLE kaitou RENAME TO kaitou_0;")
+		or &error("DB error : $DBI::errstr");
 	}
-	close OUT;
 	
-	open IN, "+< $commentfile";
-	@filedata = <IN>;
-	truncate IN,0;
-	close IN;
-	open OUT, "> $g_pastlogdir/$commentfile.0";
-	print OUT @filedata;
-	close OUT;
+	#データベースを切断
+	$dbh->disconnect();
 }
 
 sub numlist2sentence {
@@ -1467,18 +1464,6 @@ sub numlist2sentence {
 		push(@listwords,$sent);
 	}
 	return join(" ",@listwords);
-}
-
-#  日付文字列を取得
-sub get_time {
-	$ENV{'TZ'} = "JST-9";
-	$times = time;
-	local($sec,$min,$hour,$mday,$mon,$year,$wday) = localtime($times);
-	@week = ('日','月','火','水','木','金','土');
-
-	# 日時のフォーマット
-	$date = sprintf("%04d/%02d/%02d(%s) %02d:%02d",
-			$year+1900,$mon+1,$mday,$week[$wday],$hour,$min);
 }
 
 sub set_cookie {
