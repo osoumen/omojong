@@ -14,13 +14,13 @@ twitterでOAuth認証を使ってつぶやくだけのサンプル
 
 # http://dev.twitter.com/apps/XXXXXX で取得できるやつ
 my %CONSUMER_TOKENS = (
-    consumer_key    => 'QIxTtAj5K2vCdS89bIbyBw',
-    consumer_secret => 'zvyPtmedWbhAK0wyGOTDGrSwa4pyGB9lEuwEcNdY',
+    consumer_key    => 'oVHQOYjXkfrEOGEVdRosQ',
+    consumer_secret => '5Z0zGHDWqBshT1nWa3wcCB7fx69kH7cNExPPdHAGR8',
 );
 
 # http://dev.twitter.com/apps/XXXXXX/my_token で取得できるやつ
-my $ACCESS_TOKEN        = '200574591-jTqAKeJra9USKCIJ22zF8e1HSsuWlVOhxkgGO3T8';
-my $ACCESS_TOKEN_SECRET = 'XMP7wZZHkbVdhQdj3q5YpDm6RPmROXtUupS6nVXszk';
+my $ACCESS_TOKEN        = '207520259-a5z3WtxYG807hJGT1Ulat1GUcqolTX2dUPF0oVZT';
+my $ACCESS_TOKEN_SECRET = '8c8P03bhKbOzwSnPYAxYBJZ6Hm9dscZ4Vwrffl356Pg';
 
 # constructs a "Net::Twitter::Lite" object
 my $t = Net::Twitter::Lite->new(%CONSUMER_TOKENS);
