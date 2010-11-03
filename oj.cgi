@@ -152,9 +152,7 @@ sub phase_kekka {
 	&html_header;
 	
 	#データベースに接続
-	my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
-	or &error("DB error : $DBI::errstr");
-	$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
+	my $dbh = &connect_db();
 
 	if ( &is_exist_table( $dbh, "kaitou_0" ) ) {
 		print "<hr><a href=\"$g_script?mode=pastlog\">[過去の記録]</a><hr>";
@@ -182,9 +180,7 @@ sub phase_sanka {
 	
 	&html_header;
 	#データベースに接続
-	my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
-	or &error("DB error : $DBI::errstr");
-	$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
+	my $dbh = &connect_db();
 
 	if ( &is_exist_table( $dbh, "kaitou_0" ) ) {
 		print "<hr><a href=\"$g_script?mode=pastlog\">[過去の記録]</a><hr>";
@@ -253,9 +249,7 @@ sub phase_toukou {
 	&html_header;
 	
 	#データベースに接続
-	my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
-	or &error("DB error : $DBI::errstr");
-	$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
+	my $dbh = &connect_db();
 
 	if ( &is_exist_table( $dbh, "kaitou_0" ) ) {
 		print "<hr><a href=\"$g_script?mode=pastlog\">[過去の記録]</a><hr>";
@@ -306,9 +300,7 @@ _EOF_
 		#既に投稿した解答を表示
 		
 		#データベースに接続
-		my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
-		or &error("DB error : $DBI::errstr");
-		$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
+		my $dbh = &connect_db();
 		
 		#自分の解答を読み込んで表示
 		$result = $dbh->prepare("SELECT content FROM kaitou WHERE author = '$c_username';") or &error("DB error : $DBI::errstr");
@@ -502,9 +494,7 @@ _EOF_
 			$change_amount{$in{'username'}} = $in{'change_amount'};
 			
 			#データベースに接続
-			my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
-			or &error("DB error : $DBI::errstr");
-			$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
+			my $dbh = &connect_db();
 
 			#テーブルが無ければ作成する
 			if ( &is_exist_table( $dbh, "kaitou" ) eq 0 ) {
@@ -559,9 +549,7 @@ sub mode_pastlog {
 	}
 	
 	#データベースに接続
-	my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
-	or &error("DB error : $DBI::errstr");
-	$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
+	my $dbh = &connect_db();
 	
 	$nextlog = $in{'num'}+1;
 	$prevlog = $in{'num'}-1;
@@ -898,9 +886,7 @@ _EOF_
 	$in{'answer'} = join(",",@anslist);
 	
 	#データベースに接続
-	my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
-	or &error("DB error : $DBI::errstr");
-	$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
+	my $dbh = &connect_db();
 	
 	#登録されている回答数を取得する
 	$result = $dbh->prepare("SELECT id FROM kaitou;") or &error("DB error : $DBI::errstr");
@@ -1027,9 +1013,7 @@ sub mode_vote {
 
 	if (($in{'comment'} eq "") or ($in{'comentator'} eq "")) {
 		#データベースに接続
-		my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
-		or &error("DB error : $DBI::errstr");
-		$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
+		my $dbh = &connect_db();
 		
 		#解答ファイル中の得票数をインクリメントする
 		$result = $dbh->do("UPDATE kaitou SET votes = votes + $in{'increment'} WHERE id = $in{'ansnum'};")
@@ -1070,9 +1054,7 @@ sub mode_addword {
 	$newword = $in{'word'};
 	
 	#データベースに接続
-	my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
-	or &error("DB error : $DBI::errstr");
-	$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
+	my $dbh = &connect_db();
 	
 	#以前に同じ単語が入れられていないかチェック
 	if (!$in{'forceadd'}) {
@@ -1153,9 +1135,7 @@ sub get_availablewordlist {
 	}
 
 	#データベースに接続
-	my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
-	or &error("DB error : $DBI::errstr");
-	$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
+	my $dbh = &connect_db();
 
 	#投稿されている中に使用された札リストを得る
 	$result = $dbh->prepare("SELECT wordlist FROM kaitou;") or &error("DB error : $DBI::errstr");
@@ -1196,9 +1176,7 @@ sub print_kekka {
 	}
 	
 	#データベースに接続
-	my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
-	or &error("DB error : $DBI::errstr");
-	$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
+	my $dbh = &connect_db();
 
 	if ( &is_exist_table( $dbh, $kekka_table ) == 0 ) {
 		#データベースを切断
@@ -1321,9 +1299,7 @@ sub load_session_table {
 	undef(%changerest);
 	
 	#データベースに接続
-	my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
-	or &error("DB error : $DBI::errstr");
-	$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
+	my $dbh = &connect_db();
 
 	#セッション情報を読み込む
 	my $result = $dbh->prepare("SELECT * FROM session;") or &error("DB error : $DBI::errstr");
@@ -1357,9 +1333,7 @@ sub load_session_table {
 
 sub store_session_table {
 	#データベースに接続
-	my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
-	or &error("DB error : $DBI::errstr");
-	$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
+	my $dbh = &connect_db();
 	
 	#セッション情報をクリアする
 	my $result = $dbh->do("DELETE FROM session;") or &error("DB error : $DBI::errstr");
@@ -1399,9 +1373,7 @@ sub load_words_table {
 	my(@href,@filedata);
 	if (!defined(@words)) {
 		#データベースに接続
-		my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
-		or &error("DB error : $DBI::errstr");
-		$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
+		my $dbh = &connect_db();
 		
 		#単語を読み込む
 		$result = $dbh->prepare("SELECT word FROM words;") or &error("DB error : $DBI::errstr");
@@ -1435,9 +1407,7 @@ sub refresh_kaitou_table {
 	my($numlogs,$oldnum);
 
 	#データベースに接続
-	my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
-	or &error("DB error : $DBI::errstr");
-	$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
+	my $dbh = &connect_db();
 	
 	if ( &is_exist_table( $dbh, "kaitou" ) ) {
 		#過去ログのファイル名をひとつずつ送る
@@ -1453,6 +1423,20 @@ sub refresh_kaitou_table {
 	
 	#データベースを切断
 	$dbh->disconnect();
+}
+
+sub connect_db {
+	my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
+	or &error("DB error : $DBI::errstr");
+	$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
+	return $dbh;
+}
+
+sub connect_db {
+	my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
+	or &error("DB error : $DBI::errstr");
+	$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
+	return $dbh;
 }
 
 sub numlist2sentence {
