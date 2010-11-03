@@ -190,7 +190,7 @@ sub phase_sanka {
 	print "<table border=0>\n";
 	print "<tr><th>参加者</th></tr>\n";
 	foreach (@members) {
-		if (($c_passwd eq $passwd{$c_username}) and ($_ eq $c_username)) {
+		if ($_ eq $c_username) {
 			$nametext = "<font size=+1><b>$_</b></font>";
 		}
 		else {
@@ -203,17 +203,15 @@ sub phase_sanka {
 	$rest = $session{'ninzuu'} - @members;
 	print "あと$rest人の参加が必要です。<br><br>\n";
 	
-	if ($c_passwd ne $passwd{$c_username}) {
+	if ( &is_member($c_username) eq 0 ) {
 		#参加者以外の場合
 		#参加表明フォームを表示
 		print<<"_EOF_";
 <form action="$g_script" method="post">
 <input type="hidden" name="mode" value="join">
 <table>
-<tr><td><b>Username</b></td><td><input type="text" name="username" value=""></td></tr>
-<tr><td><b>cookie再発行用パスワード</b></td><td><input type="password" name="passwd" value=""></td></tr>
+<tr><td><b>Username</b></td><td><input type="text" name="username" value=""><input type="submit" name="submit" value="参加する"></td></tr>
 </table>
-<input type="submit" name="submit" value="参加"><br>
 </form>
 <hr>
 <a href="$g_script?mode=repaircookie">cookieの再発行（参加者）</a>
@@ -260,7 +258,7 @@ sub phase_toukou {
 	print "<tr><th>参加者</th><th>解答状況</th></tr>\n";
 	foreach (@members) {
 		$nametext = $_;
-		if (($c_passwd eq $passwd{$c_username}) and ($_ eq $c_username)) {
+		if ($_ eq $c_username) {
 			$nametext = "<font size=+1><b>$_</b></font>";
 		}
 		else {
@@ -275,7 +273,7 @@ sub phase_toukou {
 	}
 	print "</table><br>\n";
 
-	if ($c_passwd ne $passwd{$c_username}) {
+	if ( &is_member($c_username) eq 0 ) {
 		#参加者以外
 		if (@members < $session{'ninzuu_max'}) {
 			print<<"_EOF_";
@@ -283,10 +281,8 @@ sub phase_toukou {
 <b>途中参加受付中！</b><br>
 <input type="hidden" name="mode" value="join">
 <table>
-<tr><td><b>Username</b></td><td><input type="text" name="username" value=""></td></tr>
-<tr><td><b>cookie再発行用パスワード</b></td><td><input type="password" name="passwd" value=""></td></tr>
+<tr><td><b>Username</b></td><td><input type="text" name="username" value=""><input type="submit" name="submit" value="参加する"></td></tr>
 </table>
-<input type="submit" name="submit" value="参加"><br>
 </form>
 _EOF_
 		}
@@ -294,7 +290,6 @@ _EOF_
 	}
 	else {
 		#参加者である場合
-		#既に投稿した解答を表示
 		
 		#データベースに接続
 		my $dbh = &connect_db();
@@ -358,7 +353,7 @@ _EOF_
 <form action="$g_script" method="post">
 <input type="hidden" name="mode" value="giveup">
 <input type="hidden" name="confirm" value="$g_giveup_confirm">
-<input type="submit" name="submit" value="投了する"><br>
+<input type="submit" name="submit" value="解答を終了する"><br>
 </form>
 _EOF_
 		}
@@ -393,7 +388,6 @@ sub mode_start {
 		elsif ($in{'change_quant'} < 0) { $err_str = '交換可能回数の数値が不正です。'; }
 		elsif (grep(/\D/,$in{'change_amount'})) {$err_str = '交換可能枚数は数値で指定してください。';}
 		elsif ($in{'change_amount'} < 0) { $err_str = '交換可能枚数の数値が不正です。'; }
-		elsif ($in{'passwd'} eq "") { $err_str = 'パスワードを設定して下さい。'; }
 		elsif ($totalwords < $in{'ninzuu'}*$in{'maisuu'}) {
 			$err_str = '札が足りません。';
 		}
@@ -422,7 +416,6 @@ sub mode_start {
 <input type="hidden" name="mode" value="start">
 <input type="hidden" name="confirm" value="$g_start_confirm">
 <tr><td><b>Username</b></td><td><input type="text" name="username" value="$in{'username'}"></td></tr>
-<tr><td><b>パスワード(cookie再発行用)</b></td><td><input type="password" name="passwd" value="$in{'passwd'}"></td></tr>
 <tr>
 <td><b>人数</b></td>
 <td><input type="text" name="ninzuu" value="$in{'ninzuu'}" size=4>〜<input type="text" name="ninzuu_max" value="$in{'ninzuu_max'}" size=4>人</td>
@@ -447,7 +440,6 @@ _EOF_
 以下の条件で始めますか？<br>
 <table>
 <tr><td><b>Username</b></td><td>$in{'username'}</td></tr>
-<tr><td><b>パスワード</b></td><td>$in{'passwd'}</td></tr>
 <tr><td><b>人数</b></td><td>$in{'ninzuu'}〜$in{'ninzuu_max'}</td></tr>
 <tr><td><b>枚数</b></td><td>$in{'maisuu'}</td></tr>
 <tr><td><b>札の交換</b></td><td>$in{'change_quant'}回まで$in{'change_amount'}枚以内
@@ -457,7 +449,6 @@ _EOF_
 <input type="hidden" name="mode" value="start">
 <input type="hidden" name="confirm" value="0">
 <input type="hidden" name="username" value="$in{'username'}">
-<input type="hidden" name="passwd" value="$in{'passwd'}">
 <input type="hidden" name="ninzuu" value="$in{'ninzuu'}">
 <input type="hidden" name="ninzuu_max" value="$in{'ninzuu_max'}">
 <input type="hidden" name="maisuu" value="$in{'maisuu'}">
@@ -475,7 +466,6 @@ _EOF_
 
 			undef(%session);
 			undef(@members);
-			undef(%passwd);
 			undef(%stock);
 			undef(%changerest);
 			
@@ -487,7 +477,6 @@ _EOF_
 			$session{'change_amount'} = $in{'change_amount'};
 	
 			$members[0] = $in{'username'};
-			$passwd{$in{'username'}} = $in{'passwd'};
 			$changerest{$in{'username'}} = $in{'change_quant'};
 			$change_amount{$in{'username'}} = $in{'change_amount'};
 			
@@ -519,7 +508,6 @@ _EOF_
 			
 			#クッキーを発行
 			$c_username = $in{'username'};
-			$c_passwd = $passwd{$in{'username'}};
 			&set_cookie;
 			
 			&html_header;
@@ -528,7 +516,6 @@ _EOF_
 <h3>スタートしました</h3>
 <table>
 <tr><td><b>Username</b></td><td>$in{'username'}</td></tr>
-<tr><td><b>パスワード</b></td><td>$in{'passwd'}</td></tr>
 <tr><td><b>人数</b></td><td>$in{'ninzuu'}〜$in{'ninzuu_max'}</td></tr>
 <tr><td><b>枚数</b></td><td>$in{'maisuu'}</td></tr>
 <tr><td><b>札の交換</b></td><td>$in{'change_quant'}回まで$in{'change_amount'}枚以内</td></tr>
@@ -594,12 +581,10 @@ sub mode_join {
 	if (grep($_ eq $in{'username'},@members)) {
 		&error("その名前の人は既にいます。");
 	}
-	if ($in{'passwd'} eq "") { &error("パスワードを設定して下さい。"); }
 	
 	if ($phase eq 'sanka') {
 		#メンバーに追加
 		push(@members,$in{'username'});
-		$passwd{$in{'username'}} = $in{'passwd'};
 		$changerest{$in{'username'}} = $session{'change_quant'};
 		$change_amount{$in{'username'}} = $session{'change_amount'};
 		
@@ -622,7 +607,6 @@ sub mode_join {
 	elsif (($phase eq 'toukou') and (@members < $session{'ninzuu_max'}) ) {
 		#メンバーに追加
 		push(@members,$in{'username'});
-		$passwd{$in{'username'}} = $in{'passwd'};
 		$changerest{$in{'username'}} = $session{'change_quant'};
 		$change_amount{$in{'username'}} = $session{'change_amount'};
 		
@@ -647,29 +631,26 @@ sub mode_join {
 	&store_session_table;
 	#クッキーを発行
 	$c_username = $in{'username'};
-	$c_passwd = $passwd{$in{'username'}};
 	&set_cookie;
 	&html_header;
 	print "<hr>\n";
 	print "<h3>参加しました。</h3>\n";
 	print "Username：$in{'username'}<br>\n";
-	print "パスワード：$in{'passwd'}<br>\n";
 	print "<a href=\"$g_script\" target=_top>[戻る]</a>\n";
 	&html_footer;
 }
 
 sub mode_repaircookie
 {
-	if (($in{'passwd'} eq "") or ($in{'username'} eq "")) {
+	if ($in{'username'} eq "") {
 		&html_header;
 		print<<"_EOF_";
 <hr>
 <h3>クッキーの再発行</h3>
-Usernameと、参加時のパスワードを入力してください。<br>
+Usernameを入力してください。<br>
 <form action="$g_script" method="post">
 <input type="hidden" name="mode" value="repaircookie">
 Username：<input type="text" name="username" value="">
-パスワード：<input type="password" name="passwd" value="">
 <input type="submit" name="submit" value="再発行"><br>
 </form>
 <a href="$g_script" target=_top>[戻る]</a>
@@ -677,12 +658,10 @@ Username：<input type="text" name="username" value="">
 _EOF_
 	}
 	else {
-		if ($passwd{$in{'username'}} eq "") {&error("$in{'username'}さんは参加していません。");}
-		if ($in{'passwd'} ne $passwd{$in{'username'}}) {
-			&error("パスワードが違います。");
+		if ( &is_member($in{'username'}) eq 0 ) {
+			&error("$in{'username'}さんは参加していません。");
 		}
 		$c_username = $in{'username'};
-		$c_passwd = $passwd{$in{'username'}};
 		&set_cookie;
 		&html_header;
 		print<<"_EOF_";
@@ -699,8 +678,8 @@ _EOF_
 sub mode_joincancel {
 	if ($phase ne 'sanka') { &error("参加受付中ではありません。"); }
 	&get_cookie;
-	#cookieのパスワードを照合する
-	if ($c_passwd ne $passwd{$c_username}) {&error("参加していません。");}
+	#ユーザー名を照合する
+	if ( &is_member($c_username) eq 0 ) {&error("参加していません。");}
 	#リーダーかどうか調べる
 	if ($c_username eq $members[0]) {&error("開始した人はキャンセルできません。");}
 	
@@ -708,8 +687,7 @@ sub mode_joincancel {
 	@members = grep($_ ne $c_username,@members);
 	&store_session_table;
 	
-	#$c_username = "";
-	$c_passwd = "";
+	$c_username = "";
 	&set_cookie;
 	
 	&html_header;
@@ -731,7 +709,7 @@ sub mode_change {
 	if ($phase ne 'toukou') { &error("現在解答を受け付けていません"); }
 	&get_cookie;
 	if ($changerest{$c_username} eq 0) {&error("取り替え回数が残っていません");}
-	if ($c_passwd ne $passwd{$c_username}) {&error("参加していません。");}
+	if ( &is_member($c_username) eq 0 ) {&error("参加していません。");}
 	#持ち札があるか
 	if ($stock{$c_username} eq "") {&error("$c_usernameさんの持ち札はありません");}
 	@stocklist = split(/,/,$stock{$c_username});
@@ -833,7 +811,7 @@ sub mode_answer {
 	#--エラーチェック--
 	if ($phase ne 'toukou') { &error("現在解答を受け付けていません。"); }
 	&get_cookie;
-	if ($c_passwd ne $passwd{$c_username}) {&error("参加していません。");}
+	if ( &is_member($c_username) eq 0 ) {&error("参加していません。");}
 	#持ち札があるか
 	if ($stock{$c_username} eq "") {&error("$c_usernameさんの持ち札はありません");}
 	@stocklist = split(/,/,$stock{$c_username});
@@ -951,7 +929,7 @@ _EOF_
 sub mode_giveup {
 	if ($phase ne 'toukou') { &error("現在解答を受け付けていません。"); }
 	&get_cookie;
-	if ($c_passwd ne $passwd{$c_username}) {&error("参加していません。");}
+	if ( &is_member($c_username) eq 0 ) {&error("参加していません。");}
 	#持ち札があるか
 	if ($stock{$c_username} eq "") {&error("$c_usernameさんの解答は終了しています");}
 
@@ -1290,7 +1268,6 @@ sub load_session_table {
 	
 	undef(%session);
 	undef(@members);
-	undef(%passwd);
 	undef(%stock);
 	undef(%changerest);
 	
@@ -1316,7 +1293,6 @@ sub load_session_table {
 	while ( $href = $result->fetchrow_hashref() ) {
 		$username = $href->{'username'};
 		push(@members, $username);
-		$passwd{$username} = $href->{'passwd'};
 		$stock{$username} = $href->{'stock'};
 		$changerest{$username} = $href->{'changerest'};
 		$change_amount{$username} = $href->{'change_amount'};
@@ -1327,6 +1303,13 @@ sub load_session_table {
 	$dbh->disconnect();
 }
 
+sub is_member {
+	my $name = $_[0];
+	if (grep($_ eq $name, @members)) {
+		return 1;
+	}
+	return 0;
+}
 
 sub store_session_table {
 	#データベースに接続
@@ -1354,7 +1337,6 @@ sub store_session_table {
 	foreach (@members) {
 		$result = $dbh->do("INSERT INTO members VALUES(
 		'$_',
-		'$passwd{$_}',
 		'$stock{$_}',
 		$changerest{$_},
 		$change_amount{$_}
@@ -1447,18 +1429,11 @@ sub set_cookie {
 	@week = ('Sun','Mon','Tue','Wed','Thu','Fri','Sat');
 	$gmt = sprintf("%s, %02d-%s-%04d %02d:%02d:%02d GMT",
 		$week[$wday],$mday,$month[$mon],$year+1900,$hour,$min,$sec);
-	$cook=url_encode("username<>$c_username\,passwd<>$c_passwd");
-	print "Set-Cookie: ojcgi=$cook; expires=$gmt;\n";
+	$cook=url_encode("$c_username");
+	print "Set-Cookie: username=$cook; expires=$gmt;\n";
 }
 
 sub get_cookie {
 	local %GET = $cgi->parse_cookies;
-	local @pairs = split(/,/, $GET{'ojcgi'});
-	foreach (@pairs) {
-		local($key,$val) = split(/<>/);
-		$COOK{$key} = $val;
-	}
-	$c_username  = $COOK{'username'};
-	$c_passwd = $COOK{'passwd'};
-	if ($c_passwd eq "") {$c_passwd = 'empty';}
+	$c_username  = $GET{'username'};
 }
