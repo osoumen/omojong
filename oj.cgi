@@ -14,8 +14,7 @@ $version = '2.0';
 #  cgi-bin [755]
 #       |
 #       +-- ojcgi / [707]（必須）
-#             |        oj.cgi       [705]（必須）
-#             |        words.dat    [600]
+#             |        oj.cgi       [705]
 #             |        kaitou.dat   [600]
 #             |
 #             +-- past / [700]（必須）
@@ -32,7 +31,6 @@ $version = '2.0';
 #基本設定--ここから
 
 $g_title = '面雀(おもじゃん)2.0';		# タイトル
-$g_backurl = '../../index.html';		# 戻りのURL
 $g_script = './oj.cgi';				#このファイル自身（705）
 
 $g_scripturl = 'http://benjamin-lab.com/~ojbot/oj.cgi';
@@ -169,7 +167,6 @@ sub phase_kekka {
 	&html_header;
 	print<<"_EOF_";
 <hr>
-<a href="$g_backurl" TARGET=_top>[ホームへ]</a>
 <a href="$g_script?mode=help" TARGET=_top>[使い方]</a>
 <a href="$g_script?mode=pastlog">[過去の記録]</a>
 <hr>
@@ -195,7 +192,6 @@ sub phase_sanka {
 	&html_header;
 	print<<"_EOF_";
 <hr>
-<a href="$g_backurl" TARGET=_top>[ホームへ]</a>
 <a href="$g_script?mode=help" TARGET=_top>[使い方]</a>
 <a href="$g_script?mode=pastlog">[過去の記録]</a>
 <hr>
@@ -261,7 +257,6 @@ sub phase_toukou {
 	&html_header;
 	print<<"_EOF_";
 <hr>
-<a href="$g_backurl" TARGET=_top>[ホームへ]</a>
 <a href="$g_script?mode=help" TARGET=_top>[使い方]</a>
 <a href="$g_script?mode=pastlog">[過去の記録]</a>
 <hr>
