@@ -66,9 +66,6 @@ $notifymsg2=<<"_EOF_";
 解答が出揃いました。結果を見られます！ ($g_title $g_scripturl)
 _EOF_
 
-
-$crypt_key = 'test';
-
 #--設定はここまで
 
 
@@ -241,7 +238,7 @@ _EOF_
 
 #解答受付状態での処理
 sub phase_toukou {
-	my($ans,$sentence,$nametext,$word,@href);
+	my($nametext,$word);
 
 	&get_cookie;
 	&load_words_table;
@@ -306,6 +303,7 @@ _EOF_
 		$result = $dbh->prepare("SELECT content FROM kaitou WHERE author = '$c_username';") or &error("DB error : $DBI::errstr");
 		$result->execute() or &error("DB error : $DBI::errstr");
 		@sentence = ();
+		my @href = ();
 		while ( @href = $result->fetchrow_array() ) {
 			push( @sentence, $href[0] );
 		}
@@ -376,8 +374,7 @@ _EOF_
 
 
 sub mode_start {
-	my($err_str,@no_yes);
-	@no_yes = ('なし','あり');
+	my($err_str);
 	
 	&get_cookie;
 	&load_words_table;
@@ -482,6 +479,7 @@ _EOF_
 			undef(%stock);
 			undef(%changerest);
 			
+			$session{'leadername'} = $in{'username'};
 			$session{'ninzuu'} = $in{'ninzuu'};
 			$session{'ninzuu_max'} = $in{'ninzuu_max'};
 			$session{'maisuu'} = $in{'maisuu'};
@@ -489,7 +487,7 @@ _EOF_
 			$session{'change_amount'} = $in{'change_amount'};
 	
 			$members[0] = $in{'username'};
-			$passwd{$in{'username'}} = crypt($in{'passwd'},$crypt_key);
+			$passwd{$in{'username'}} = $in{'passwd'};
 			$changerest{$in{'username'}} = $in{'change_quant'};
 			$change_amount{$in{'username'}} = $in{'change_amount'};
 			
@@ -543,7 +541,7 @@ _EOF_
 }
 
 sub mode_pastlog {
-	my($nextlog,$prevlog);
+	my($nextlog, $prevlog);
 	if ($in{'num'} eq "") {
 		$in{'num'} = 0;
 	}
@@ -579,7 +577,7 @@ _EOF_
 sub is_exist_table {
 	my ($dbh, $table_name) = @_;
 	
-	#存在チェック
+	#テーブルの存在チェック
 	my $result = $dbh->prepare("SHOW TABLES WHERE Tables_in_$g_database = '$table_name';")
 	or &error("DB error : $DBI::errstr");
 	$result->execute() or &error("DB error : $DBI::errstr");
@@ -601,7 +599,7 @@ sub mode_join {
 	if ($phase eq 'sanka') {
 		#メンバーに追加
 		push(@members,$in{'username'});
-		$passwd{$in{'username'}} = crypt($in{'passwd'},$crypt_key);
+		$passwd{$in{'username'}} = $in{'passwd'};
 		$changerest{$in{'username'}} = $session{'change_quant'};
 		$change_amount{$in{'username'}} = $session{'change_amount'};
 		
@@ -624,7 +622,7 @@ sub mode_join {
 	elsif (($phase eq 'toukou') and (@members < $session{'ninzuu_max'}) ) {
 		#メンバーに追加
 		push(@members,$in{'username'});
-		$passwd{$in{'username'}} = crypt($in{'passwd'},$crypt_key);
+		$passwd{$in{'username'}} = $in{'passwd'};
 		$changerest{$in{'username'}} = $session{'change_quant'};
 		$change_amount{$in{'username'}} = $session{'change_amount'};
 		
@@ -680,7 +678,7 @@ _EOF_
 	}
 	else {
 		if ($passwd{$in{'username'}} eq "") {&error("$in{'username'}さんは参加していません。");}
-		if (crypt($in{'passwd'},$crypt_key) ne $passwd{$in{'username'}}) {
+		if ($in{'passwd'} ne $passwd{$in{'username'}}) {
 			&error("パスワードが違います。");
 		}
 		$c_username = $in{'username'};
@@ -951,8 +949,6 @@ _EOF_
 }
 
 sub mode_giveup {
-	my($remain);
-	
 	if ($phase ne 'toukou') { &error("現在解答を受け付けていません。"); }
 	&get_cookie;
 	if ($c_passwd ne $passwd{$c_username}) {&error("参加していません。");}
@@ -979,7 +975,7 @@ _EOF_
 		$stock{$c_username} = "";
 		
 		#全員の解答が終了したか調べてモード移行を行う
-		$remain = 0;
+		my $remain = 0;
 		foreach (@members) {
 			if ($stock{$_}) {$remain++;}
 		}
@@ -1007,7 +1003,7 @@ _EOF_
 }
 
 sub mode_vote {
-	my(@kaitou,$foot,$hyousuu,$answer,@anslist,$sentence,@comments,@href);
+	my($sentence,@href);
 	if ($phase ne 'kekka') { &error("現在投票を受け付けていません。"); }
 	if (grep(/\D/,$in{'ansnum'})) {&error("投票は数値を指定してください。");}
 
@@ -1046,7 +1042,7 @@ _EOF_
 }
 
 sub mode_addword {
-	my(@filedata,$today,$yday,$newword);
+	my(@filedata,$newword);
 	
 	if ($in{'word'} eq '') {
 		&error("文字が入っていないぞ？");
@@ -1127,7 +1123,7 @@ sub supply_stock {
 #使用可能な単語のリストを得る
 #要load_words_table
 sub get_availablewordlist {
-	my(@filedata,@usedlist,$ans,@wordnumber,@rnd,@href);
+	my(@usedlist,@wordnumber,@rnd,@href);
 	
 	#使われている札の番号の配列を得る
 	foreach (@members) {
@@ -1290,7 +1286,7 @@ sub error {
 }
 
 sub load_session_table {
-	my($key,$val,$username);
+	my($username,$href);
 	
 	undef(%session);
 	undef(@members);
@@ -1305,6 +1301,7 @@ sub load_session_table {
 	my $result = $dbh->prepare("SELECT * FROM session;") or &error("DB error : $DBI::errstr");
 	$result->execute() or &error("DB error : $DBI::errstr");
 	my $href = $result->fetchrow_hashref();
+	$session{'leadername'} = $href->{'leadername'};
 	$session{'phase'} = $href->{'phase'};
 	$session{'ninzuu'} = $href->{'ninzuu'};
 	$session{'ninzuu_max'} = $href->{'ninzuu_max'};
@@ -1340,14 +1337,14 @@ sub store_session_table {
 	
 	#セッション情報を書き込む
 	$result = $dbh->do("INSERT INTO session VALUES(
-	'',
+	'$session{'leadername'}',
 	'',
 	'$phase',
-	'$session{'ninzuu'}',
-	'$session{'ninzuu_max'}',
-	'$session{'maisuu'}',
-	'$session{'change_quant'}',
-	'$session{'change_amount'}'
+	$session{'ninzuu'},
+	$session{'ninzuu_max'},
+	$session{'maisuu'},
+	$session{'change_quant'},
+	$session{'change_amount'}
 	);") or &error("DB error : $DBI::errstr");
 	
 	#参加者情報情報をクリアする
@@ -1359,8 +1356,8 @@ sub store_session_table {
 		'$_',
 		'$passwd{$_}',
 		'$stock{$_}',
-		'$changerest{$_}',
-		'$change_amount{$_}'
+		$changerest{$_},
+		$change_amount{$_}
 		);") or &error("DB error : $DBI::errstr");
 	}
 	
@@ -1423,13 +1420,6 @@ sub refresh_kaitou_table {
 	
 	#データベースを切断
 	$dbh->disconnect();
-}
-
-sub connect_db {
-	my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
-	or &error("DB error : $DBI::errstr");
-	$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
-	return $dbh;
 }
 
 sub connect_db {
