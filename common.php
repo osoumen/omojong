@@ -1,22 +1,22 @@
 <?php
 
 function connect_db {
-	my $dbh = DBI->connect("DBI:mysql:$g_database", $g_dbuser, $g_dbpassword)
-	or &error("DB error : $DBI::errstr");
-	$dbh->do("SET NAMES utf8") or &error("DB error : $DBI::errstr");
-	return $dbh;
+	$dbServer = 'localhost';
+	if ( !$link = mysql_connect( $dbServer, $g_dbuser, $g_dbpassword ) ) {
+		die('データベースに接続できませんでした');
+	}
+	mysql_select_db( $g_database, $link );
+	mysql_set_charset( 'utf8', $link );
+	
+	return $link;
 }
 
-function is_exist_table {
-	my ($dbh, $table_name) = @_;
+function is_exist_table( $link, $table_name ) {
 	
 	#テーブルの存在チェック
-	my $result = $dbh->prepare("SHOW TABLES WHERE Tables_in_$g_database = '$table_name';")
-	or &error("DB error : $DBI::errstr");
-	$result->execute() or &error("DB error : $DBI::errstr");
-	my $exists = $result->rows;
-	$result->finish() or &error("DB error : $DBI::errstr");
-	
+	$sql = "SHOW TABLES WHERE Tables_in_$g_database = '$table_name';";
+	$query = mysql_query( $sql, $link );
+	$exists = mysql_num_rows( $query );
 	return $exists;
 }
 
