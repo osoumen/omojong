@@ -985,47 +985,42 @@ sub mode_vote {
 	if ($phase ne 'kekka') { &error("現在投票を受け付けていません。"); }
 	if (grep(/\D/,$in{'ansnum'})) {&error("投票は数値を指定してください。");}
 
-	if (($in{'comment'} eq "") or ($in{'comentator'} eq "")) {
-		#データベースに接続
-		my $dbh = &connect_db();
-		
-		#解答ファイル中の得票数をインクリメントする
-		$result = $dbh->do("UPDATE kaitou SET votes = votes + $in{'increment'} WHERE id = $in{'ansnum'};")
-		or &error("範囲外の解答を指定しています。");
-		
-		#投票した解答を得る
-		$result = $dbh->prepare("SELECT content FROM kaitou WHERE id = $in{'ansnum'};")
-		or &error("DB error : $DBI::errstr");
-		$result->execute() or &error("DB error : $DBI::errstr");
-		while ( @href = $result->fetchrow_array() ) {
-			$sentence = $href[0];
-		}
-		$result->finish() or &error("DB error : $DBI::errstr");
-		
-		#データベースを切断
-		$dbh->disconnect();
-		
-		&html_header;
-		if ($in{'increment'}) {
-			print<<"_EOF_";
+	#データベースに接続
+	my $dbh = &connect_db();
+	
+	#解答ファイル中の得票数をインクリメントする
+	$result = $dbh->do("UPDATE kaitou SET votes = votes + $in{'increment'} WHERE id = $in{'ansnum'};")
+	or &error("範囲外の解答を指定しています。");
+	
+	#投票した解答を得る
+	$result = $dbh->prepare("SELECT content FROM kaitou WHERE id = $in{'ansnum'};")
+	or &error("DB error : $DBI::errstr");
+	$result->execute() or &error("DB error : $DBI::errstr");
+	while ( @href = $result->fetchrow_array() ) {
+		$sentence = $href[0];
+	}
+	$result->finish() or &error("DB error : $DBI::errstr");
+	
+	#データベースを切断
+	$dbh->disconnect();
+	
+	&html_header;
+	if ($in{'increment'}) {
+		print<<"_EOF_";
 <hr>
 <h3>$sentenceに投票しました</h3>
 投票ありがとうございます。<br>
 <a href="$g_script" target=_top>[戻る]</a>
 _EOF_
-		}
-		&html_footer;
-		
 	}
+	&html_footer;
 }
 
 sub mode_addword {
-	my(@filedata,$newword);
-	
 	if ($in{'word'} eq '') {
 		&error("文字が入っていないぞ？");
 	}
-	$newword = $in{'word'};
+	my $newword = $in{'word'};
 	
 	#データベースに接続
 	my $dbh = &connect_db();
@@ -1349,7 +1344,7 @@ sub store_session_table {
 
 
 sub load_words_table {
-	my(@href,@filedata);
+	my(@href);
 	if (!defined(@words)) {
 		#データベースに接続
 		my $dbh = &connect_db();
