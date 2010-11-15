@@ -24,10 +24,8 @@ $g_dbpassword = 'korogottu';
 $usenotification = 0;
 
 #Twitter関連
-$g_consumer_tokens = array(
-    'consumer_key'    => 'oVHQOYjXkfrEOGEVdRosQ',
-    'consumer_secret' => '5Z0zGHDWqBshT1nWa3wcCB7fx69kH7cNExPPdHAGR8'
-);
+$consumer_key    = 'oVHQOYjXkfrEOGEVdRosQ';
+$consumer_secret = '5Z0zGHDWqBshT1nWa3wcCB7fx69kH7cNExPPdHAGR8';
 $access_token        = '207520259-a5z3WtxYG807hJGT1Ulat1GUcqolTX2dUPF0oVZT';
 $access_token_secret = '8c8P03bhKbOzwSnPYAxYBJZ6Hm9dscZ4Vwrffl356Pg';
 
@@ -45,4 +43,4 @@ $members = array();
 $stock = array();
 $changerest = array();
 $words = array();
-
+$phase = 'kaitou';

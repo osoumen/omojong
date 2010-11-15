@@ -1,5 +1,7 @@
 <?php
 
+require_once("twitteroauth.php");
+
 function connect_db {
 	$dbServer = 'localhost';
 	if ( !$link = mysql_connect( $dbServer, $g_dbuser, $g_dbpassword ) ) {
@@ -12,7 +14,6 @@ function connect_db {
 }
 
 function is_exist_table( $link, $table_name ) {
-	
 	#テーブルの存在チェック
 	$sql = "SHOW TABLES WHERE Tables_in_$g_database = '$table_name';";
 	$query = mysql_query( $sql, $link );
@@ -21,194 +22,184 @@ function is_exist_table( $link, $table_name ) {
 }
 
 function load_session_table {
-	my($username,$href);
-	
 	$session = array();
 	$members = array();
 	$stock = array();
 	$changerest = array();
 	
 	#データベースに接続
-	my $dbh = &connect_db();
+	$link = connect_db();
 
 	#セッション情報を読み込む
-	my $result = $dbh->prepare("SELECT * FROM session;") or &error("DB error : $DBI::errstr");
-	$result->execute() or &error("DB error : $DBI::errstr");
-	my $href = $result->fetchrow_hashref();
-	$session{'leadername'} = $href->{'leadername'};
-	$session{'phase'} = $href->{'phase'};
-	$session{'ninzuu'} = $href->{'ninzuu'};
-	$session{'ninzuu_max'} = $href->{'ninzuu_max'};
-	$session{'maisuu'} = $href->{'maisuu'};
-	$session{'change_quant'} = $href->{'change_quant'};
-	$session{'change_amount'} = $href->{'change_amount'};
-	$result->finish() or &error("DB error : $DBI::errstr");
+	$sql = "SELECT * FROM session;";
+	$query = mysql_query( $sql, $link );
+	$row = @mysql_fetch_array( $query, MYSQL_ASSOC );
+	$session['leadername'] = $row['leadername'];
+	$session['phase'] = $row['phase'];
+	$session['ninzuu'] = $row['ninzuu'];
+	$session['ninzuu_max'] = $row['ninzuu_max'];
+	$session['maisuu'] = $row['maisuu'];
+	$session['change_quant'] = $row['change_quant'];
+	$session['change_amount'] = $row['change_amount'];
 	
 	#参加者情報を読み込む
-	$result = $dbh->prepare("SELECT * FROM members;") or &error("DB error : $DBI::errstr");
-	$result->execute() or &error("DB error : $DBI::errstr");
-	while ( $href = $result->fetchrow_hashref() ) {
-		$username = $href->{'username'};
-		push(@members, $username);
-		$stock{$username} = $href->{'stock'};
-		$changerest{$username} = $href->{'changerest'};
-		$change_amount{$username} = $href->{'change_amount'};
+	$sql = "SELECT * FROM members;";
+	$query = mysql_query( $sql, $link );
+	while ( $row = @mysql_fetch_array( $query, MYSQL_ASSOC ) ) {
+		$username = $row['username'];
+		array_push($members, $username);
+		$stock[$username] = $row['stock'];
+		$changerest[$username] = $row['changerest'];
+		$change_amount[$username] = $row['change_amount'];
 	}
-	$result->finish() or &error("DB error : $DBI::errstr");
 
 	#データベースを切断
-	$dbh->disconnect();
+	mysql_close( $link );
 }
 
 function numlist2sentence( $numlist ) {
-	if (!defined(@words)) { load_words_table(); }
-	my @listwords;
-	foreach (@numlist) {
-		my $sent = $words[$_];
-		push(@listwords,$sent);
+	if ( count($words) == 0 ) {
+		load_words_table();
 	}
-	return join(" ",@listwords);
+	$listwords = array();
+	foreach ($numlist as $num) {
+		$sent = $words[$num];
+		array_push( $listwords, $sent );
+	}
+	return join(" ", $listwords);
 }
 
 function supply_stock {
-	my(@wordnumber);
-	&load_words_table;
+	load_words_table();
 	
-	@wordnumber = &get_availablewordlist;
+	$wordnumber = get_availablewordlist();
 	
 	#札を配る
-	foreach (@members) {
-		$stock{$_} = join(",",splice(@wordnumber,0,$session{'maisuu'}));
+	foreach ($members as $memb) {
+		$stock[$memb] = join(",", array_splice( $wordnumber,0,$session['maisuu'] ) );
 	}
 }
 
 #使用可能な単語のリストを得る
 #要load_words_table
 function get_availablewordlist {
-	my(@usedlist,@wordnumber,@rnd,@href);
+	$usedlist = array();
 	
 	#使われている札の番号の配列を得る
-	foreach (@members) {
-		push(@usedlist,split(/,/,$stock{$_}));
+	foreach ($members as $memb) {
+		array_push($usedlist, split(",", $stock[$memb] ) );
 	}
 
 	#データベースに接続
-	my $dbh = &connect_db();
+	$link = connect_db();
 
 	#投稿されている中に使用された札リストを得る
-	$result = $dbh->prepare("SELECT wordlist FROM kaitou;") or &error("DB error : $DBI::errstr");
-	$result->execute() or &error("DB error : $DBI::errstr");
-	while ( @href = $result->fetchrow_array() ) {
-		push( @usedlist,split(/,/, $href[0]) );
+	$sql = "SELECT wordlist FROM kaitou;"
+	$query = mysql_query( $sql, $link );
+	while ( $row = mysql_fetch_array( $query, MYSQL_NUM ) ) {
+		array_push( $usedlist,split(",", $row[0]) );
 	}
-	$result->finish() or &error("DB error : $DBI::errstr");
 
 	#データベースを切断
-	$dbh->disconnect();
+	mysql_close( $link );
 	
-	#残っている札番号の配列を得る
-	@wordnumber = 0..($totalwords-1);
-	foreach (@usedlist) { $wordnumber[$_] = -1; }
-	@wordnumber = grep($_ ne -1,@wordnumber);
+	#usedlistを除いた札番号の配列を得る
+	$wordnumber = array();
+	for ( $i = 0; $i < $totalwords; $i++ ) {
+		if ( in_array( $i, $usedlist ) == FALSE) {
+			array_push( $wordnumber, $i );
+		}
+	}
 
 	#シャッフルする
-	while (@wordnumber) {
- 	   push(@rnd, splice(@wordnumber , rand @wordnumber , 1));
-	}
-	return @rnd;
+	shuffle($wordnumber);
+
+	return $wordnumber;
 }
 
-function commit_mention {
-	local($mlad,$inmsg) = @_;
-	my $err = 0;
-	my $t = Net::Twitter::Lite->new(%g_consumer_tokens);
-	
-	# トークンをセットする
-	$t->access_token($g_access_token);
-	$t->access_token_secret($g_access_token_secret);
+function commit_mention($mlad,$inmsg) {
+	// OAuthオブジェクト生成
+	$to = new TwitterOAuth($consumer_key,$consumer_secret,$access_token,$access_token_secret);
 	
 	# 投稿
-	my $notify_msg = "\@$mlad $inmsg";
-	my $utf8 = Encode::decode_utf8 $notify_msg;
-	my $status = $t->update({ status => $utf8 });
-	
-	return $err;
+	$notify_msg = "\@$mlad $inmsg";	
+	$req = $to->OAuthRequest("https://twitter.com/statuses/update.xml","POST",array("status"=>$notify_msg));	
+	return $req;
 }
 
-function is_member {
-	my $name = $_[0];
-	if (grep($_ eq $name, @members)) {
-		return 1;
+function is_member($name) {
+	if ( in_array($name, $members) ) {
+		return TRUE;
 	}
-	return 0;
+	return FALSE;
 }
 
 function store_session_table {
 	#データベースに接続
-	my $dbh = &connect_db();
+	$link = connect_db();
 	
 	#セッション情報をクリアする
-	my $result = $dbh->do("DELETE FROM session;") or &error("DB error : $DBI::errstr");
+	$sql = "DELETE FROM session;";
+	$query = mysql_query( $sql, $link );
 	
 	#セッション情報を書き込む
-	$result = $dbh->do("INSERT INTO session VALUES(
-	'$session{'leadername'}',
+	$sql = "INSERT INTO session VALUES(
+	'$session['leadername']',
 	'',
 	'$phase',
-	$session{'ninzuu'},
-	$session{'ninzuu_max'},
-	$session{'maisuu'},
-	$session{'change_quant'},
-	$session{'change_amount'}
-	);") or &error("DB error : $DBI::errstr");
-	
+	$session['ninzuu'],
+	$session['ninzuu_max'],
+	$session['maisuu'],
+	$session['change_quant'],
+	$session['change_amount']
+	);";
+	$query = mysql_query( $sql, $link );
+
 	#参加者情報情報をクリアする
-	my $result = $dbh->do("DELETE FROM members;") or &error("DB error : $DBI::errstr");
+	$sql = "DELETE FROM members;";
+	$query = mysql_query( $sql, $link );
 	
 	#参加者情報を書き込む
-	foreach (@members) {
-		$result = $dbh->do("INSERT INTO members VALUES(
-		'$_',
-		'$stock{$_}',
-		$changerest{$_},
-		$change_amount{$_}
-		);") or &error("DB error : $DBI::errstr");
+	foreach ($members as $memb) {
+		$sql = "INSERT INTO members VALUES(
+		'$memb',
+		'$stock[$memb]',
+		$changerest[$memb],
+		$change_amount[$memb]
+		);";
+		$query = mysql_query( $sql, $link );
 	}
 	
 	#データベースを切断
-	$dbh->disconnect();
+	mysql_close( $link );
 }
 
 function load_words_table {
-	my(@href);
-	if (!defined(@words)) {
+	if ( count($words) == 0 ) {
 		#データベースに接続
-		my $dbh = &connect_db();
+		$link = connect_db();
 		
 		#単語を読み込む
-		$result = $dbh->prepare("SELECT word FROM words;") or &error("DB error : $DBI::errstr");
-		$result->execute() or &error("DB error : $DBI::errstr");
-		@words = ();
-		while ( @href = $result->fetchrow_array() ) {
-			push( @words, $href[0] );
+		$sql = "SELECT word FROM words;";
+		$query = mysql_query( $sql, $link );
+		$words = array();
+		while ( $row = mysql_fetch_array($query, MYSQL_NUM) ) {
+			array_push( $words, $row[0] );
 		}
-		$result->finish() or &error("DB error : $DBI::errstr");
-		$totalwords=@words;
+		$totalwords = count($words);
 		
 		#今日追加された単語数を取得する
-		$result = $dbh->prepare("SELECT word FROM words WHERE TO_DAYS( NOW() ) = TO_DAYS( date );") or &error("DB error : $DBI::errstr");
-		$result->execute() or &error("DB error : $DBI::errstr");
-		$todaywords = $result->rows;
-		$result->finish() or &error("DB error : $DBI::errstr");
+		$sql = "SELECT word FROM words WHERE TO_DAYS( NOW() ) = TO_DAYS( date );";
+		$query = mysql_query( $sql, $link );
+		$todaywords = mysql_num_rows( $query );
 
 		#昨日追加された単語数を取得する
-		$result = $dbh->prepare("SELECT word FROM words WHERE TO_DAYS( NOW() ) - TO_DAYS( date ) = 1;") or &error("DB error : $DBI::errstr");
-		$result->execute() or &error("DB error : $DBI::errstr");
-		$yesterdaywords = $result->rows;
-		$result->finish() or &error("DB error : $DBI::errstr");
+		$sql = "SELECT word FROM words WHERE TO_DAYS( NOW() ) - TO_DAYS( date ) = 1;";
+		$query = mysql_query( $sql, $link );
+		$yesterdaywords = mysql_num_rows( $query );
 
 		#データベースを切断
-		$dbh->disconnect();
+		mysql_close( $link );
 	}
 }
 
@@ -216,20 +207,20 @@ function refresh_kaitou_table {
 	my($numlogs,$oldnum);
 
 	#データベースに接続
-	my $dbh = &connect_db();
+	$link = connect_db();
 	
-	if ( &is_exist_table( $dbh, "kaitou" ) ) {
+	if ( is_exist_table( $link, "kaitou" ) ) {
 		#過去ログのファイル名をひとつずつ送る
-		for ($numlogs=0; &is_exist_table($dbh, "kaitou_$numlogs"); $numlogs++) {}
+		for ($numlogs=0; is_exist_table($link, "kaitou_$numlogs"); $numlogs++) {}
 		for (; $numlogs>0; $numlogs--) {
 			$oldnum = $numlogs-1;
-			$dbh->do("ALTER TABLE kaitou_$oldnum RENAME TO kaitou_$numlogs;")
-			or &error("DB error : $DBI::errstr");
+			$sql = "ALTER TABLE kaitou_$oldnum RENAME TO kaitou_$numlogs;";
+			$query = mysql_query( $sql, $link );
 		}
-		$dbh->do("ALTER TABLE kaitou RENAME TO kaitou_0;")
-		or &error("DB error : $DBI::errstr");
+		$sql = "ALTER TABLE kaitou RENAME TO kaitou_0;";
+		$query = mysql_query( $sql, $link );
 	}
 	
 	#データベースを切断
-	$dbh->disconnect();
+	mysql_close( $link );
 }
