@@ -43,4 +43,4 @@ $members = array();
 $stock = array();
 $changerest = array();
 $words = array();
-$phase = 'kaitou';
+
