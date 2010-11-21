@@ -1,9 +1,9 @@
 <?php
 
 $g_title = 'Twitterおもじゃん';		# タイトル
-$g_script = './oj.cgi';				#このファイル自身（705）
+$g_script = './oj.php';				#このファイル自身（705）
 
-$g_scripturl = 'http://benjamin-lab.com/~ojbot/oj.cgi';
+$g_scripturl = 'http://benjamin-lab.com/~ojbot/oj.php';
 
 $g_kekkasort = 0;			#結果発表を投票数順に表示する（0なら投稿順）
 
@@ -43,3 +43,35 @@ $members = array();
 $stock = array();
 $changerest = array();
 $words = array();
+
+
+define('SMARTY_DIR', '/usr/local/lib/smarty/');
+define('SMARTY_TEMP', '/var/www/smarty/');
+require_once(SMARTY_DIR . 'Smarty.class.php');
+
+//Smartyのインスタンスを作成
+$smarty = new Smarty();
+
+//各ディレクトリの指定
+$smarty->template_dir = SMARTY_TEMP . 'templates';
+$smarty->compile_dir = SMARTY_TEMP . 'templates_c';
+$smarty->config_dir = SMARTY_TEMP . 'configs';
+$smarty->cache_dir = SMARTY_TEMP . 'cache';
+
+$smarty->default_modifiers = array('escape');
+
+//キャッシュ機能の有効化
+//$smarty->caching = true;
+
+$g_tpl_path = 'tpl/';
+$smarty->assign( 'header_path', 'tpl/header.tpl' );
+$smarty->assign( 'footer_path', 'tpl/footer.tpl' );
+
+$smarty->assign( 'g_title', $g_title );
+$smarty->assign( 'g_css_url', $g_css_url );
+$smarty->assign( 'g_script', $g_script );
+$smarty->assign( 'g_scripturl', $g_scripturl );
+
+$smarty->assign( 'g_start_confirm', $g_start_confirm );
+$smarty->assign( 'g_answer_confirm', $g_answer_confirm );
+$smarty->assign( 'g_giveup_confirm', $g_giveup_confirm );
