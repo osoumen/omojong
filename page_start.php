@@ -1,13 +1,28 @@
 <?php
 
 require_once 'globals.php';
+require_once 'common.php';
+
+$session = array();
+$members = array();
+$stock = array();
+$changerest = array();
+$change_amount = array();
+$words = array();
+
+//データベースに接続
+$link = connect_db();
+
+$session = load_session_table( $link );
 
 $err_str = '';
 $in = $_POST;
 $c_username = isset($_COOKIE['username']) ? $_COOKIE['username'] : '';
 
-if ( isset($in['new']) == FALSE ) {
-	if ($phase != 'kekka') {
+if ( isset($in['confirm']) ) {
+	$totalwords = load_words_table( $link, $words );
+	
+	if ($session['phase'] == 'sanka' || $session['phase'] == 'toukou') {
 		$err_str = '開催中です。';
 	}
 	elseif ($in['username'] == '') {
@@ -57,7 +72,7 @@ if ( isset($in['new']) == FALSE ) {
 	}
 }
 
-if ( isset($in['new']) || $err_str != '' ) {
+if ( isset($in['confirm']) == FALSE || $err_str != '' ) {
 	if ( !isset($in['username']) ) {
 		$in['username'] = $c_username;
 	}
@@ -83,4 +98,54 @@ if ( isset($in['new']) || $err_str != '' ) {
 	$smarty->display( $g_tpl_path . 'page_start.tpl' );
 }
 else {
-	
+	if ( $in['confirm'] != 0 ) {
+		$smarty->assign( 'in', $in );
+		$smarty->display( $g_tpl_path . 'page_start_confirm.tpl' );
+	}
+	else {
+		refresh_kaitou_table( $link );
+		
+		//セッション情報の初期化
+		$session = array();
+		$session['leadername'] = $in['username'];
+		$session['ninzuu'] = $in['ninzuu'];
+		$session['ninzuu_max'] = $in['ninzuu_max'];
+		$session['maisuu'] = $in['maisuu'];
+		$session['change_quant'] = $in['change_quant'];
+		$session['change_amount'] = $in['change_amount'];
+
+		$members[0] = $in['username'];
+		$stock[$in['username']] = '';
+		$changerest[$in['username']] = $in['change_quant'];
+		$change_amount[$in['username']] = $in['change_amount'];
+		
+		$sql = 'CREATE TABLE IF NOT EXISTS `kaitou` (
+				id int,
+				content text,
+				wordlist text,
+				author text,
+				date date,
+				votes int
+				);';
+		$query = mysql_query( $sql, $link );
+		
+		//ウェルカム通知
+		if ( $usenotification ) {
+			commit_mention( $in['username'], $notifymsg0 );
+		}
+		$phase = 'sanka';
+		store_session_table( $link, $phase, $session );
+		store_members( $link, $members, $stock, $changerest, $change_amount );
+		
+		//クッキーを発行
+		$c_username = $in['username'];
+		setcookie( 'username', $in['username'], time() + 3600 * 24 * 75, '/' );	//75日有効
+		
+		//ページを表示
+		$smarty->assign( 'in', $in );
+		$smarty->display( $g_tpl_path . 'page_start_success.tpl' );
+	}
+}
+
+//データベースを切断
+mysql_close( $link );

@@ -632,6 +632,7 @@ sub mode_join {
 	#クッキーを発行
 	$c_username = $in{'username'};
 	&set_cookie;
+	
 	&html_header;
 	print "<hr>\n";
 	print "<h3>参加しました。</h3>\n";
