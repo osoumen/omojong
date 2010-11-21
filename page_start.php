@@ -1,6 +1,7 @@
 <?php
 
 require_once 'globals.php';
+require_once 'start_smarty.php';
 
 $in = $_POST;
 $c_username = $_COOKIE['username'];
