@@ -1,6 +1,6 @@
 <?php
 
-$g_title = '面雀(おもじゃん)2.0';		# タイトル
+$g_title = 'Twitterおもじゃん';		# タイトル
 $g_script = './oj.cgi';				#このファイル自身（705）
 
 $g_scripturl = 'http://benjamin-lab.com/~ojbot/oj.cgi';
@@ -43,4 +43,3 @@ $members = array();
 $stock = array();
 $changerest = array();
 $words = array();
-

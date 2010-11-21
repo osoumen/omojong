@@ -1,6 +1,6 @@
 <?php
 
-require_once("twitteroauth.php");
+require_once 'twitteroauth.php';
 
 function connect_db {
 	$dbServer = 'localhost';
@@ -23,9 +23,6 @@ function is_exist_table( $link, $table_name ) {
 
 function load_session_table {
 	$session = array();
-	$members = array();
-	$stock = array();
-	$changerest = array();
 	
 	#データベースに接続
 	$link = connect_db();
@@ -42,6 +39,18 @@ function load_session_table {
 	$session['change_quant'] = $row['change_quant'];
 	$session['change_amount'] = $row['change_amount'];
 	
+	#データベースを切断
+	mysql_close( $link );
+}
+
+function load_members {
+	$members = array();
+	$stock = array();
+	$changerest = array();
+
+	#データベースに接続
+	$link = connect_db();
+
 	#参加者情報を読み込む
 	$sql = "SELECT * FROM members;";
 	$query = mysql_query( $sql, $link );
@@ -155,6 +164,14 @@ function store_session_table {
 	);";
 	$query = mysql_query( $sql, $link );
 
+	#データベースを切断
+	mysql_close( $link );
+}
+
+function store_members {
+	#データベースに接続
+	$link = connect_db();
+	
 	#参加者情報情報をクリアする
 	$sql = "DELETE FROM members;";
 	$query = mysql_query( $sql, $link );
@@ -204,8 +221,6 @@ function load_words_table {
 }
 
 function refresh_kaitou_table {
-	my($numlogs,$oldnum);
-
 	#データベースに接続
 	$link = connect_db();
 	
