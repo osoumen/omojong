@@ -12,14 +12,14 @@ function connect_db() {
 		die('データベースに接続できませんでした');
 	}
 	mysql_select_db( G_DATABASE, $link );
-	$sql = "SET NAMES utf8;";
+	$sql = "SET NAMES utf8";
 	$query = mysql_query( $sql, $link );
 	return $link;
 }
 
 function is_exist_table( $link, $table_name ) {
 	//テーブルの存在チェック
-	$sql = sprintf("SHOW TABLES WHERE Tables_in_%s = '$table_name';", G_DATABASE);
+	$sql = sprintf("SHOW TABLES WHERE Tables_in_%s = '$table_name'", G_DATABASE);
 	$query = mysql_query( $sql, $link );
 	$exists = mysql_num_rows( $query );
 	return $exists;
@@ -29,7 +29,7 @@ function load_session_table( $link ) {
 	$session = array();
 	
 	//セッション情報を読み込む
-	$sql = "SELECT * FROM session;";
+	$sql = "SELECT * FROM session";
 	$query = mysql_query( $sql, $link );
 	$row = @mysql_fetch_array( $query, MYSQL_ASSOC );
 	$session['leadername'] = $row['leadername'];
@@ -50,7 +50,7 @@ function load_members( $link, &$members, &$stock, &$changerest, &$change_amount 
 	$change_amount = array();
 
 	//参加者情報を読み込む
-	$sql = "SELECT * FROM members;";
+	$sql = "SELECT * FROM members";
 	$query = mysql_query( $sql, $link );
 	while ( $row = @mysql_fetch_array( $query, MYSQL_ASSOC ) ) {
 		$username = $row['username'];
@@ -61,16 +61,16 @@ function load_members( $link, &$members, &$stock, &$changerest, &$change_amount 
 	}
 }
 
-function numlist2sentence( $numlist ) {
-	if ( count($words) == 0 ) {
-		load_words_table();
-	}
+function numlist2sentence( $numlist, $words ) {
+//	if ( count($words) == 0 ) {
+//		load_words_table();
+//	}
 	$listwords = array();
 	foreach ($numlist as $num) {
 		$sent = $words[$num];
 		array_push( $listwords, $sent );
 	}
-	return join(" ", $listwords);
+	return implode(" ", $listwords);
 }
 
 //使用可能な単語のリストを得る
@@ -79,14 +79,14 @@ function get_availablewordlist( $link, $members, $stock, $totalwords ) {
 	
 	//使われている札の番号の配列を得る
 	foreach ($members as $memb) {
-		array_push($usedlist, split(",", $stock[$memb] ) );
+		array_push($usedlist, explode(",", $stock[$memb] ) );
 	}
 
 	//投稿されている中に使用された札リストを得る
-	$sql = "SELECT wordlist FROM kaitou;";
+	$sql = "SELECT wordlist FROM kaitou";
 	$query = mysql_query( $sql, $link );
 	while ( $row = mysql_fetch_array( $query, MYSQL_NUM ) ) {
-		array_push( $usedlist,split(",", $row[0]) );
+		array_push( $usedlist,explode(",", $row[0]) );
 	}
 
 	//usedlistを除いた札番号の配列を得る
@@ -125,15 +125,15 @@ function is_member($name) {
 	return FALSE;
 }
 */
-function store_session_table( $link, $phase, $session ) {
+function store_session_table( $link, $session ) {
 	//セッション情報をクリアする
-	$sql = "DELETE FROM session;";
+	$sql = "DELETE FROM session";
 	$query = mysql_query( $sql, $link );
 	
 	//セッション情報を書き込む
-	$sql = sprintf( "INSERT INTO session VALUES( '%s', '', '%s', %d, %d, %d, %d, %d );",
+	$sql = sprintf( "INSERT INTO session VALUES( '%s', '', '%s', %d, %d, %d, %d, %d )",
 	$session['leadername'],
-	$phase,
+	$session['phase'],
 	$session['ninzuu'],
 	$session['ninzuu_max'],
 	$session['maisuu'],
@@ -145,12 +145,12 @@ function store_session_table( $link, $phase, $session ) {
 
 function store_members( $link, $members, $stock, $changerest, $change_amount ) {
 	//参加者情報情報をクリアする
-	$sql = "DELETE FROM members;";
+	$sql = "DELETE FROM members";
 	$query = mysql_query( $sql, $link );
 	
 	//参加者情報を書き込む
 	foreach ($members as $memb) {
-		$sql = sprintf("INSERT INTO members VALUES( '%s', '%s', %d, %d );",
+		$sql = sprintf("INSERT INTO members VALUES( '%s', '%s', %d, %d )",
 		$memb,
 		$stock[$memb],
 		$changerest[$memb],
@@ -163,7 +163,7 @@ function store_members( $link, $members, $stock, $changerest, $change_amount ) {
 function load_words_table( $link, &$words ) {
 	if ( count($words) == 0 ) {
 		//単語を読み込む
-		$sql = "SELECT word FROM words;";
+		$sql = "SELECT word FROM words";
 		$query = mysql_query( $sql, $link );
 		$words = array();
 		while ( $row = mysql_fetch_array($query, MYSQL_NUM) ) {
@@ -176,7 +176,7 @@ function load_words_table( $link, &$words ) {
 
 function get_todaywords( $link ) {
 	//今日追加された単語数を取得する
-	$sql = "SELECT word FROM words WHERE TO_DAYS( NOW() ) = TO_DAYS( date );";
+	$sql = "SELECT word FROM words WHERE TO_DAYS( NOW() ) = TO_DAYS( date )";
 	$query = mysql_query( $sql, $link );
 	$todaywords = mysql_num_rows( $query );
 	return $todaywords;
@@ -184,7 +184,7 @@ function get_todaywords( $link ) {
 
 function get_yesterdaywords( $link ) {
 	//昨日追加された単語数を取得する
-	$sql = "SELECT word FROM words WHERE TO_DAYS( NOW() ) - TO_DAYS( date ) = 1;";
+	$sql = "SELECT word FROM words WHERE TO_DAYS( NOW() ) - TO_DAYS( date ) = 1";
 	$query = mysql_query( $sql, $link );
 	$yesterdaywords = mysql_num_rows( $query );
 	return $yesterdaywords;
@@ -196,10 +196,10 @@ function refresh_kaitou_table( $link ) {
 		for ($numlogs=0; is_exist_table($link, "kaitou_$numlogs"); $numlogs++) {}
 		for (; $numlogs>0; $numlogs--) {
 			$oldnum = $numlogs-1;
-			$sql = "ALTER TABLE kaitou_$oldnum RENAME TO kaitou_$numlogs;";
+			$sql = "ALTER TABLE kaitou_$oldnum RENAME TO kaitou_$numlogs";
 			$query = mysql_query( $sql, $link );
 		}
-		$sql = "ALTER TABLE kaitou RENAME TO kaitou_0;";
+		$sql = "ALTER TABLE kaitou RENAME TO kaitou_0";
 		$query = mysql_query( $sql, $link );
 	}
 }

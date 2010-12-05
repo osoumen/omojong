@@ -16,7 +16,7 @@ $link = connect_db();
 $session = load_session_table( $link );
 
 $err_str = '';
-$in = $_POST;
+$in = array_merge( $_POST, $_GET );
 $c_username = isset($_COOKIE['username']) ? $_COOKIE['username'] : '';
 
 if ( isset($in['confirm']) ) {
@@ -133,8 +133,8 @@ else {
 		if ( $usenotification ) {
 			commit_mention( $in['username'], $notifymsg0 );
 		}
-		$phase = 'sanka';
-		store_session_table( $link, $phase, $session );
+		$session['phase'] = 'sanke';
+		store_session_table( $link, $session );
 		store_members( $link, $members, $stock, $changerest, $change_amount );
 		
 		//クッキーを発行

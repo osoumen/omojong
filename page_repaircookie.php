@@ -3,7 +3,7 @@
 require_once 'globals.php';
 require_once 'common.php';
 
-$in = $_POST;
+$in = array_merge( $_POST, $_GET );
 
 //データベースに接続
 $link = connect_db();

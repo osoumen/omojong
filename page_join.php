@@ -3,7 +3,7 @@
 require_once 'globals.php';
 require_once 'common.php';
 
-$in = $_POST;
+$in = array_merge( $_POST, $_GET );
 
 //データベースに接続
 $link = connect_db();
@@ -40,7 +40,7 @@ if ($phase == 'sanka') {
 		$wordnumber = get_availablewordlist( $link, $members, $stock, $totalwords );
 		//札を配る
 		foreach ($members as $memb) {
-			$stock[$memb] = join(",", array_splice( $wordnumber,0, $session['maisuu'] ) );
+			$stock[$memb] = implode(',', array_splice( $wordnumber,0, $session['maisuu'] ) );
 		}
 		
 		$phase = 'toukou';
@@ -71,7 +71,7 @@ elseif (($phase == 'toukou') and (count($members) < $session['ninzuu_max']) ) {
 	if ( count($wordnumber) < $session['maisuu'] ) {
 		error("単語が足りないので参加できません。");
 	}
-	$stock[$in['username']] = join(",", array_splice($wordnumber, 0, $session{'maisuu'}));
+	$stock[$in['username']] = implode(',', array_splice($wordnumber, 0, $session['maisuu']));
 }
 else {
 	error("参加受付中ではありません。");
@@ -83,7 +83,8 @@ if ($usenotification) {
 }
 
 //セッション情報をストア
-store_session_table( $link, $phase, $session );
+$session['phase'] = $phase;
+store_session_table( $link, $session );
 store_members( $link, $members, $stock, $changerest, $change_amount );
 
 //クッキーを発行
