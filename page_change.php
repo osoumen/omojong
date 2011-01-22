@@ -43,7 +43,7 @@ $anslist = explode( ',', $in['changelist'] );
 
 //数字以外が入ってないか
 foreach ( $anslist as $ansnum ) {
-	if ( ctype_digit( $ansnum ) ) {
+	if ( ctype_digit( $ansnum ) == FALSE ) {
 		error("コンマと数字のみを入力してください。");
 	}
 }
@@ -66,10 +66,15 @@ foreach ( $anslist as $ansnum ) {
 	}
 }
 //同じものを２枚以上出していないか
-$count = array();
 foreach ( $anslist as $ansnum ) {
-	if ( ++$count[$ansnum] > 1 ) {
-		error("同じ札を２枚以上入力しています。");
+	$count = 0;
+	foreach ( $anslist as $ansnum1 ) {
+		if ( $ansnum == $ansnum1 ) {
+			$count++;
+			if ( $count >= 2 ) {
+				error("同じ札を２枚以上入力しています。");
+			}
+		}
 	}
 }
 
@@ -107,13 +112,13 @@ else {
 	store_members( $link, $members, $stock, $changerest, $change_amount );
 	
 	//配列に格納
-	$in_list = array();
-	foreach ( $anslist as $ansnum ) {
-		$in_list[$ansnum] = $words[$ansnum];
-	}
 	$out_list = array();
-	foreach ( $wordnumber as $ansnum ) {
+	foreach ( $anslist as $ansnum ) {
 		$out_list[$ansnum] = $words[$ansnum];
+	}
+	$in_list = array();
+	foreach ( $wordnumber as $ansnum ) {
+		$in_list[$ansnum] = $words[$ansnum];
 	}
 	
 	//受領ページを表示

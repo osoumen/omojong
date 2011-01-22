@@ -55,11 +55,6 @@ if ($phase == 'sanka') {
 	}
 }
 elseif (($phase == 'toukou') and (count($members) < $session['ninzuu_max']) ) {
-	//メンバーに追加
-	array_push( $members, $in['username'] );
-	$changerest[$in{'username']] = $session['change_quant'];
-	$change_amount[$in['username']] = $session['change_amount'];
-	
 	//途中参加
 	//全員の$stockと、kaitou.dat内の解答で使われた数を除外した札を選ぶ
 	//もし残りを合わせて$session{'maisuu'}に満たない場合、参加できない
@@ -71,6 +66,10 @@ elseif (($phase == 'toukou') and (count($members) < $session['ninzuu_max']) ) {
 	if ( count($wordnumber) < $session['maisuu'] ) {
 		error("単語が足りないので参加できません。");
 	}
+	//メンバーに追加
+	array_push( $members, $in['username'] );
+	$changerest[$in['username']] = $session['change_quant'];
+	$change_amount[$in['username']] = $session['change_amount'];
 	$stock[$in['username']] = implode(',', array_splice($wordnumber, 0, $session['maisuu']));
 }
 else {

@@ -47,7 +47,7 @@ else {
 			$remain++;
 		}
 	}
-	if ($remain eq 0) {
+	if ($remain === 0) {
 		$session['phase'] = 'kekka';
 		if ( $usenotification ) {
 			foreach ( $members as $memb ) {

@@ -11,10 +11,10 @@ $session = load_session_table( $link );
 $in = array_merge( $_POST, $_GET );
 
 //--エラーチェック--
-if (　$session['phase'] != 'kekka') {
+if ( $session['phase'] != 'kekka') {
 	error("現在投票を受け付けていません。");
 }
-if ( ctype_digit( $in[$ansnum] ) == FALSE ) {
+if ( ctype_digit( $in['ansnum'] ) == FALSE ) {
 	error("投票は数値を指定してください。");
 }
 
@@ -38,7 +38,7 @@ mysql_close( $link );
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html><head>
 <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
-<link rel="stylesheet" href="{<?php echo $g_css_url; ?>}" type="text/css" />
+<link rel="stylesheet" href="<?php echo $g_css_url; ?>" type="text/css" />
 <title>Twitterおもじゃん:参加</title>
 </head>
 <body>

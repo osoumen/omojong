@@ -133,7 +133,7 @@ else {
 		if ( $usenotification ) {
 			commit_mention( $in['username'], $notifymsg0 );
 		}
-		$session['phase'] = 'sanke';
+		$session['phase'] = 'sanka';
 		store_session_table( $link, $session );
 		store_members( $link, $members, $stock, $changerest, $change_amount );
 		

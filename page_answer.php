@@ -62,10 +62,15 @@ foreach ( $anslist as $ansnum ) {
 	}
 }
 //同じものを２枚以上出していないか
-$count = array();
 foreach ( $anslist as $ansnum ) {
-	if ( ++$count[$ansnum] > 1 ) {
-		error("同じ札を２枚以上入力しています。");
+	$count = 0;
+	foreach ( $anslist as $ansnum1 ) {
+		if ( $ansnum == $ansnum1 ) {
+			$count++;
+			if ( $count >= 2 ) {
+				error("同じ札を２枚以上入力しています。");
+			}
+		}
 	}
 }
 
