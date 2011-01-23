@@ -79,21 +79,30 @@ function get_availablewordlist( $link, $members, $stock, $totalwords ) {
 	
 	//使われている札の番号の配列を得る
 	foreach ($members as $memb) {
-		array_push($usedlist, explode(",", $stock[$memb] ) );
+		if ( empty( $stock[$memb] ) == FALSE ) {
+			$memb_stock = explode(',', $stock[$memb] );
+			foreach ( $memb_stock as $stock_id ) {
+				$usedlist[] = $stock_id;
+			}
+		}
 	}
 
 	//投稿されている中に使用された札リストを得る
 	$sql = "SELECT wordlist FROM kaitou";
 	$query = mysql_query( $sql, $link );
 	while ( $row = mysql_fetch_array( $query, MYSQL_NUM ) ) {
-		array_push( $usedlist,explode(",", $row[0]) );
+		$ans_used = explode(",", $row[0]);
+		foreach ( $ans_used as $stock_id ) {
+			$usedlist[] = stovk_id;
+		}
 	}
-
+	//print_r( $usedlist );
+	
 	//usedlistを除いた札番号の配列を得る
 	$wordnumber = array();
 	for ( $i = 0; $i < $totalwords; $i++ ) {
 		if ( in_array( $i, $usedlist ) == FALSE) {
-			array_push( $wordnumber, $i );
+			$wordnumber[] = $i;
 		}
 	}
 

@@ -57,7 +57,7 @@ if ($phase == 'sanka') {
 elseif (($phase == 'toukou') and (count($members) < $session['ninzuu_max']) ) {
 	//途中参加
 	//全員の$stockと、kaitou.dat内の解答で使われた数を除外した札を選ぶ
-	//もし残りを合わせて$session{'maisuu'}に満たない場合、参加できない
+	//もし残りを合わせて$session['maisuu']に満たない場合、参加できない
 	$words = array();
 	$totalwords = load_words_table( $link, $words );
 	
