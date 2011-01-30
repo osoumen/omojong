@@ -19,14 +19,14 @@ if ( ctype_digit( $in['ansnum'] ) == FALSE ) {
 }
 
 //解答ファイル中の得票数をインクリメントする
-$sql = sprintf( "UPDATE kaitou SET votes = votes + %d WHERE id = %d", $in{'increment'}, $in{'ansnum'} );
+$sql = sprintf( "UPDATE %s SET votes = votes + %d WHERE id = %d", $kaitou_table_name, $in{'increment'}, $in{'ansnum'} );
 $query = mysql_query( $sql, $link );
 if ( !$query ) {
 	error("範囲外の解答を指定しています。");
 }
 
 //投票した解答を得る
-$sql = sprintf( "SELECT content FROM kaitou WHERE id = %d", $in{'ansnum'} );
+$sql = sprintf( "SELECT content FROM %s WHERE id = %d", $kaitou_table_name, $in{'ansnum'} );
 $query = mysql_query( $sql, $link );
 while ( $row = mysql_fetch_array( $query, MYSQL_NUM ) ) {
 	$sentence = $row[0];

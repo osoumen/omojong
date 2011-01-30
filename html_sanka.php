@@ -3,7 +3,8 @@
 require_once 'globals.php';
 require_once 'common.php';
 
-$is_exist_pastlog = is_exist_table( $link, 'kaitou_0' );
+$table_name = sprintf( '%s_0', $kaitou_table_name );
+$is_exist_pastlog = is_exist_table( $link, $table_name );
 
 $words = array();
 $totalwords = load_words_table( $link, $words );

@@ -8,6 +8,8 @@ $in = array_merge( $_POST, $_GET );
 //データベースに接続
 $link = connect_db();
 
+$session = load_session_table( $link );
+
 if ( mb_strlen( $in{'word'} ) == 0 ) {
 	error("文字が入っていないぞ？");
 }
@@ -15,7 +17,7 @@ $newword = $in{'word'};
 
 //以前に同じ単語が入れられていないかチェック
 if ( isset( $in{'forceadd'} ) == FALSE ) {
-	$sql = sprintf( "SELECT word FROM words WHERE word = '%s'", $newword );
+	$sql = sprintf( "SELECT word FROM %s WHERE word = '%s'", $words_table_name, $newword );
 	$query = mysql_query( $sql, $link );
 	$found = mysql_num_rows( $query );
 	if ( $found > 0 ) {
@@ -28,7 +30,7 @@ if ( isset( $in{'forceadd'} ) == FALSE ) {
 }
 
 //単語をデータベースに書き込む
-$sql = sprintf( "INSERT INTO words (word, date) VALUES ('%s', NOW())", $newword );
+$sql = sprintf( "INSERT INTO %s (word, date) VALUES ('%s', NOW())", $words_table_name, $newword );
 $query = mysql_query( $sql, $link );
 
 //最大保持数を超えたら古い順に削除する

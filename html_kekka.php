@@ -3,7 +3,8 @@
 require_once 'globals.php';
 require_once 'common.php';
 
-$is_exist_pastlog = is_exist_table( $link, 'kaitou_0' );
+$table_name = sprintf( '%s_0', $kaitou_table_name );
+$is_exist_pastlog = is_exist_table( $link, $table_name );
 
 $words = array();
 $totalwords = load_words_table( $link, $words );
@@ -31,12 +32,11 @@ if ( $is_exist_pastlog ) {
 }
 echo '<h2>結果発表</h2><br>';
 //結果表示
-$kekka_table = 'kaitou';
 if ( $g_kekkasort ) {
-	$sql = "SELECT id,content,author,votes FROM $kekka_table ORDER BY votes DESC";
+	$sql = "SELECT id,content,author,votes FROM $kaitou_table_name ORDER BY votes DESC";
 }
 else {
-	$sql = "SELECT id,content,author,votes FROM $kekka_table";
+	$sql = "SELECT id,content,author,votes FROM $kaitou_table_name";
 }
 $query = mysql_query( $sql, $link );
 while ( $row = mysql_fetch_array( $query, MYSQL_NUM ) ) {

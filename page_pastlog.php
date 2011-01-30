@@ -14,10 +14,12 @@ else {
 //データベースに接続
 $link = connect_db();
 
+$session = load_session_table( $link );
+
 $nextlog = $num+1;
 $prevlog = $num-1;
-$exist_next = is_exist_table($link, 'kaitou_'.$nextlog);
-$exist_prev = is_exist_table($link, 'kaitou_'.$prevlog);
+$exist_next = is_exist_table($link, sprintf('%s_%d', $kaitou_table_name, $nextlog) );
+$exist_prev = is_exist_table($link, sprintf('%s_%d', $kaitou_table_name, $prevlog) );
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html><head>
@@ -44,7 +46,7 @@ if ( $exist_prev && ($prevlog >= 0) ) {
 <hr>
 <?php
 //結果表示
-$kekka_table = 'kaitou_'.$num;
+$kekka_table = sprintf( "%s_%d", $kaitou_table_name, $num );
 
 if ( $num == 0 ) {
 	echo '<h2>前回の結果</h2><br>';

@@ -8,6 +8,8 @@ $in = array_merge( $_POST, $_GET );
 //データベースに接続
 $link = connect_db();
 
+$session = load_session_table( $link );
+
 $members = array();
 $stock = array();
 $changerest = array();

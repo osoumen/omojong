@@ -85,18 +85,19 @@ if ( isset($in['confirm']) ) {
 }
 else {
 	//解答を登録
-	$in{'answer'} = implode(',',$anslist);
+	$in['answer'] = implode(',',$anslist);
 	
 	//登録されている回答数を取得する
-	$sql = "SELECT id FROM kaitou;";
+	$sql = sprintf( "SELECT id FROM %s", $kaitou_table_name );
 	$query = mysql_query( $sql, $link );
 	$kaitou_total = mysql_num_rows( $query );
 	
 	//解答を追加
-	$sql = sprintf( "INSERT INTO kaitou ( id, content, wordlist, author, date, votes) VALUES ( %d, '%s', '%s', '%s', NOW(), 0 );"
+	$sql = sprintf( "INSERT INTO %s ( id, content, wordlist, author, date, votes) VALUES ( %d, '%s', '%s', '%s', NOW(), 0 );"
+	,$kaitou_table_name
 	,$kaitou_total
 	,$sentence
-	,$in{'answer'}
+	,$in['answer']
 	,$c_username
 	);
 	$query = mysql_query( $sql, $link );

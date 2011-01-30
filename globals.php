@@ -61,3 +61,8 @@ $smarty->assign( 'g_scripturl', $g_scripturl );
 $smarty->assign( 'g_start_confirm', $g_start_confirm );
 $smarty->assign( 'g_answer_confirm', $g_answer_confirm );
 $smarty->assign( 'g_giveup_confirm', $g_giveup_confirm );
+
+//各データへのテーブル名
+$words_table_name = 'words';
+$members_table_name = 'members';
+$kaitou_table_name = 'kaitou';

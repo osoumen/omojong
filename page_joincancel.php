@@ -30,7 +30,7 @@ if ($c_username == $session['leadername']) {
 }
 
 //メンバーリストから取り除く
-$sql = sprintf( "DELETE FROM members WHERE username = '%s';", $c_username );
+$sql = sprintf( "DELETE FROM %s WHERE username = '%s';", $members_table_name, $c_username );
 $query = mysql_query( $sql, $link );
 
 //cookieの削除

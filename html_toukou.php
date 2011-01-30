@@ -3,7 +3,8 @@
 require_once 'globals.php';
 require_once 'common.php';
 
-$is_exist_pastlog = is_exist_table( $link, 'kaitou_0' );
+$table_name = sprintf( '%s_0', $kaitou_table_name );
+$is_exist_pastlog = is_exist_table( $link, $table_name );
 
 $words = array();
 $totalwords = load_words_table( $link, $words );
@@ -65,7 +66,7 @@ if ( in_array($c_username, $members) ) {
 	//参加者である
 	
 	//解答したものを表示
-	$sql = sprintf( "SELECT content FROM kaitou WHERE author = '%s'", $c_username );
+	$sql = sprintf( "SELECT content FROM %s WHERE author = '%s'", $kaitou_table_name, $c_username );
 	$query = mysql_query( $sql, $link );
 	$answers = array();
 	while ( $row = @mysql_fetch_array( $query, MYSQL_NUM ) ) {

@@ -61,9 +61,9 @@ if ( isset($in['confirm']) ) {
 	elseif ($in['change_amount'] < 0) {
 		$err_str = '交換可能枚数の数値が不正です。';
 	}
-	elseif ($totalwords < $in['ninzuu']*$in['maisuu']) {
-		$err_str = '札が足りません。';
-	}
+//	elseif ($totalwords < $in['ninzuu']*$in['maisuu']) {
+//		$err_str = '札が足りません。';
+//	}
 	if ($in['ninzuu_max'] == '') {
 		$in['ninzuu_max'] = $in['ninzuu'];
 	}
@@ -119,14 +119,32 @@ else {
 		$changerest[$in['username']] = $in['change_quant'];
 		$change_amount[$in['username']] = $in['change_amount'];
 		
-		$sql = 'CREATE TABLE IF NOT EXISTS `kaitou` (
+		$words_table_name = sprintf( 'words_%s', $session['leadername'] );
+		$members_table_name = sprintf( 'members_%s', $session['leadername'] );
+		$kaitou_table_name = sprintf( 'kaitou_%s', $session['leadername'] );
+	
+		$sql = sprintf( 'CREATE TABLE IF NOT EXISTS `%s` (
+				word text,
+				date date
+				)', $words_table_name);
+		$query = mysql_query( $sql, $link );
+
+		$sql = sprintf( 'CREATE TABLE IF NOT EXISTS `%s` (
+				username text,
+				stock text,
+				changerest int,
+				change_amount int
+				)', $members_table_name);
+		$query = mysql_query( $sql, $link );
+		
+		$sql = sprintf( 'CREATE TABLE IF NOT EXISTS `%s` (
 				id int,
 				content text,
 				wordlist text,
 				author text,
 				date date,
 				votes int
-				);';
+				)', $kaitou_table_name);
 		$query = mysql_query( $sql, $link );
 		
 		//ウェルカム通知
