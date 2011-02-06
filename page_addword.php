@@ -10,13 +10,13 @@ $link = connect_db();
 
 $session = load_session_table( $link );
 
-if ( mb_strlen( $in{'word'} ) == 0 ) {
+if ( mb_strlen( $in['word'] ) == 0 ) {
 	error("文字が入っていないぞ？");
 }
-$newword = $in{'word'};
+$newword = $in['word'];
 
 //以前に同じ単語が入れられていないかチェック
-if ( isset( $in{'forceadd'} ) == FALSE ) {
+if ( isset( $in['forceadd'] ) == FALSE ) {
 	$sql = sprintf( "SELECT word FROM %s WHERE word = '%s'", $words_table_name, $newword );
 	$query = mysql_query( $sql, $link );
 	$found = mysql_num_rows( $query );

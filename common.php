@@ -25,7 +25,33 @@ function is_exist_table( $link, $table_name ) {
 	return $exists;
 }
 
-function load_session_table( $link ) {
+function get_new_session_key( $link, $leader_name ) {
+	$session_key = 99999;
+	//セッションテーブル内にleader_nameがあればそのセッションのキーを返す
+	$sql = sprintf( "SELECT * FROM session WHERE leadername = %s", $leader_name );
+	$query = mysql_query( $sql, $link );
+	$exists = mysql_num_rows( $query );
+	if ( $exists > 0 ) {
+		while ( $row = @mysql_fetch_array( $query, MYSQL_ASSOC ) ) {
+			$session_key = $row['session_key'];
+		}
+	}
+	else {
+		//無ければ、カウンタを１進めて新しいのを返す
+		$sql = sprintf( "SELECT * FROM global" );
+		$query = mysql_query( $sql, $link );
+		while ( $row = @mysql_fetch_array( $query, MYSQL_ASSOC ) ) {
+			$session_key = $row['total'];
+		}
+		$session_key++;
+		$sql = "UPDATE global SET total = $session_key";
+		$query = mysql_query( $sql, $link );
+	}
+
+	return $session_key;
+}
+
+function load_session_table( $link, $session_key=NULL ) {
 	global $words_table_name;
 	global $members_table_name;
 	global $kaitou_table_name;
@@ -33,10 +59,16 @@ function load_session_table( $link ) {
 	$session = array();
 	
 	//セッション情報を読み込む
-	$sql = "SELECT * FROM session";
+	$sql = sprintf( "SELECT * FROM session WHERE session_key = %s", $session_key );
 	$query = mysql_query( $sql, $link );
+	if ( !$query ) {
+		error( 'セッション情報が取得できません。' );
+		//return NULL;
+	}
+	
 	$row = @mysql_fetch_array( $query, MYSQL_ASSOC );
 	$session['leadername'] = $row['leadername'];
+	$session['session_key'] = $row['session_key'];
 	$session['phase'] = $row['phase'];
 	$session['ninzuu'] = $row['ninzuu'];
 	$session['ninzuu_max'] = $row['ninzuu_max'];
@@ -55,13 +87,30 @@ function store_session_table( $link, $session ) {
 	global $members_table_name;
 	global $kaitou_table_name;
 
+	//テーブルが無ければ作成する
+	$sql = sprintf( 'CREATE TABLE IF NOT EXISTS `session` (
+			leadername text,
+			session_key text,
+			phase text,
+			ninzuu int,
+			ninzuu_max int,
+			maisuu int,
+			change_quant int,
+			change_amount int,
+			words_table_name text,
+			members_table_name text,
+			kaitou_table_name text
+			)');
+	$query = mysql_query( $sql, $link );
+	
 	//セッション情報をクリアする
-	$sql = "DELETE FROM session";
+	$sql = sprintf( "DELETE FROM session WHERE session_key = %s", $session['session_key'] );
 	$query = mysql_query( $sql, $link );
 	
 	//セッション情報を書き込む
-	$sql = sprintf( "INSERT INTO session VALUES( '%s', '', '%s', %d, %d, %d, %d, %d, '%s', '%s', '%s' )",
+	$sql = sprintf( "INSERT INTO session VALUES( '%s', '%s', '%s', %d, %d, %d, %d, %d, '%s', '%s', '%s' )",
 	$session['leadername'],
+	$session['session_key'],
 	$session['phase'],
 	$session['ninzuu'],
 	$session['ninzuu_max'],

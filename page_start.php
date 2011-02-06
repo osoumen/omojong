@@ -108,6 +108,7 @@ else {
 		//セッション情報の初期化
 		$session = array();
 		$session['leadername'] = $in['username'];
+		$session['session_key'] = get_new_session_key( $link, $in['username'] );
 		$session['ninzuu'] = $in['ninzuu'];
 		$session['ninzuu_max'] = $in['ninzuu_max'];
 		$session['maisuu'] = $in['maisuu'];
