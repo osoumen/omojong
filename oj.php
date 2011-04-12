@@ -6,30 +6,51 @@ require_once 'common.php';
 //データベースに接続
 $link = connect_db();
 
+//twitterにログインしているか調べる
+$is_login = false;
+if (isset($_SESSION['oauth_token']) &&
+	isset($_SESSION['oauth_token_secret']) &&
+	isset($_SESSION['user_id'])) {
+	$is_login = true;
+}
+
+//ゲーム情報を取り出す
 $session = load_session_table( $link );
 
-//$mode = $_GET['mode'];
-$phase = $session['phase'];
-if ($phase == NULL) {
-	$phase = 'kekka';
+if ( isset( $session ) ) {
+	$phase = $session['phase'];
 }
 
-switch ( $phase ) {
-	case 'sanka':
-		include 'html_sanka.php';
-		break;
-		
-	case 'toukou':
-		include 'html_toukou.php';
-		break;
-		
-	case 'kekka':
-		include 'html_kekka.php';
-		break;
-		
-	default:
-		include 'html_kekka.php';
+if ( $is_login || $phase == 'kekka' ) {
+	switch ( $phase ) {
+		case 'sanka':
+			include 'html_sanka.php';
+			mysql_close( $link );	//データベースを切断
+			break;
+			
+		case 'toukou':
+			include 'html_toukou.php';
+			mysql_close( $link );	//データベースを切断
+			break;
+			
+		case 'kekka':
+			include 'html_kekka.php';
+			mysql_close( $link );	//データベースを切断
+			break;
+			
+		default:
+			mysql_close( $link );	//データベースを切断
+			//新規開始ページへリダイレクト
+			$host  = $_SERVER['HTTP_HOST'];
+			$uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+			$extra = 'page_start.php';
+			header('HTTP/1.1 303 See Other');
+			header("Location: http://$host$uri/$extra");
+			exit;
+	}
 }
-
-//データベースを切断
-mysql_close( $link );
+else {
+	//twitterログインページを表示
+	include 'html_login.php';
+	mysql_close( $link );	//データベースを切断
+}

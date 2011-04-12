@@ -51,19 +51,37 @@ function get_new_session_key( $link, $leader_name ) {
 	return $session_key;
 }
 
-function load_session_table( $link, $session_key=NULL ) {
+function load_session_table( $link ) {
+	//GETにパラメータが指定されていればそちらを優先
+	//cookieに今回読んだidを記録
+	//GETが無い場合は、cookieから取得
+	//読めなかった場合は、NULLを返す
+
 	global $words_table_name;
 	global $members_table_name;
 	global $kaitou_table_name;
 	
 	$session = array();
 	
+	if ( isset($_GET[$gameid_param_name]) ) {
+		$session_key = $_GET[$gameid_param_name];
+		setcookie( $gameid_param_name, $session_key, time() + 3600 * 24 * 75 );	//75日有効
+	}
+	else {
+		if ( isset( $_COOKIE[$gameid_param_name] ) ) {
+			$session_key = $_COOKIE[$gameid_param_name];
+		}
+		else {
+			return NULL;
+		}
+	}
+	
 	//セッション情報を読み込む
 	$sql = sprintf( "SELECT * FROM session WHERE session_key = %s", $session_key );
 	$query = mysql_query( $sql, $link );
 	if ( !$query ) {
-		error( 'セッション情報が取得できません。' );
-		//return NULL;
+		//error( 'セッション情報が取得できません。' );
+		return NULL;
 	}
 	
 	$row = @mysql_fetch_array( $query, MYSQL_ASSOC );
@@ -197,13 +215,11 @@ function get_availablewordlist( $link, $members, $stock, $totalwords ) {
 }
 
 function commit_mention($mlad,$inmsg) {
-	$consumer_key    = 'oVHQOYjXkfrEOGEVdRosQ';
-	$consumer_secret = '5Z0zGHDWqBshT1nWa3wcCB7fx69kH7cNExPPdHAGR8';
 	$access_token        = '207520259-a5z3WtxYG807hJGT1Ulat1GUcqolTX2dUPF0oVZT';
 	$access_token_secret = '8c8P03bhKbOzwSnPYAxYBJZ6Hm9dscZ4Vwrffl356Pg';
 	
 	// OAuthオブジェクト生成
-	$to = new TwitterOAuth($consumer_key,$consumer_secret,$access_token,$access_token_secret);
+	$to = new TwitterOAuth(CONSUMER_KEY,CONSUMER_SECRET,$access_token,$access_token_secret);
 	
 	// 投稿
 	$notify_msg = "\@$mlad $inmsg";	

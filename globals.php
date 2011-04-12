@@ -17,6 +17,8 @@ $g_maxwords = 0;			//保持する単語の最大数　超えると古いもの�
 $g_css_url = 'css/default.css';
 
 define('G_DATABASE', 'omojong');
+define('CONSUMER_KEY', 'oVHQOYjXkfrEOGEVdRosQ');
+define('CONSUMER_SECRET', '5Z0zGHDWqBshT1nWa3wcCB7fx69kH7cNExPPdHAGR8');
 
 //mentionによる通知を使用する(1=YES 0=NO)
 $usenotification = 0;
@@ -66,3 +68,6 @@ $smarty->assign( 'g_giveup_confirm', $g_giveup_confirm );
 $words_table_name = 'words';
 $members_table_name = 'members';
 $kaitou_table_name = 'kaitou';
+
+//ゲームIDのパラメーター名
+$gameid_param_name = 'p';

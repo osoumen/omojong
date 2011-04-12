@@ -7,6 +7,9 @@ require_once 'common.php';
 $link = connect_db();
 
 $session = load_session_table( $link );
+if ( empty( $session ) ) {
+	error('無効なIDです。');
+}
 
 if ($session['phase'] != 'sanka') {
 	error("参加受付中ではありません。");

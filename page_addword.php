@@ -9,6 +9,9 @@ $in = array_merge( $_POST, $_GET );
 $link = connect_db();
 
 $session = load_session_table( $link );
+if ( empty( $session ) ) {
+	error('無効なIDです。');
+}
 
 if ( mb_strlen( $in['word'] ) == 0 ) {
 	error("文字が入っていないぞ？");

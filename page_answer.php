@@ -9,6 +9,9 @@ $session = array();
 $link = connect_db();
 
 $session = load_session_table( $link );
+if ( empty( $session ) ) {
+	error('無効なIDです。');
+}
 
 $members = array();
 $stock = array();
