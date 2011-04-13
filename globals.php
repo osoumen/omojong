@@ -3,7 +3,7 @@
 $g_title = 'Twitterおもじゃん';		// タイトル
 $g_script = './oj.php';				//このファイル自身（705）
 
-$g_scripturl = 'http://benjamin-lab.com/~ojbot/oj.php';
+$g_scripturl = 'http://www.benjamin-lab.com/~ojbot/oj.php';
 
 $g_kekkasort = 0;			//結果発表を投票数順に表示する（0なら投稿順）
 
