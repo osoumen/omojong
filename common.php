@@ -83,7 +83,7 @@ function load_session_table( $link ) {
 	//セッション情報を読み込む
 	$sql = sprintf( "SELECT * FROM session WHERE session_key = %s", $session_key );
 	$query = mysql_query( $sql, $link );
-	if ( !$query ) {
+	if ( mysql_num_rows( $query ) == 0 ) {
 		error( '指定されたページは存在しません。' );
 		return NULL;
 	}
