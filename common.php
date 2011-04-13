@@ -337,3 +337,11 @@ function message( $msg_title, $msg ) {
 	$smarty->display( $g_tpl_path . 'page_message.tpl' );
 	exit();
 }
+
+function is_login() {
+	$is_login = true;
+	if (empty($_SESSION['access_token']) || empty($_SESSION['access_token']['oauth_token']) || empty($_SESSION['access_token']['oauth_token_secret'])) {
+		$is_login = false;
+	}
+	return $is_login;
+}

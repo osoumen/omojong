@@ -8,10 +8,7 @@ require_once 'common.php';
 $link = connect_db();
 
 //twitterにログインしているか調べる
-$is_login = true;
-if (empty($_SESSION['access_token']) || empty($_SESSION['access_token']['oauth_token']) || empty($_SESSION['access_token']['oauth_token_secret'])) {
-	$is_login = false;
-}
+$is_login = is_login();
 
 //ゲーム情報を取り出す
 $session = load_session_table( $link );

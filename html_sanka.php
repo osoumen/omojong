@@ -3,6 +3,8 @@
 require_once 'globals.php';
 require_once 'common.php';
 
+//oj.phpから続く
+
 $table_name = sprintf( '%s_0', $kaitou_table_name );
 $is_exist_pastlog = is_exist_table( $link, $table_name );
 
@@ -18,7 +20,7 @@ $change_amount = array();
 load_members( $link, $members, $stock, $changerest, $change_amount );
 
 //参加者名を取得
-$c_username = isset($_COOKIE['username']) ? $_COOKIE['username'] : '';
+$c_username = isset($_SESSION['access_token']['screen_name']) ? $_SESSION['access_token']['screen_name'] : '';
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -70,7 +72,6 @@ else {
 	//参加者以外の場合
 	//参加表明フォームを表示
 	$smarty->display( $g_tpl_path . 'html_sanka_form.tpl' );
-	echo '<hr><a href="page_repaircookie.php">cookieの再発行（参加者）</a>';
 }
 ?>
 <br>

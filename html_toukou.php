@@ -3,6 +3,8 @@
 require_once 'globals.php';
 require_once 'common.php';
 
+//oj.phpから続く
+
 $table_name = sprintf( '%s_0', $kaitou_table_name );
 $is_exist_pastlog = is_exist_table( $link, $table_name );
 
@@ -110,7 +112,6 @@ else {
 		echo '<b>途中参加受付中！</b><br>';
 		$smarty->display( $g_tpl_path . 'html_sanka_form.tpl' );
 	}
-	echo '<hr><a href="page_repaircookie.php">cookieの再発行（参加者）</a>';
 }
 ?>
 <br>

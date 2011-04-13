@@ -3,6 +3,8 @@
 require_once 'globals.php';
 require_once 'common.php';
 
+//oj.phpから続く
+
 $table_name = sprintf( '%s_0', $kaitou_table_name );
 $is_exist_pastlog = is_exist_table( $link, $table_name );
 

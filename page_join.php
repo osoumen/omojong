@@ -3,16 +3,24 @@
 require_once 'globals.php';
 require_once 'common.php';
 
-$in = array_merge( $_POST, $_GET );
+//$in = array_merge( $_POST, $_GET );
 
 //データベースに接続
 $link = connect_db();
 
+//いきなりこのページを開いたらtopへ
 $session = load_session_table( $link );
 if ( empty( $session ) ) {
 	header('Location: ' . $g_scripturl);
 }
 $phase = $session['phase'];
+
+//ログインしてなかったらtopに飛ぶ
+session_start();
+if ( is_login() == false ) {
+	header('Location: ' . $g_scripturl);
+}
+$in['username'] = $_SESSION['access_token']['screen_name'];
 
 $members = array();
 $stock = array();
@@ -20,16 +28,14 @@ $changerest = array();
 $change_amount = array();
 load_members( $link, $members, $stock, $changerest, $change_amount );
 
-if ($in['username'] == '') {
-	error("名前を入力してください。");
-}
 if ( in_array($in['username'], $members) ) {
-	error("その名前の人は既にいます。");
+	error("既に参加しています。");
 }
 
 if ($phase == 'sanka') {
 	//メンバーに追加
 	array_push( $members, $in['username'] );
+	$stock[$in['username']] = '';
 	$changerest[$in['username']] = $session['change_quant'];
 	$change_amount[$in['username']] = $session['change_amount'];
 	
@@ -88,10 +94,6 @@ if ($usenotification) {
 $session['phase'] = $phase;
 store_session_table( $link, $session );
 store_members( $link, $members, $stock, $changerest, $change_amount );
-
-//クッキーを発行
-$c_username = $in['username'];
-setcookie( 'username', $in['username'], time() + 3600 * 24 * 75, '/' );	//75日有効
 
 //データベースを切断
 mysql_close( $link );
