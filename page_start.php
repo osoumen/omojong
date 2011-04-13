@@ -114,9 +114,15 @@ else {
 		refresh_kaitou_table( $link );
 		
 		//セッション情報の初期化
+		if ( $session ) {
+			$new_session_key = $session['session_key'];
+		}
+		else {
+			$new_session_key = get_new_session_key( $link, $player_name );
+		}
 		$session = array();
 		$session['leadername'] = $player_name;
-		$session['session_key'] = get_new_session_key( $link, $player_name );
+		$session['session_key'] = $new_session_key;
 		$session['ninzuu'] = $in['ninzuu'];
 		$session['ninzuu_max'] = $in['ninzuu_max'];
 		$session['maisuu'] = $in['maisuu'];
@@ -128,9 +134,10 @@ else {
 		$changerest[$player_name] = $in['change_quant'];
 		$change_amount[$player_name] = $in['change_amount'];
 		
-		$words_table_name = sprintf( 'words_%s', $session['leadername'] );
-		$members_table_name = sprintf( 'members_%s', $session['leadername'] );
-		$kaitou_table_name = sprintf( 'kaitou_%s', $session['leadername'] );
+		//単語テーブル、参加者テーブル、解答リストテーブル名を決める
+		$words_table_name = sprintf( 'words_%s', $new_session_key );
+		$members_table_name = sprintf( 'members_%s', $new_session_key );
+		$kaitou_table_name = sprintf( 'kaitou_%s', $new_session_key );
 	
 		$sql = sprintf( 'CREATE TABLE IF NOT EXISTS `%s` (
 				word text,
