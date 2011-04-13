@@ -17,9 +17,11 @@ if (empty($_SESSION['access_token']) || empty($_SESSION['access_token']['oauth_t
 $session = load_session_table( $link );
 
 if ( isset( $session ) ) {
+	//p値もしくは、cookieでページが指定されている
 	$phase = $session['phase'];
 }
 else {
+	//初めてこのURLを開いた、もしくはページの指定が不正
 	$phase = 'login';
 }
 
@@ -40,6 +42,7 @@ if ( $is_login || $phase == 'kekka' ) {
 			mysql_close( $link );	//データベースを切断
 			break;
 			
+		case 'login':
 		default:
 			mysql_close( $link );	//データベースを切断
 			//新規開始ページへリダイレクト

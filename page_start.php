@@ -13,6 +13,9 @@ $words = array();
 //データベースに接続
 $link = connect_db();
 
+//ゲーム情報をとりあえず読み込もうと試みる
+//存在しないp値を入れたらここでエラーとなる
+//p値の指定が無かったらNULLを受け取って素通りさせる
 $session = load_session_table( $link );
 
 $err_str = '';
@@ -20,6 +23,7 @@ $in = array_merge( $_POST, $_GET );
 session_start();
 $player_name = $_SESSION['access_token']['screen_name'];
 
+//確認時の処理
 if ( isset($in['confirm']) ) {
 	$totalwords = load_words_table( $link, $words );
 	
@@ -73,6 +77,7 @@ if ( isset($in['confirm']) ) {
 	}
 }
 
+//初見もしくは、設定値にエラーがある場合
 if ( isset($in['confirm']) == FALSE || $err_str != '' ) {
 	$in['username'] = $player_name;
 	if ( !isset($in['ninzuu']) ) {
@@ -97,12 +102,15 @@ if ( isset($in['confirm']) == FALSE || $err_str != '' ) {
 	$smarty->display( $g_tpl_path . 'page_start.tpl' );
 }
 else {
+	//入力値に問題が無いので、確認画面を表示する
 	if ( $in['confirm'] != 0 ) {
 		$in['username'] = $player_name;
 		$smarty->assign( 'in', $in );
 		$smarty->display( $g_tpl_path . 'page_start_confirm.tpl' );
 	}
 	else {
+		//確認画面でOKしたので、次の状態に遷移する
+		
 		refresh_kaitou_table( $link );
 		
 		//セッション情報の初期化
@@ -157,7 +165,7 @@ else {
 		store_members( $link, $members, $stock, $changerest, $change_amount );
 		
 		//クッキーを発行
-		setcookie( $gameid_param_name, $session['session_key'], time() + 3600 * 24 * 75, '/' );	//75日有効
+		setcookie( $gameid_param_name, $session['session_key'], time() + 3600 * 24 * 75 );	//75日有効
 		
 		//ページを表示
 		$smarty->assign( 'in', $in );

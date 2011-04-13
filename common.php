@@ -55,7 +55,8 @@ function load_session_table( $link ) {
 	//GETにパラメータが指定されていればそちらを優先
 	//cookieに今回読んだidを記録
 	//GETが無い場合は、cookieから取得
-	//読めなかった場合は、NULLを返す
+	//どちらにも指定が無い場合は、NULLを返す
+	//存在しないidを指定された場合はエラー表示
 
 	global $words_table_name;
 	global $members_table_name;
@@ -65,14 +66,16 @@ function load_session_table( $link ) {
 	$session = array();
 	
 	if ( isset($_GET[$gameid_param_name]) ) {
+		//GET値が指定されている
 		$session_key = $_GET[$gameid_param_name];
-		setcookie( $gameid_param_name, $session_key, time() + 3600 * 24 * 75 );	//75日有効
 	}
 	else {
+		//cookieに値がある
 		if ( isset( $_COOKIE[$gameid_param_name] ) ) {
 			$session_key = $_COOKIE[$gameid_param_name];
 		}
 		else {
+			//どちらにもない
 			return NULL;
 		}
 	}
@@ -81,9 +84,12 @@ function load_session_table( $link ) {
 	$sql = sprintf( "SELECT * FROM session WHERE session_key = %s", $session_key );
 	$query = mysql_query( $sql, $link );
 	if ( !$query ) {
-		//error( 'セッション情報が取得できません。' );
+		error( '指定されたページは存在しません。' );
 		return NULL;
 	}
+	
+	//指定されたidが正しい場合のみcookieに記録する
+	setcookie( $gameid_param_name, $session_key, time() + 3600 * 24 * 75 );	//75日有効
 	
 	$row = @mysql_fetch_array( $query, MYSQL_ASSOC );
 	$session['leadername'] = $row['leadername'];

@@ -6,10 +6,7 @@ session_start();
 //oauth_tokenが古くなっている場合は、topに戻る
 if (isset($_REQUEST['oauth_token']) && $_SESSION['oauth_token'] !== $_REQUEST['oauth_token']) {
 	$_SESSION['oauth_status'] = 'oldtoken';
-	$host  = $_SERVER['HTTP_HOST'];
-	$uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-	$extra = 'oj.php';
-	header("Location: http://$host$uri/$extra");
+	header('Location: ' . $g_scripturl);
 }
 
 $connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, $_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);
@@ -32,10 +29,7 @@ if (200 == $connection->http_code) {
 //アクセストークンをデバッグ表示
 //print_r($access_token);
 	
-	$host  = $_SERVER['HTTP_HOST'];
-	$uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-	$extra = 'oj.php';
-	header("Location: http://$host$uri/$extra");
+	header('Location: ' . $g_scripturl);
 }
 else {
 	//200以外を返した場合はアクセストークンの取得に失敗
