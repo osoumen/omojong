@@ -16,7 +16,7 @@ $link = connect_db();
 
 $session = load_session_table( $link );
 if ( empty( $session ) ) {
-	error('無効なIDです。');
+	header('Location: ' . $g_scripturl);
 }
 
 $nextlog = $num+1;

@@ -10,7 +10,7 @@ $link = connect_db();
 
 $session = load_session_table( $link );
 if ( empty( $session ) ) {
-	error('無効なIDです。');
+	header('Location: ' . $g_scripturl);
 }
 
 if ( mb_strlen( $in['word'] ) == 0 ) {

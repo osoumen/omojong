@@ -84,7 +84,7 @@ function load_session_table( $link ) {
 	$sql = sprintf( "SELECT * FROM session WHERE session_key = %s", $session_key );
 	$query = mysql_query( $sql, $link );
 	if ( mysql_num_rows( $query ) == 0 ) {
-		error( '指定されたページは存在しません。' );
+		error( '指定されたページは存在しないか、削除されました。' );
 		return NULL;
 	}
 	

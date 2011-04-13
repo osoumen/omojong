@@ -9,7 +9,7 @@ $link = connect_db();
 $session = array();
 $session = load_session_table( $link );
 if ( empty( $session ) ) {
-	error('無効なIDです。');
+	header('Location: ' . $g_scripturl);
 }
 
 $in = array_merge( $_POST, $_GET );
