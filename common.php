@@ -30,7 +30,12 @@ function get_new_session_key( $link, $leader_name ) {
 	//セッションテーブル内にleader_nameがあればそのセッションのキーを返す
 	$sql = sprintf( "SELECT * FROM session WHERE leadername = %s", $leader_name );
 	$query = mysql_query( $sql, $link );
-	$exists = mysql_num_rows( $query );
+	if ( $query ) {
+		$exists = mysql_num_rows( $query );
+	}
+	else {
+		$exists = 0;
+	}
 	if ( $exists > 0 ) {
 		while ( $row = @mysql_fetch_array( $query, MYSQL_ASSOC ) ) {
 			$session_key = $row['session_key'];
@@ -272,8 +277,10 @@ function load_words_table( $link, &$words ) {
 		$sql = sprintf( "SELECT word FROM %s", $words_table_name );
 		$query = mysql_query( $sql, $link );
 		$words = array();
-		while ( $row = mysql_fetch_array($query, MYSQL_NUM) ) {
-			array_push( $words, $row[0] );
+		if ( $query ) {
+			while ( $row = mysql_fetch_array($query, MYSQL_NUM) ) {
+				array_push( $words, $row[0] );
+			}
 		}
 	}
 	$totalwords = count($words);
