@@ -1,5 +1,6 @@
 <?php
 
+session_start();
 require_once 'globals.php';
 require_once 'common.php';
 
@@ -7,11 +8,9 @@ require_once 'common.php';
 $link = connect_db();
 
 //twitterにログインしているか調べる
-$is_login = false;
-if (isset($_SESSION['oauth_token']) &&
-	isset($_SESSION['oauth_token_secret']) &&
-	isset($_SESSION['user_id'])) {
-	$is_login = true;
+$is_login = true;
+if (empty($_SESSION['access_token']) || empty($_SESSION['access_token']['oauth_token']) || empty($_SESSION['access_token']['oauth_token_secret'])) {
+	$is_login = false;
 }
 
 //ゲーム情報を取り出す
@@ -19,6 +18,9 @@ $session = load_session_table( $link );
 
 if ( isset( $session ) ) {
 	$phase = $session['phase'];
+}
+else {
+	$phase = 'login';
 }
 
 if ( $is_login || $phase == 'kekka' ) {

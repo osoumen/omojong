@@ -14,7 +14,7 @@ $_SESSION['oauth_token_secret'] = $request_token['oauth_token_secret'];
 
 switch ($connection->http_code) {
   case 200:
-    //twitterの認証ページへのURLを作成
+    //twitterの認証ページへ
     $url = $connection->getAuthorizeURL($token);
     header('Location: ' . $url);
     break;

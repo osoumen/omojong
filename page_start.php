@@ -17,7 +17,8 @@ $session = load_session_table( $link );
 
 $err_str = '';
 $in = array_merge( $_POST, $_GET );
-$c_username = isset($_COOKIE['username']) ? $_COOKIE['username'] : '';
+session_start();
+$player_name = $_SESSION['access_token']['screen_name'];
 
 if ( isset($in['confirm']) ) {
 	$totalwords = load_words_table( $link, $words );
@@ -25,9 +26,9 @@ if ( isset($in['confirm']) ) {
 	if ($session['phase'] == 'sanka' || $session['phase'] == 'toukou') {
 		$err_str = '開催中です。';
 	}
-	elseif ($in['username'] == '') {
-		$err_str = '名前を入力してください。';
-	}
+//	elseif ($in['username'] == '') {
+//		$err_str = '名前を入力してください。';
+//	}
 	elseif ($in['ninzuu'] == '') {
 		$err_str = '人数のパラメータがありません。';
 	}
@@ -73,9 +74,7 @@ if ( isset($in['confirm']) ) {
 }
 
 if ( isset($in['confirm']) == FALSE || $err_str != '' ) {
-	if ( !isset($in['username']) ) {
-		$in['username'] = $c_username;
-	}
+	$in['username'] = $player_name;
 	if ( !isset($in['ninzuu']) ) {
 		$in['ninzuu'] = 4;
 	}
@@ -99,6 +98,7 @@ if ( isset($in['confirm']) == FALSE || $err_str != '' ) {
 }
 else {
 	if ( $in['confirm'] != 0 ) {
+		$in['username'] = $player_name;
 		$smarty->assign( 'in', $in );
 		$smarty->display( $g_tpl_path . 'page_start_confirm.tpl' );
 	}
@@ -107,18 +107,18 @@ else {
 		
 		//セッション情報の初期化
 		$session = array();
-		$session['leadername'] = $in['username'];
-		$session['session_key'] = get_new_session_key( $link, $in['username'] );
+		$session['leadername'] = $player_name;
+		$session['session_key'] = get_new_session_key( $link, $player_name );
 		$session['ninzuu'] = $in['ninzuu'];
 		$session['ninzuu_max'] = $in['ninzuu_max'];
 		$session['maisuu'] = $in['maisuu'];
 		$session['change_quant'] = $in['change_quant'];
 		$session['change_amount'] = $in['change_amount'];
 
-		$members[0] = $in['username'];
-		$stock[$in['username']] = '';
-		$changerest[$in['username']] = $in['change_quant'];
-		$change_amount[$in['username']] = $in['change_amount'];
+		$members[0] = $player_name;
+		$stock[$player_name] = '';
+		$changerest[$player_name] = $in['change_quant'];
+		$change_amount[$player_name] = $in['change_amount'];
 		
 		$words_table_name = sprintf( 'words_%s', $session['leadername'] );
 		$members_table_name = sprintf( 'members_%s', $session['leadername'] );
@@ -150,15 +150,14 @@ else {
 		
 		//ウェルカム通知
 		if ( $usenotification ) {
-			commit_mention( $in['username'], $notifymsg0 );
+			commit_mention( $player_name, $notifymsg0 );
 		}
 		$session['phase'] = 'sanka';
 		store_session_table( $link, $session );
 		store_members( $link, $members, $stock, $changerest, $change_amount );
 		
 		//クッキーを発行
-		$c_username = $in['username'];
-		setcookie( 'username', $in['username'], time() + 3600 * 24 * 75, '/' );	//75日有効
+		setcookie( $gameid_param_name, $session['session_key'], time() + 3600 * 24 * 75, '/' );	//75日有効
 		
 		//ページを表示
 		$smarty->assign( 'in', $in );

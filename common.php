@@ -60,6 +60,7 @@ function load_session_table( $link ) {
 	global $words_table_name;
 	global $members_table_name;
 	global $kaitou_table_name;
+	global $gameid_param_name;
 	
 	$session = array();
 	
