@@ -18,8 +18,39 @@ if ( isset( $session ) ) {
 	$phase = $session['phase'];
 }
 else {
-	//初めてこのURLを開いた、もしくはページの指定が不正
 	$phase = 'login';
+	//初めてこのURLを開いた、もしくはページの指定が不正
+	//ログイン済みの場合、参加中のゲームを探す
+	$session_key_list = array();
+	$phase_list = array();
+	$memberlist_list = array();
+
+	if ( $is_login ) {
+		$sql = 'SELECT session_key,phase,members_table_name FROM session';
+		$query = mysql_query( $sql, $link );
+		while ( $row = @mysql_fetch_array( $query, MYSQL_ASSOC ) ) {
+			//自分の名前が含まれているメンバーリストを探す
+			$sql = sprintf('SELECT username FROM %s WHERE username=\'%s\'', $row['members_table_name'], $_SESSION['access_token']['screen_name']);
+			$query2 = mysql_query( $sql, $link );
+			if ( mysql_num_rows( $query2 ) > 0 ) {
+				//フェーズ、session_key、参加者リストを保存
+				$session_key_list[] = $row['session_key'];
+				$phase_list[] = $row['phase'];
+				$memberlist = array();
+				$sql = sprintf('SELECT username FROM %s', $row['members_table_name']);
+				$query3 = mysql_query( $sql, $link );
+				while ( $row2 = mysql_fetch_array( $query3, MYSQL_NUM ) ) {
+					$memberlist[] = $row2[0];
+				}
+				$memberlist_list[] = $memberlist;
+			}
+		}
+		if ( count($session_key_list) > 0 ) {
+			//自分が参加しているリストを表示する
+			include 'html_sanka_list.php';
+			exit;
+		}
+	}
 }
 
 if ( $is_login || $phase == 'kekka' ) {
