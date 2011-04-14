@@ -18,9 +18,14 @@ $link = connect_db();
 //p値の指定が無かったらNULLを受け取って素通りさせる
 $session = load_session_table( $link );
 
+//ログインしてなかったらtopに飛ぶ
+session_start();
+if ( is_login() == false ) {
+	header('Location: ' . $g_scripturl);
+}
+
 $err_str = '';
 $in = array_merge( $_POST, $_GET );
-session_start();
 $player_name = $_SESSION['access_token']['screen_name'];
 
 //確認時の処理
@@ -81,7 +86,7 @@ if ( isset($in['confirm']) ) {
 if ( isset($in['confirm']) == FALSE || $err_str != '' ) {
 	$in['username'] = $player_name;
 	if ( !isset($in['ninzuu']) ) {
-		$in['ninzuu'] = 4;
+		$in['ninzuu'] = 2;
 	}
 	if ( !isset($in['ninzuu_max']) ) {
 		$in['ninzuu_max'] = 10;

@@ -7,12 +7,14 @@
 <body>
 <center>
 {include file={$header_path}}
-
 <hr>
 <h3>参加しました。</h3>
 Username：{$in.username}<br>
-<a href="{$g_script}" target=_top>[戻る]</a>
-
+あなたのツイートから単語を抽出することができます。<br>
+(最近の100発言を使用します。重複した単語は１つのみ登録されます。取得された単語は単語札以外には使用されません。)<br>
+<a href="page_word_form_tw.php">[抽出する]</a>
+<br>
+<a href="{$g_script}" target=_top>[抽出しない]</a>
 </center>
 {include file={$footer_path}}
 </body>

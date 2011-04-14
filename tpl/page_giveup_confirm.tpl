@@ -10,11 +10,7 @@
 <hr>
 <h3>解答終了</h3>
 以後解答できなくなりますが、よろしいですか？<br>
-<form action="page_giveup.php" method="post">
-<input type="hidden" name="mode" value="giveup">
-<!--<input type="hidden" name="confirm" value="0">-->
-<input type="submit" name="submit" value="ＯＫ"><br>
-</form>
+<a href="page_giveup.php" target=_top>[ＯＫ]</a><br>
 <a href="{$g_script}" target=_top>[戻る]</a>
 </center>
 {include file={$footer_path}}

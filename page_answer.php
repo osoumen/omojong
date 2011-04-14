@@ -8,8 +8,15 @@ $session = array();
 //データベースに接続
 $link = connect_db();
 
+//いきなりこのページを開いたらtopへ
 $session = load_session_table( $link );
 if ( empty( $session ) ) {
+	header('Location: ' . $g_scripturl);
+}
+
+//ログインしてなかったらtopに飛ぶ
+session_start();
+if ( is_login() == false ) {
 	header('Location: ' . $g_scripturl);
 }
 
@@ -21,7 +28,7 @@ load_members( $link, $members, $stock, $changerest, $change_amount );
 
 $err_str = '';
 $in = array_merge( $_POST, $_GET );
-$c_username = isset($_COOKIE['username']) ? $_COOKIE['username'] : '';
+$c_username = isset($_SESSION['access_token']['screen_name']) ? $_SESSION['access_token']['screen_name'] : '';
 
 //--エラーチェック--
 if ( $session['phase'] != 'toukou' ) {

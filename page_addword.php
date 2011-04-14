@@ -8,6 +8,7 @@ $in = array_merge( $_POST, $_GET );
 //データベースに接続
 $link = connect_db();
 
+//いきなりこのページを開いたらtopへ
 $session = load_session_table( $link );
 if ( empty( $session ) ) {
 	header('Location: ' . $g_scripturl);

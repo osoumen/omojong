@@ -39,7 +39,7 @@ $smarty->display( $g_tpl_path . 'header.tpl' );
 <?php
 //過去の記録へのリンク
 if ( $is_exist_pastlog ) {
-	echo '<a href="page_pastlog.php">[過去の記録]</a><hr>';
+	echo '<a href="page_pastlog.php?p=' . $session['session_key'] . '">[過去の記録]</a><hr>';
 }
 ?>
 <h3>解答して下さい</h3>
@@ -93,9 +93,11 @@ if ( in_array($c_username, $members) ) {
 		$smarty->display( $g_tpl_path . 'html_answer_form.tpl' );
 		
 		//交換回数が残っている
-		$smarty->assign( 'c_rest', $changerest{$c_username} );
-		$smarty->assign( 'c_amount', $change_amount{$c_username} );
-		$smarty->display( $g_tpl_path . 'html_change_form.tpl' );
+		if ( $changerest[$c_username] > 0 && $change_amount[$c_username] ) {
+			$smarty->assign( 'c_rest', $changerest[$c_username] );
+			$smarty->assign( 'c_amount', $change_amount[$c_username] );
+			$smarty->display( $g_tpl_path . 'html_change_form.tpl' );
+		}
 		
 		//解答終了ボタンを表示
 		$smarty->display( $g_tpl_path . 'html_giveup_button.tpl' );

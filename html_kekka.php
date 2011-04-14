@@ -30,7 +30,7 @@ $smarty->display( $g_tpl_path . 'header.tpl' );
 <?php
 //過去の記録へのリンク
 if ( $is_exist_pastlog ) {
-	echo '<a href="page_pastlog.php">[過去の記録]</a><hr>';
+	echo '<a href="page_pastlog.php?p=' . $session['session_key'] . '">[過去の記録]</a><hr>';
 }
 echo '<h2>結果発表</h2><br>';
 //結果表示
@@ -48,6 +48,7 @@ while ( $row = mysql_fetch_array( $query, MYSQL_NUM ) ) {
 	$hyousuu = $row[3];
 	$tweet_msg = urlencode(' 『' . $sentence . '』by @' . $kaitousya . ' ');
 	
+	$smarty->assign( 'session_key', $session['session_key'] );
 	$smarty->assign( 'ansindex', $ansindex );
 	$smarty->assign( 'sentence', $sentence );
 	$smarty->assign( 'kaitousya', $kaitousya );
@@ -55,10 +56,14 @@ while ( $row = mysql_fetch_array( $query, MYSQL_NUM ) ) {
 	$smarty->assign( 'tweet_msg', $tweet_msg );
 	$smarty->display( $g_tpl_path . 'html_kekka.tpl' );
 }
-?>
-<a href="page_start.php">[新しく始める]</a><br>
-<br>
-<?php
+
+if ( $is_login ) {
+	echo '<a href="page_start.php?p=' . $session['session_key'] . '">[新しく始める]</a><br><br>';
+}
+else {
+	echo '<a href="twitter_request.php">[twitterにログイン]</a><br><br>';
+}
+
 //単語を追加フォーム
 $smarty->assign( 'totalwords', $totalwords );
 $smarty->assign( 'todaywords', $todaywords );

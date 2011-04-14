@@ -7,6 +7,8 @@ require_once 'common.php';
 $link = connect_db();
 
 $session = array();
+
+//いきなりこのページを開いたらtopへ
 $session = load_session_table( $link );
 if ( empty( $session ) ) {
 	header('Location: ' . $g_scripturl);
@@ -14,8 +16,13 @@ if ( empty( $session ) ) {
 
 $in = array_merge( $_POST, $_GET );
 
+//過去データへの投票の場合、テーブル名の末尾にp値を付加
+if ( isset($in['num']) ) {
+	$kaitou_table_name = $kaitou_table_name . '_' . $in['num'];
+}
+
 //--エラーチェック--
-if ( $session['phase'] != 'kekka') {
+if ( $session['phase'] != 'kekka' && !isset($in['num']) ) {
 	error("現在投票を受け付けていません。");
 }
 if ( ctype_digit( $in['ansnum'] ) == FALSE ) {
@@ -52,7 +59,6 @@ $smarty->display( 'tpl/header.tpl' );
 ?>
 <hr>
 <h3><?php echo $sentence; ?>に投票しました</h3>
-投票ありがとうございます。<br>
 <a href="<?php echo $g_script; ?>" target=_top>[戻る]</a>
 </center>
 <?php

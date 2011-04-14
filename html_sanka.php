@@ -39,7 +39,7 @@ $smarty->display( $g_tpl_path . 'header.tpl' );
 <?php
 //過去の記録へのリンク
 if ( $is_exist_pastlog ) {
-	echo '<a href="page_pastlog.php">[過去の記録]</a><hr>';
+	echo '<a href="page_pastlog.php?p=' . $session['session_key'] . '">[過去の記録]</a><hr>';
 }
 ?>
 <h2>参加募集中</h2>

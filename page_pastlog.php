@@ -14,6 +14,7 @@ else {
 //データベースに接続
 $link = connect_db();
 
+//いきなりこのページを開いたらtopへ
 $session = load_session_table( $link );
 if ( empty( $session ) ) {
 	header('Location: ' . $g_scripturl);
@@ -39,10 +40,10 @@ $smarty->display( $g_tpl_path . 'header.tpl' );
 <hr>
 <?php
 if ( $exist_next ) {
-	echo '<a href="page_pastlog.php?num='.$nextlog.'">[←もっと古い記録] </a>';
+	echo '<a href="page_pastlog.php?p=' . $session['session_key'] . '&num='.$nextlog.'">[←もっと古い記録] </a>';
 }
 if ( $exist_prev && ($prevlog >= 0) ) {
-	echo '<a href="page_pastlog.php?num='.$prevlog.'">[もっと新しい記録→] </a>';
+	echo '<a href="page_pastlog.php?p=' . $session['session_key'] . '&num='.$prevlog.'">[もっと新しい記録→] </a>';
 }
 ?>
 <br>
@@ -71,6 +72,8 @@ while ( $row = mysql_fetch_array( $query, MYSQL_NUM ) ) {
 	$hyousuu = $row[3];
 	$tweet_msg = urlencode(' 『' . $sentence . '』by @' . $kaitousya . ' ');
 	
+	$smarty->assign( 'pastno', $num );
+	$smarty->assign( 'session_key', $session['session_key'] );
 	$smarty->assign( 'ansindex', $ansindex );
 	$smarty->assign( 'sentence', $sentence );
 	$smarty->assign( 'kaitousya', $kaitousya );
