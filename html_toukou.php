@@ -20,7 +20,7 @@ $change_amount = array();
 load_members( $link, $members, $stock, $changerest, $change_amount );
 
 //参加者名を取得
-$c_username = isset($_COOKIE['username']) ? $_COOKIE['username'] : '';
+$c_username = isset($_SESSION['access_token']['screen_name']) ? $_SESSION['access_token']['screen_name'] : '';
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
