@@ -8,7 +8,6 @@
 <center>
 {include file={$header_path}}
 <hr>
-<h3>解答終了</h3>
 以後解答できなくなりますが、よろしいですか？<br>
 <a href="page_giveup.php" target=_top>[ＯＫ]</a><br>
 <a href="{$g_script}" target=_top>[戻る]</a>

@@ -70,7 +70,8 @@ mysql_close( $link );
 $smarty->display( 'tpl/header.tpl' );
 ?>
 <hr>
-<h3><?php echo $sentence; ?>に投票しました</h3>
+<h3><?php echo $sentence; ?></h3>
+に投票しました。<br>
 <a href="page_pastlog.php?num=<?php echo $in['num']; ?>" target=_top>[戻る]</a>
 </center>
 <?php

@@ -42,7 +42,6 @@ if ( $is_exist_pastlog ) {
 	echo '<a href="page_pastlog.php">[過去ログ]</a><hr>';
 }
 ?>
-<h2>参加募集中</h2>
 <table border=0>
 <tr><th>参加者</th></tr>
 <?php

@@ -7,12 +7,10 @@
 <body>
 <center>
 {include file={$header_path}}
-
 <hr>
-<h3>新しく開始</h3>
 以下の条件で始めますか？<br>
 <table>
-<tr><td><b>Username</b></td><td>{$in.username}</td></tr>
+<!--<tr><td><b>Username</b></td><td>{$in.username}</td></tr>-->
 <tr><td><b>人数</b></td><td>{$in.ninzuu}〜{$in.ninzuu_max}</td></tr>
 <tr><td><b>枚数</b></td><td>{$in.maisuu}</td></tr>
 <tr><td><b>札の交換</b></td><td>{$in.change_quant}回まで{$in.change_amount}枚以内
@@ -21,7 +19,7 @@
 <form action="page_start.php" method="post">
 <input type="hidden" name="mode" value="start">
 <input type="hidden" name="confirm" value="0">
-<input type="hidden" name="username" value="{$in.username}">
+<!--<input type="hidden" name="username" value="{$in.username}">-->
 <input type="hidden" name="ninzuu" value="{$in.ninzuu}">
 <input type="hidden" name="ninzuu_max" value="{$in.ninzuu_max}">
 <input type="hidden" name="maisuu" value="{$in.maisuu}">

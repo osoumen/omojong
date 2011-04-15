@@ -8,7 +8,6 @@
 <center>
 {include file={$header_path}}
 <hr>
-<h3>解答の確認</h3>
 <b>{$sentence}</b><br><br>
 でよろしいですか？<br>
 <form action="page_answer.php" method="post">

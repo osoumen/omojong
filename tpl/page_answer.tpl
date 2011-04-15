@@ -8,9 +8,8 @@
 <center>
 {include file={$header_path}}
 <hr>
-<h3>解答を登録</h3>
 <b>{$sentence}</b><br><br>
-を送信しました。<br>
+を解答しました。<br>
 <a href="{$g_script}" target=_top>[戻る]</a>
 </center>
 {include file={$footer_path}}

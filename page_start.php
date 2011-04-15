@@ -112,7 +112,7 @@ if ( isset($in['confirm']) == FALSE || $err_str != '' ) {
 else {
 	//入力値に問題が無いので、確認画面を表示する
 	if ( $in['confirm'] != 0 ) {
-		$in['username'] = $player_name;
+		//$in['username'] = $player_name;
 		$smarty->assign( 'in', $in );
 		$smarty->display( $g_tpl_path . 'page_start_confirm.tpl' );
 	}

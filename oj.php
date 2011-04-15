@@ -53,7 +53,7 @@ else {
 	}
 }
 
-if ( $is_login || $phase == 'kekka' ) {
+if ( $is_login ) {
 	switch ( $phase ) {
 		case 'sanka':
 			include 'html_sanka.php';

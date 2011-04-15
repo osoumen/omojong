@@ -8,7 +8,6 @@
 <center>
 {include file={$header_path}}
 <hr>
-<h3>札を交換</h3>
 {foreach from="$disp_list" item="value" key="key"}
 {$key}：{$value}<br>
 {/foreach}

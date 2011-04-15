@@ -9,7 +9,6 @@
 {include file={$header_path}}
 <hr>
 <h3>参加しました。</h3>
-Username：{$in.username}<br>
 {if $allow_addword != 0}
 あなたのツイートから単語を抽出することができます。<br>
 (最近の100発言を使用します。重複した単語は１つのみ登録されます。取得された単語は単語札以外には使用されません。)<br>

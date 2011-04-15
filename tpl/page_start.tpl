@@ -7,15 +7,13 @@
 <body>
 <center>
 {include file={$header_path}}
-
 <hr>
-<h3>新しく始める</h3>
 <font color=red>{$err_str}</font><br>
 <form action="page_start.php" method="post">
 <table>
 <input type="hidden" name="mode" value="start">
 <input type="hidden" name="confirm" value="{$g_start_confirm}">
-<tr><td><b>Username</b></td><td>{$in.username}</td></tr>
+<!--<tr><td><b>Username</b></td><td>{$in.username}</td></tr>-->
 <tr>
 <td><b>人数</b></td>
 <td><input type="text" name="ninzuu" value="{$in.ninzuu}" size=4>〜<input type="text" name="ninzuu_max" value="{$in.ninzuu_max}" size=4>人</td>
