@@ -60,6 +60,16 @@ if ( $is_login || $phase == 'kekka' ) {
 			mysql_close( $link );	//データベースを切断
 			break;
 			
+		case 'deal':
+			mysql_close( $link );	//データベースを切断
+			//札を配るページへリダイレクト
+			$host  = $_SERVER['HTTP_HOST'];
+			$uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+			$extra = 'page_deal.php';
+			header('HTTP/1.1 303 See Other');
+			header("Location: http://$host$uri/$extra");
+			exit;
+		
 		case 'toukou':
 			include 'html_toukou.php';
 			mysql_close( $link );	//データベースを切断
@@ -69,7 +79,7 @@ if ( $is_login || $phase == 'kekka' ) {
 			include 'html_kekka.php';
 			mysql_close( $link );	//データベースを切断
 			break;
-			
+		
 		case 'login':
 		default:
 			mysql_close( $link );	//データベースを切断

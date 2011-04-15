@@ -42,6 +42,7 @@ if ($phase == 'sanka') {
 	//通常の参加
 	//人数が集まったなら投稿モードへ移行
 	if ( count($members) >= $session['ninzuu'] ) {
+	/*
 		//札を全員に配る
 		$words = array();
 		$totalwords = load_words_table( $link, $words );
@@ -51,8 +52,8 @@ if ($phase == 'sanka') {
 		foreach ($members as $memb) {
 			$stock[$memb] = implode(',', array_splice( $wordnumber,0, $session['maisuu'] ) );
 		}
-		
-		$phase = 'toukou';
+	*/
+		$phase = 'deal';
 		//人数集まりましたmentionを投げる
 		if ($usenotification) {
 			foreach ( $members as $memb ) {
@@ -72,17 +73,18 @@ elseif (($phase == 'toukou') and (count($members) < $session['ninzuu_max']) ) {
 	
 	$wordnumber = get_availablewordlist( $link, $members, $stock, $totalwords );
 	
-	if ( count($wordnumber) < $session['maisuu'] ) {
-		error("単語が足りないので参加できません。");
+	if ( count($wordnumber) < 2 ) {
+		error("残り単語数が２に満たないので参加できません。");
 	}
+	$stock[$in['username']] = implode(',', array_splice($wordnumber, 0, $session['maisuu']));
+	
 	//メンバーに追加
 	array_push( $members, $in['username'] );
 	$changerest[$in['username']] = $session['change_quant'];
 	$change_amount[$in['username']] = $session['change_amount'];
-	$stock[$in['username']] = implode(',', array_splice($wordnumber, 0, $session['maisuu']));
 }
 else {
-	error("参加受付中ではありません。");
+	error("現在は参加を受け付けていません。");
 }
 
 //ウェルカム通知
