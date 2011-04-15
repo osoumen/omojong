@@ -22,9 +22,11 @@ if ( isset($in['num']) ) {
 	$kaitou_table_name = $pastlog_table_name . '_' . $in['num'];
 }
 //結果発表中のデータへの投票の場合
+/*
 elseif ( isset($in[$gameid_param_name]) ) {
 	$session = load_session_table( $link );
 }
+*/
 else {
 	error("対象が指定されていません。");
 }
@@ -69,7 +71,7 @@ $smarty->display( 'tpl/header.tpl' );
 ?>
 <hr>
 <h3><?php echo $sentence; ?>に投票しました</h3>
-<a href="<?php echo $g_script; ?>" target=_top>[戻る]</a>
+<a href="page_pastlog.php?num=<?php echo $in['num']; ?>" target=_top>[戻る]</a>
 </center>
 <?php
 $smarty->display( 'tpl/footer.tpl' );

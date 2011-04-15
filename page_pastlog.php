@@ -30,6 +30,10 @@ else {
 	$num = $latest_pastlog;
 }
 
+if ( $latest_pastlog < 0 ) {
+	error( '過去ログがまだありません。');
+}
+
 $nextlog = $num-1;
 $prevlog = $num+1;
 $exist_next = is_exist_table($link, sprintf('%s_%d', $pastlog_table_name, $nextlog) );
@@ -73,7 +77,12 @@ else {
 if ( is_exist_table( $link, $kekka_table ) == FALSE ) {
 	error( 'データが存在しません。' );
 }
-$sql = "SELECT id,content,author,votes FROM $kekka_table ORDER BY votes DESC";
+if ( $g_kekkasort ) {
+	$sql = "SELECT id,content,author,votes FROM $kekka_table ORDER BY votes DESC";
+}
+else {
+	$sql = "SELECT id,content,author,votes FROM $kekka_table";
+}
 $query = mysql_query( $sql, $link );
 
 while ( $row = mysql_fetch_array( $query, MYSQL_NUM ) ) {
