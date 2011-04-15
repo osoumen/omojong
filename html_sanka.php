@@ -61,7 +61,7 @@ foreach ( $members as $memb ) {
 <?php
 //残り参加人数表示
 $rest = $session['ninzuu'] - count( $members );
-echo "あと$rest 人の参加が必要です。<br><br>";
+echo "あと$rest 人の参加が必要です。<br>";
 
 if ( in_array($c_username, $members) ) {
 	if ( $c_username !== $session['leadername'] ) {
@@ -76,6 +76,10 @@ else {
 ?>
 <br>
 <?php
+if ( $c_username == $session['leadername'] ) {
+	echo '<a href="page_start_confirm.php?p=' . $session['session_key'] . '">[最初から始める]</a><br>';
+}
+
 if ( $allow_addword ) {
 	//単語を追加フォーム
 	$smarty->assign( 'totalwords', $totalwords );

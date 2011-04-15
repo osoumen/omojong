@@ -15,7 +15,7 @@ if ( empty( $session ) ) {
 }
 
 if ( mb_strlen( $in['word'] ) == 0 ) {
-	error("文字が入っていないぞ？");
+	error("文字が入力されていません。");
 }
 $newword = $in['word'];
 

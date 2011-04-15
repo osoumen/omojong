@@ -118,6 +118,10 @@ else {
 ?>
 <br>
 <?php
+if ( $c_username == $session['leadername'] ) {
+	echo '<a href="page_start_confirm.php?p=' . $session['session_key'] . '">[最初から始める]</a><br>';
+}
+
 if ( $allow_addword ) {
 	//単語を追加フォーム
 	$smarty->assign( 'totalwords', $totalwords );

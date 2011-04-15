@@ -30,17 +30,18 @@ $err_str = '';
 $in = array_merge( $_POST, $_GET );
 $player_name = $_SESSION['access_token']['screen_name'];
 
+if ( ($session['phase'] == 'sanka' || $session['phase'] == 'toukou') && $player_name != $session['leadername'] ) {
+	error('開始者以外は中断できません。');
+}
+
 //確認時の処理
 if ( isset($in['confirm']) ) {
 	$totalwords = load_words_table( $link, $words );
 	
-	if ($session['phase'] == 'sanka' || $session['phase'] == 'toukou') {
-		$err_str = '開催中です。';
-	}
 //	elseif ($in['username'] == '') {
 //		$err_str = '名前を入力してください。';
 //	}
-	elseif ($in['ninzuu'] == '') {
+	if ($in['ninzuu'] == '') {
 		$err_str = '人数のパラメータがありません。';
 	}
 	elseif (ctype_digit($in['ninzuu']) == FALSE) {
@@ -118,7 +119,10 @@ else {
 	else {
 		//確認画面でOKしたので、次の状態に遷移する
 		
-		refresh_kaitou_table( $link );
+		//中断して始めた場合は、過去ログを更新しない
+		if ($session['phase'] == 'kekka') {
+			refresh_kaitou_table( $link );
+		}
 		
 		//セッション情報の初期化
 		if ( $session ) {
@@ -173,6 +177,9 @@ else {
 				date date,
 				votes int
 				)', $kaitou_table_name);
+		$query = mysql_query( $sql, $link );
+		//解答テーブルのリセット
+		$sql = sprintf( 'TRUNCATE `%s`', $kaitou_table_name );
 		$query = mysql_query( $sql, $link );
 		
 		//Twitterから単語を取得
