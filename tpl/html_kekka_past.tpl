@@ -1,4 +1,5 @@
 {$kaitousya}<br>
+{$date}<br>
 {$sentence}<br>
 {$hyousuu}
 <a href="page_vote.php?num={$pastno}&ansnum={$ansindex}&increment=1">

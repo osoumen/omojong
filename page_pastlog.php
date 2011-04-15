@@ -78,10 +78,10 @@ if ( is_exist_table( $link, $kekka_table ) == FALSE ) {
 	error( 'データが存在しません。' );
 }
 if ( $g_kekkasort ) {
-	$sql = "SELECT id,content,author,votes FROM $kekka_table ORDER BY votes DESC";
+	$sql = "SELECT id,content,author,votes,date FROM $kekka_table ORDER BY votes DESC";
 }
 else {
-	$sql = "SELECT id,content,author,votes FROM $kekka_table";
+	$sql = "SELECT id,content,author,votes,date FROM $kekka_table";
 }
 $query = mysql_query( $sql, $link );
 
@@ -90,6 +90,7 @@ while ( $row = mysql_fetch_array( $query, MYSQL_NUM ) ) {
 	$sentence = $row[1];
 	$kaitousya = $row[2];
 	$hyousuu = $row[3];
+	$date = $row[4];
 	$tweet_msg = urlencode(' 『' . $sentence . '』by @' . $kaitousya . ' ');
 	
 	$smarty->assign( 'pastno', $num );
@@ -99,6 +100,7 @@ while ( $row = mysql_fetch_array( $query, MYSQL_NUM ) ) {
 	$smarty->assign( 'kaitousya', $kaitousya );
 	$smarty->assign( 'hyousuu', $hyousuu );
 	$smarty->assign( 'tweet_msg', $tweet_msg );
+	$smarty->assign( 'date', $date );
 	$smarty->display( $g_tpl_path . 'html_kekka_past.tpl' );
 }
 mysql_close( $link );
