@@ -8,23 +8,33 @@ $link = connect_db();
 
 $session = array();
 
-//いきなりこのページを開いたらtopへ
+$in = array_merge( $_POST, $_GET );
+
+/*
 $session = load_session_table( $link );
 if ( empty( $session ) ) {
 	header('Location: ' . $g_scripturl);
 }
+*/
 
-$in = array_merge( $_POST, $_GET );
-
-//過去データへの投票の場合、テーブル名の末尾にp値を付加
+//過去データへの投票の場合
 if ( isset($in['num']) ) {
-	$kaitou_table_name = $kaitou_table_name . '_' . $in['num'];
+	$kaitou_table_name = $pastlog_table_name . '_' . $in['num'];
+}
+//結果発表中のデータへの投票の場合
+elseif ( isset($in[$gameid_param_name]) ) {
+	$session = load_session_table( $link );
+}
+else {
+	error("対象が指定されていません。");
 }
 
 //--エラーチェック--
+/*
 if ( $session['phase'] != 'kekka' && !isset($in['num']) ) {
 	error("現在投票を受け付けていません。");
 }
+*/
 if ( ctype_digit( $in['ansnum'] ) == FALSE ) {
 	error("投票は数値を指定してください。");
 }

@@ -5,7 +5,7 @@ require_once 'common.php';
 
 //oj.phpから続く
 
-$table_name = sprintf( '%s_0', $kaitou_table_name );
+$table_name = sprintf( '%s_0', $pastlog_table_name );
 $is_exist_pastlog = is_exist_table( $link, $table_name );
 
 $words = array();
@@ -39,7 +39,7 @@ $smarty->display( $g_tpl_path . 'header.tpl' );
 <?php
 //過去の記録へのリンク
 if ( $is_exist_pastlog ) {
-	echo '<a href="page_pastlog.php?p=' . $session['session_key'] . '">[過去の記録]</a><hr>';
+	echo '<a href="page_pastlog.php">[過去ログ]</a><hr>';
 }
 ?>
 <h2>参加募集中</h2>
@@ -77,7 +77,7 @@ else {
 <br>
 <?php
 if ( $c_username == $session['leadername'] ) {
-	echo '<a href="page_start_confirm.php?p=' . $session['session_key'] . '">[最初から始める]</a><br>';
+	echo '<a href="page_start_confirm.php?p=' . $session['session_key'] . '">[始めからやる]</a><br>';
 }
 
 if ( $allow_addword ) {

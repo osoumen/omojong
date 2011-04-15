@@ -1,7 +1,7 @@
 {$kaitousya}<br>
 {$sentence}<br>
 {$hyousuu}
-<a href="page_vote.php?p={$session_key}&num={$pastno}&ansnum={$ansindex}&increment=1">
+<a href="page_vote.php?num={$pastno}&ansnum={$ansindex}&increment=1">
 [いいね！]
 </a>
 <!--

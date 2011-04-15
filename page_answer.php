@@ -132,6 +132,9 @@ else {
 				}
 			}
 		}
+		//解答をログへ移動
+		$table_name = push_kaitou_table_pastlog( $link, $kaitou_table_name );
+		$kaitou_table_name = $table_name;
 	}
 	store_session_table( $link, $session );
 	store_members( $link, $members, $stock, $changerest, $change_amount );

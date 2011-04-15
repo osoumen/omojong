@@ -110,7 +110,6 @@ function load_session_table( $link ) {
 	$words_table_name = $row['words_table_name'];
 	$members_table_name = $row['members_table_name'];
 	$kaitou_table_name = $row['kaitou_table_name'];
-	$session['latest_log'] = $row['latest_log'];
 	
 	return $session;
 }
@@ -132,8 +131,7 @@ function store_session_table( $link, $session ) {
 			change_amount int,
 			words_table_name text,
 			members_table_name text,
-			kaitou_table_name text,
-			latest_log int
+			kaitou_table_name text
 			)');
 	$query = mysql_query( $sql, $link );
 	
@@ -142,7 +140,7 @@ function store_session_table( $link, $session ) {
 	$query = mysql_query( $sql, $link );
 	
 	//セッション情報を書き込む
-	$sql = sprintf( "INSERT INTO session VALUES( '%s', '%s', '%s', %d, %d, %d, %d, %d, '%s', '%s', '%s', %d )",
+	$sql = sprintf( "INSERT INTO session VALUES( '%s', '%s', '%s', %d, %d, %d, %d, %d, '%s', '%s', '%s' )",
 	$session['leadername'],
 	$session['session_key'],
 	$session['phase'],
@@ -153,8 +151,7 @@ function store_session_table( $link, $session ) {
 	$session['change_amount'],
 	$words_table_name,
 	$members_table_name,
-	$kaitou_table_name,
-	$session['latest_log']
+	$kaitou_table_name
 	);
 	$query = mysql_query( $sql, $link );
 }
@@ -326,6 +323,33 @@ function refresh_kaitou_table( $link ) {
 		$query = mysql_query( $sql, $link );
 	}
 	return $numlogs;
+}
+
+function push_kaitou_table_pastlog( $link, $table_name ) {
+	global $pastlog_table_name;
+	
+	$new_table_name = '';
+	
+	//table_nameが存在しているかチェック
+	if ( is_exist_table( $link, $table_name ) ) {
+		//最近の過去ログの値をインクリメントする
+		$sql = 'UPDATE global SET latest_pastlog = latest_pastlog+1';
+		$query = mysql_query( $sql, $link );
+		
+		//インクリメント後の値を取得する
+		$sql = sprintf( "SELECT * FROM global" );
+		$query = mysql_query( $sql, $link );
+		while ( $row = @mysql_fetch_array( $query, MYSQL_ASSOC ) ) {
+			$numlogs = $row['latest_pastlog'];
+		}
+		
+		//テーブルを過去ログに移動する
+		$new_table_name = sprintf( '%s_%d', $pastlog_table_name, $numlogs );
+		$sql = sprintf( "ALTER TABLE %s RENAME TO %s", $table_name, $new_table_name );
+		$query = mysql_query( $sql, $link );
+	}
+	//移動後のテーブル名を返す
+	return $new_table_name;
 }
 
 function error( $msg ) {

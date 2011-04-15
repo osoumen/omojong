@@ -74,6 +74,7 @@ $smarty->assign( 'g_giveup_confirm', $g_giveup_confirm );
 $words_table_name = 'words';
 $members_table_name = 'members';
 $kaitou_table_name = 'kaitou';
+$pastlog_table_name = 'pastlog';
 
 //ゲームIDのパラメーター名
 $gameid_param_name = 'p';
