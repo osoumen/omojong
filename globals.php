@@ -23,6 +23,10 @@ define('CONSUMER_SECRET', '5Z0zGHDWqBshT1nWa3wcCB7fx69kH7cNExPPdHAGR8');
 //mentionによる通知を使用する(1=YES 0=NO)
 $usenotification = 0;
 
+//Twitter以外の単語追加をありにするか
+//1にすると、スタート時に単語がリセットされない
+$allow_addword = 0;
+
 //参加したときの通知の内容
 $notifymsg0 = "ご参加ありがとうございます！まだまだ参加受付中です。 ($g_title $g_scripturl)";
 

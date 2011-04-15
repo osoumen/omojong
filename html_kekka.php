@@ -64,11 +64,13 @@ else {
 	echo '<a href="twitter_request.php">[twitterにログイン]</a><br><br>';
 }
 
-//単語を追加フォーム
-$smarty->assign( 'totalwords', $totalwords );
-$smarty->assign( 'todaywords', $todaywords );
-$smarty->assign( 'yesterdaywords', $yesterdaywords );
-$smarty->display( $g_tpl_path . 'html_addwordform.tpl' );
+if ( $allow_addword ) {
+	//単語を追加フォーム
+	$smarty->assign( 'totalwords', $totalwords );
+	$smarty->assign( 'todaywords', $todaywords );
+	$smarty->assign( 'yesterdaywords', $yesterdaywords );
+	$smarty->display( $g_tpl_path . 'html_addwordform.tpl' );
+}
 
 //このページへのリンク
 echo '<a href="' . $g_script . '?p=' . $session['session_key'] . '">[このページへのリンク]</a><br>';

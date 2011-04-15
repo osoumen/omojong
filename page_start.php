@@ -149,6 +149,10 @@ else {
 				date date
 				)', $words_table_name);
 		$query = mysql_query( $sql, $link );
+		//単語のリセット
+		if ( $allow_addword == 0 ) {
+			
+		}
 
 		$sql = sprintf( 'CREATE TABLE IF NOT EXISTS `%s` (
 				username text,
