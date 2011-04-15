@@ -121,7 +121,15 @@ else {
 		
 		//中断して始めた場合は、過去ログを更新しない
 		if ($session['phase'] == 'kekka') {
-			refresh_kaitou_table( $link );
+			$new_latest_log = refresh_kaitou_table( $link );
+		}
+		else {
+			if ( $session ) {
+				$new_latest_log = $session['latest_log'];
+			}
+			else {
+				$new_latest_log = -1;
+			}
 		}
 		
 		//セッション情報の初期化
@@ -139,6 +147,7 @@ else {
 		$session['maisuu'] = $in['maisuu'];
 		$session['change_quant'] = $in['change_quant'];
 		$session['change_amount'] = $in['change_amount'];
+		$session['latest_log'] = $new_latest_log;
 
 		$members[0] = $player_name;
 		$stock[$player_name] = '';

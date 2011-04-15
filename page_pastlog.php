@@ -4,12 +4,6 @@ require_once 'globals.php';
 require_once 'common.php';
 
 $in = array_merge( $_POST, $_GET );
-if ( isset( $in['num'] ) ) {
-	$num = $in['num'];
-}
-else {
-	$num = 0;
-}
 
 //データベースに接続
 $link = connect_db();
@@ -20,8 +14,15 @@ if ( empty( $session ) ) {
 	header('Location: ' . $g_scripturl);
 }
 
-$nextlog = $num+1;
-$prevlog = $num-1;
+if ( isset( $in['num'] ) ) {
+	$num = $in['num'];
+}
+else {
+	$num = $session['latest_log'];
+}
+
+$nextlog = $num-1;
+$prevlog = $num+1;
 $exist_next = is_exist_table($link, sprintf('%s_%d', $kaitou_table_name, $nextlog) );
 $exist_prev = is_exist_table($link, sprintf('%s_%d', $kaitou_table_name, $prevlog) );
 ?>
@@ -60,7 +61,7 @@ else {
 }
 
 if ( is_exist_table( $link, $kekka_table ) == FALSE ) {
-	error( '過去データが取得出来ませんでした。' );
+	error( 'データが存在しません。' );
 }
 $sql = "SELECT id,content,author,votes FROM $kekka_table ORDER BY votes DESC";
 $query = mysql_query( $sql, $link );

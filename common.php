@@ -110,6 +110,7 @@ function load_session_table( $link ) {
 	$words_table_name = $row['words_table_name'];
 	$members_table_name = $row['members_table_name'];
 	$kaitou_table_name = $row['kaitou_table_name'];
+	$session['latest_log'] = $row['latest_log'];
 	
 	return $session;
 }
@@ -131,7 +132,8 @@ function store_session_table( $link, $session ) {
 			change_amount int,
 			words_table_name text,
 			members_table_name text,
-			kaitou_table_name text
+			kaitou_table_name text,
+			latest_log int
 			)');
 	$query = mysql_query( $sql, $link );
 	
@@ -140,7 +142,7 @@ function store_session_table( $link, $session ) {
 	$query = mysql_query( $sql, $link );
 	
 	//セッション情報を書き込む
-	$sql = sprintf( "INSERT INTO session VALUES( '%s', '%s', '%s', %d, %d, %d, %d, %d, '%s', '%s', '%s' )",
+	$sql = sprintf( "INSERT INTO session VALUES( '%s', '%s', '%s', %d, %d, %d, %d, %d, '%s', '%s', '%s', %d )",
 	$session['leadername'],
 	$session['session_key'],
 	$session['phase'],
@@ -151,7 +153,8 @@ function store_session_table( $link, $session ) {
 	$session['change_amount'],
 	$words_table_name,
 	$members_table_name,
-	$kaitou_table_name
+	$kaitou_table_name,
+	$session['latest_log']
 	);
 	$query = mysql_query( $sql, $link );
 }
@@ -307,18 +310,22 @@ function get_yesterdaywords( $link ) {
 
 function refresh_kaitou_table( $link ) {
 	global $kaitou_table_name;
-
+	$numlogs = -1;
+	
 	if ( is_exist_table( $link, $kaitou_table_name ) ) {
 		//過去ログのファイル名をひとつずつ送る
 		for ($numlogs=0; is_exist_table($link, sprintf( "%s_%d", $kaitou_table_name, $numlogs )); $numlogs++) {}
+		/*
 		for (; $numlogs>0; $numlogs--) {
 			$oldnum = $numlogs-1;
 			$sql = sprintf( "ALTER TABLE %s_$oldnum RENAME TO %s_$numlogs", $kaitou_table_name, $kaitou_table_name );
 			$query = mysql_query( $sql, $link );
 		}
-		$sql = sprintf( "ALTER TABLE %s RENAME TO %s_0", $kaitou_table_name, $kaitou_table_name );
+		*/
+		$sql = sprintf( "ALTER TABLE %s RENAME TO %s_%d", $kaitou_table_name, $kaitou_table_name, $numlogs );
 		$query = mysql_query( $sql, $link );
 	}
+	return $numlogs;
 }
 
 function error( $msg ) {
