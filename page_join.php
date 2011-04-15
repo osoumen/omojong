@@ -3,6 +3,8 @@
 require_once 'globals.php';
 require_once 'common.php';
 
+dl('mecab.so');
+
 //$in = array_merge( $_POST, $_GET );
 
 //データベースに接続
@@ -87,6 +89,11 @@ else {
 	error("現在は参加を受け付けていません。");
 }
 
+//Twitterから単語を取得
+if ( $allow_addword == 0 ) {
+	add_word_from_twitter( $link, $words_table_name );
+}
+
 //ウェルカム通知
 if ($usenotification) {
 	commit_mention($in['username'],$notifymsg0);
@@ -102,4 +109,5 @@ mysql_close( $link );
 
 //ページを表示
 $smarty->assign( 'in', $in );
+$smarty->assign( 'allow_addword', $allow_addword );
 $smarty->display( $g_tpl_path . 'page_join.tpl' );

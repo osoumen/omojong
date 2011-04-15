@@ -19,6 +19,8 @@ $g_css_url = 'css/default.css';
 define('G_DATABASE', 'omojong');
 define('CONSUMER_KEY', 'oVHQOYjXkfrEOGEVdRosQ');
 define('CONSUMER_SECRET', '5Z0zGHDWqBshT1nWa3wcCB7fx69kH7cNExPPdHAGR8');
+define('ACCESS_TOKEN', '207520259-a5z3WtxYG807hJGT1Ulat1GUcqolTX2dUPF0oVZT');
+define('ACCESS_TOKEN_SECRET', '8c8P03bhKbOzwSnPYAxYBJZ6Hm9dscZ4Vwrffl356Pg');
 
 //mentionによる通知を使用する(1=YES 0=NO)
 $usenotification = 0;

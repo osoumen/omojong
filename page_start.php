@@ -3,6 +3,8 @@
 require_once 'globals.php';
 require_once 'common.php';
 
+dl('mecab.so');
+
 $session = array();
 $members = array();
 $stock = array();
@@ -173,6 +175,11 @@ else {
 				)', $kaitou_table_name);
 		$query = mysql_query( $sql, $link );
 		
+		//Twitterから単語を取得
+		if ( $allow_addword == 0 ) {
+			add_word_from_twitter( $link, $words_table_name );
+		}
+		
 		//ウェルカム通知
 		if ( $usenotification ) {
 			commit_mention( $player_name, $notifymsg0 );
@@ -186,6 +193,7 @@ else {
 		
 		//ページを表示
 		$smarty->assign( 'in', $in );
+		$smarty->assign( 'allow_addword', $allow_addword );
 		$smarty->display( $g_tpl_path . 'page_start_success.tpl' );
 	}
 }
