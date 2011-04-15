@@ -23,6 +23,8 @@ if ( is_login() == false ) {
 
 $totalwords = add_word_from_twitter( $link, $words_table_name );
 
+$pagetitle = '単語の追加';
+$smarty->assign( 'pagetitle', $pagetitle );
 $smarty->assign( 'totalwords', $totalwords );
 $smarty->display( $g_tpl_path . 'page_word_from_tw.tpl' );
 

@@ -90,9 +90,9 @@ else {
 }
 
 //Twitterから単語を取得
-if ( $allow_addword == 0 ) {
+//if ( $allow_addword == 0 ) {
 	add_word_from_twitter( $link, $words_table_name );
-}
+//}
 
 //ウェルカム通知
 if ($usenotification) {
@@ -108,6 +108,8 @@ store_members( $link, $members, $stock, $changerest, $change_amount );
 mysql_close( $link );
 
 //ページを表示
+$pagetitle = '参加';
+$smarty->assign( 'pagetitle', $pagetitle );
 $smarty->assign( 'in', $in );
 $smarty->assign( 'allow_addword', $allow_addword );
 $smarty->display( $g_tpl_path . 'page_join.tpl' );

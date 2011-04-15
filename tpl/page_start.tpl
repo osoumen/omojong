@@ -1,11 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html><head>
-<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
-<link rel="stylesheet" href="{$g_css_url}" type="text/css" />
-<title>Twitterおもじゃん:新しく始める</title>
-</head>
-<body>
-<center>
 {include file={$header_path}}
 <hr>
 <font color=red>{$err_str}</font><br>
@@ -13,7 +5,6 @@
 <table>
 <input type="hidden" name="mode" value="start">
 <input type="hidden" name="confirm" value="{$g_start_confirm}">
-<!--<tr><td><b>Username</b></td><td>{$in.username}</td></tr>-->
 <tr>
 <td><b>人数</b></td>
 <td><input type="text" name="ninzuu" value="{$in.ninzuu}" size=4>〜<input type="text" name="ninzuu_max" value="{$in.ninzuu_max}" size=4>人</td>
@@ -26,8 +17,4 @@
 <input type="submit" name="submit" value="始める"><br>
 </form>
 <a href="{$g_script}" target=_top>[戻る]</a>
-
-</center>
 {include file={$footer_path}}
-</body>
-</html>

@@ -44,6 +44,8 @@ if ( mb_strlen($stock[$c_username]) == 0 ) {
 
 //ページを表示
 if ( isset($in['confirm']) ) {
+	$pagetitle = '解答の終了';
+	$smarty->assign( 'pagetitle', $pagetitle );
 	$smarty->display( $g_tpl_path . 'page_giveup_confirm.tpl' );
 }
 else {
@@ -73,6 +75,8 @@ else {
 	store_session_table( $link, $session );
 	store_members( $link, $members, $stock, $changerest, $change_amount );
 
+	$pagetitle = '解答の終了';
+	$smarty->assign( 'pagetitle', $pagetitle );
 	$smarty->assign( 'c_username', $c_username );
 	$smarty->display( $g_tpl_path . 'page_giveup.tpl' );
 }

@@ -104,15 +104,17 @@ if ( isset($in['confirm']) == FALSE || $err_str != '' ) {
 		$in['change_amount'] = 8;
 	}
 	
+	$pagetitle = '新しく始める';
+	$smarty->assign( 'pagetitle', $pagetitle );
 	$smarty->assign( 'in', $in );
 	$smarty->assign( 'err_str', $err_str );
-	
 	$smarty->display( $g_tpl_path . 'page_start.tpl' );
 }
 else {
 	//入力値に問題が無いので、確認画面を表示する
 	if ( $in['confirm'] != 0 ) {
-		//$in['username'] = $player_name;
+		$pagetitle = '新しく始める';
+		$smarty->assign( 'pagetitle', $pagetitle );
 		$smarty->assign( 'in', $in );
 		$smarty->display( $g_tpl_path . 'page_start_confirm.tpl' );
 	}
@@ -167,10 +169,10 @@ else {
 				)', $words_table_name);
 		$query = mysql_query( $sql, $link );
 		//単語のリセット
-		if ( $allow_addword == 0 ) {
+		//if ( $allow_addword == 0 ) {
 			$sql = sprintf( 'TRUNCATE `%s`', $words_table_name );
 			$query = mysql_query( $sql, $link );
-		}
+		//}
 
 		$sql = sprintf( 'CREATE TABLE IF NOT EXISTS `%s` (
 				username text,
@@ -194,9 +196,9 @@ else {
 		$query = mysql_query( $sql, $link );
 		
 		//Twitterから単語を取得
-		if ( $allow_addword == 0 ) {
+		//if ( $allow_addword == 0 ) {
 			add_word_from_twitter( $link, $words_table_name );
-		}
+		//}
 		
 		//ウェルカム通知
 		if ( $usenotification ) {
@@ -210,6 +212,8 @@ else {
 		setcookie( $gameid_param_name, $session['session_key'], time() + 3600 * 24 * 75 );	//75日有効
 		
 		//ページを表示
+		$pagetitle = '新しく始める';
+		$smarty->assign( 'pagetitle', $pagetitle );
 		$smarty->assign( 'in', $in );
 		$smarty->assign( 'allow_addword', $allow_addword );
 		$smarty->display( $g_tpl_path . 'page_start_success.tpl' );

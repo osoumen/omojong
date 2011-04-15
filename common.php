@@ -355,6 +355,8 @@ function push_kaitou_table_pastlog( $link, $table_name ) {
 function error( $msg ) {
 	global $smarty;
 	global $g_tpl_path;
+	global $pagetitle;
+	$pagetitle = 'エラー';
 	$smarty->assign( 'err_msg', $msg );
 	$smarty->display( $g_tpl_path . 'page_error.tpl' );
 	exit();
@@ -363,6 +365,8 @@ function error( $msg ) {
 function message( $msg_title, $msg ) {
 	global $smarty;
 	global $g_tpl_path;
+	global $pagetitle;
+	$pagetitle = 'メッセージ';
 	$smarty->assign( 'msg_title', $msg_title );
 	$smarty->assign( 'msg', $msg );
 	$smarty->display( $g_tpl_path . 'page_message.tpl' );

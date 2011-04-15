@@ -89,6 +89,8 @@ $sentence = numlist2sentence( $anslist, $words );
 //ページを表示
 if ( isset($in['confirm']) ) {
 	//確認ページを表示
+	$pagetitle = '解答の確認';
+	$smarty->assign( 'pagetitle', $pagetitle );
 	$smarty->assign( 'in', $in );
 	$smarty->assign( 'sentence', $sentence );
 	$smarty->display( $g_tpl_path . 'page_answer_confirm.tpl' );
@@ -139,6 +141,8 @@ else {
 	store_session_table( $link, $session );
 	store_members( $link, $members, $stock, $changerest, $change_amount );
 	
+	$pagetitle = '解答の確認';
+	$smarty->assign( 'pagetitle', $pagetitle );
 	$smarty->assign( 'sentence', $sentence );
 	$smarty->display( $g_tpl_path . 'page_answer.tpl' );
 }

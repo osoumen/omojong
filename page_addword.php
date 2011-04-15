@@ -25,6 +25,8 @@ if ( isset( $in['forceadd'] ) == FALSE ) {
 	$query = mysql_query( $sql, $link );
 	$found = mysql_num_rows( $query );
 	if ( $found > 0 ) {
+		$pagetitle = '単語の追加';
+		$smarty->assign( 'pagetitle', $pagetitle );
 		$smarty->assign( 'inword', $in['word'] );
 		$smarty->display( $g_tpl_path . 'page_addword_duplicate.tpl' );
 		//データベースを切断
@@ -42,6 +44,8 @@ $query = mysql_query( $sql, $link );
 //		splice(@filedata,1,1);
 //	}
 
+$pagetitle = '単語の追加';
+$smarty->assign( 'pagetitle', $pagetitle );
 $smarty->assign( 'inword', $in['word'] );
 $smarty->display( $g_tpl_path . 'page_addword.tpl' );
 

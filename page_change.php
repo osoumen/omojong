@@ -94,6 +94,8 @@ if ( isset($in['confirm']) ) {
 		$disp_list[$ansnum] = $words[$ansnum];
 	}
 	//確認ページを表示
+	$pagetitle = '札の交換';
+	$smarty->assign( 'pagetitle', $pagetitle );
 	$smarty->assign( 'in', $in );
 	$smarty->assign( 'disp_list', $disp_list );
 	$smarty->display( $g_tpl_path . 'page_change_confirm.tpl' );
@@ -131,6 +133,8 @@ else {
 	}
 	
 	//受領ページを表示
+	$pagetitle = '札の交換';
+	$smarty->assign( 'pagetitle', $pagetitle );
 	$smarty->assign( 'in_list', $in_list );
 	$smarty->assign( 'out_list', $out_list );
 	$smarty->display( $g_tpl_path . 'page_change.tpl' );

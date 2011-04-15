@@ -26,17 +26,9 @@ $c_username = isset($_SESSION['access_token']['screen_name']) ? $_SESSION['acces
 $num = explode( '_', $kaitou_table_name );
 $num = $num[1];
 
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html><head>
-<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
-<link rel="stylesheet" href="<?php echo $g_css_url; ?>" type="text/css" />
-<title>Twitterおもじゃん:結果</title>
-</head>
-<body>
-<center>
-<?php
 //ヘッダー
+$pagetitle = '結果';
+$smarty->assign( 'pagetitle', $pagetitle );
 $smarty->display( $g_tpl_path . 'header.tpl' );
 ?>
 <hr>
@@ -111,11 +103,6 @@ if ( $allow_addword ) {
 
 //このページへのリンク
 //echo '<a href="' . $g_script . '?p=' . $session['session_key'] . '">[このページへのリンク]</a><br>';
-?>
-</center>
-<?php
+
 //フッター
 $smarty->display( $g_tpl_path . 'footer.tpl' );
-?>
-</body>
-</html>
