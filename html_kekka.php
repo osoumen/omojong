@@ -33,7 +33,7 @@ if ( $is_exist_pastlog ) {
 //参加者一覧表示
 foreach ( $members as $memb ) {
 	if ($memb === $c_username) {
-		$nametext = "<font size=+1><b>$memb</b></font>";
+		$nametext = '<span class="its_me">' . $memb . '</span>';
 	}
 	else {
 		$nametext = $memb;

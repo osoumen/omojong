@@ -1,4 +1,4 @@
-<form action="page_change.php" method="post">
+<form name="change_form" action="page_change.php" method="post">
 <p>交換したい札の番号をコンマで区切りで入力してください。</p>
 <input type="hidden" name="confirm" value="{$g_answer_confirm}">
 <input type="text" name="changelist" value="">

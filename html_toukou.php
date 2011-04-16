@@ -46,6 +46,35 @@ foreach ( $members as $memb ) {
 }
 ?>
 </table><br>
+<script type="text/javascript">
+function reset_input() {
+	document.answer_form.reset();
+	document.answer_form.answer.value = '';
+	$("#ans_input").html('');
+	return false;
+}
+function submit_input() {
+	document.answer_form.submit();
+	return false;
+}
+function input_word( word ) {
+	var word_str = String(word);
+	var ans = document.answer_form.answer.value;
+	if ( ans.length == 0 ) {
+		ans = word_str;
+	}
+	else {
+		ans = ans + ',' + word_str;
+	}
+	var ans_array = document.answer_form.answer.value.split(',');
+	var match = ans_array.indexOf(word_str);
+	if ( match == -1 ) {
+		document.answer_form.answer.value = ans;
+		$("#ans_input").load("func_confirm_ans.php", {p: <?php echo $session['session_key'];?>, answer: document.answer_form.answer.value});
+	}
+	return false;
+}
+</script>
 <?php
 if ( in_array($c_username, $members) ) {
 	//参加者である
@@ -62,6 +91,9 @@ if ( in_array($c_username, $members) ) {
 	$smarty->display( $g_tpl_path . 'html_answers.tpl' );
 	
 	if ( $stock[$c_username] !== '' ) {
+		//解答の表示
+		echo '<div id="ans_input"></div>';
+		
 		//持ち札の一覧を表示
 		$stock_array = explode( ',', $stock[$c_username] );
 		$word_array = array();
@@ -70,9 +102,6 @@ if ( in_array($c_username, $members) ) {
 		}
 		$smarty->assign( 'stock_array', $stock_array );
 		$smarty->assign( 'word_array', $word_array );
-		$smarty->display( $g_tpl_path . 'html_stocks.tpl' );
-		
-		//投稿フォームを表示
 		$smarty->display( $g_tpl_path . 'html_answer_form.tpl' );
 		
 		//交換回数が残っている
