@@ -10,13 +10,6 @@ $session = array();
 
 $in = array_merge( $_POST, $_GET );
 
-/*
-$session = load_session_table( $link );
-if ( empty( $session ) ) {
-	header('Location: ' . $g_scripturl);
-}
-*/
-
 //過去データへの投票の場合
 if ( isset($in['num']) ) {
 	$kaitou_table_name = $pastlog_table_name . '_' . $in['num'];
@@ -32,11 +25,6 @@ else {
 }
 
 //--エラーチェック--
-/*
-if ( $session['phase'] != 'kekka' && !isset($in['num']) ) {
-	error("現在投票を受け付けていません。");
-}
-*/
 if ( ctype_digit( $in['ansnum'] ) == FALSE ) {
 	error("投票は数値を指定してください。");
 }

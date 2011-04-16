@@ -24,10 +24,6 @@ if ($session['phase'] != 'sanka') {
 }
 
 //ユーザー名を照合する
-$members = array();
-$stock = array();
-$changerest = array();
-$change_amount = array();
 load_members( $link, $members, $stock, $changerest, $change_amount );
 if ( in_array($c_username, $members) == FALSE ) {
 	error( $c_username . 'さんは参加していません。' );

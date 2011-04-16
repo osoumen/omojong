@@ -1,5 +1,4 @@
 {include file={$header_path}}
-<hr>
 <h3>“{$inword}”は既にありますが追加しますか？</h3>
 <form action="$page_addword.php" method="post">
 <input type="hidden" name="word" value="{$inword}">

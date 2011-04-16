@@ -357,6 +357,7 @@ function error( $msg ) {
 	global $g_tpl_path;
 	global $pagetitle;
 	$pagetitle = 'エラー';
+	$smarty->assign( 'pagetitle', $pagetitle );
 	$smarty->assign( 'err_msg', $msg );
 	$smarty->display( $g_tpl_path . 'page_error.tpl' );
 	exit();
@@ -367,6 +368,7 @@ function message( $msg_title, $msg ) {
 	global $g_tpl_path;
 	global $pagetitle;
 	$pagetitle = 'メッセージ';
+	$smarty->assign( 'pagetitle', $pagetitle );
 	$smarty->assign( 'msg_title', $msg_title );
 	$smarty->assign( 'msg', $msg );
 	$smarty->display( $g_tpl_path . 'page_message.tpl' );
@@ -517,4 +519,9 @@ function add_word_from_twitter( $link, $words_table_name ) {
 		}
 	}
 	return $totalwords;
+}
+
+function write_urltweet( $url, $session_key ) {
+	$tweet_msg = urlencode($url . '?p=' . $session_key);
+	echo '<a href="http://twitter.com/home?status=' . $tweet_msg . '" target="_blank">[このページのURLをツイート]</a><br>';
 }

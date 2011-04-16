@@ -8,15 +8,6 @@ require_once 'common.php';
 $table_name = sprintf( '%s_0', $pastlog_table_name );
 $is_exist_pastlog = is_exist_table( $link, $table_name );
 
-$words = array();
-$totalwords = load_words_table( $link, $words );
-$todaywords = get_todaywords( $link );
-$yesterdaywords = get_yesterdaywords( $link );
-
-$members = array();
-$stock = array();
-$changerest = array();
-$change_amount = array();
 load_members( $link, $members, $stock, $changerest, $change_amount );
 
 //参加者名を取得
@@ -30,14 +21,11 @@ $num = $num[1];
 $pagetitle = '結果';
 $smarty->assign( 'pagetitle', $pagetitle );
 $smarty->display( $g_tpl_path . 'header.tpl' );
-?>
-<hr>
-<?php
+
 //過去の記録へのリンク
 if ( $is_exist_pastlog ) {
-	echo '<a href="page_pastlog.php">[過去ログ]</a><hr>';
+	echo '<a href="page_pastlog.php">[過去ログ]</a>';
 }
-//echo '<h2>結果発表</h2><br>';
 ?>
 <table border=0>
 <tr><th>参加者</th><th>解答状況</th></tr>
@@ -58,7 +46,7 @@ foreach ( $members as $memb ) {
 	}
 }
 
-echo '</table><br><a href="page_pastlog.php?num=' . $num . '">[結果を見る]</a><br><hr>';
+echo '</table><br>';
 
 //結果表示
 /*
@@ -85,24 +73,22 @@ while ( $row = mysql_fetch_array( $query, MYSQL_NUM ) ) {
 	$smarty->display( $g_tpl_path . 'html_kekka.tpl' );
 }
 */
+echo '<a href="page_pastlog.php?num=' . $num . '">[結果を見る]</a><br><hr>';
 
-if ( $is_login ) {
-	echo '<a href="page_start.php?p=' . $session['session_key'] . '">[始めからやる]</a><br><br>';
-}
-else {
-	echo '<a href="twitter_request.php">[twitterにログイン]</a><br><br>';
-}
+echo '<a href="page_start.php?p=' . $session['session_key'] . '">[始めからやる]</a><br>';
 
 if ( $allow_addword ) {
+	$words = array();
+	$totalwords = load_words_table( $link, $words );
+	$todaywords = get_todaywords( $link );
+	$yesterdaywords = get_yesterdaywords( $link );
+
 	//単語を追加フォーム
 	$smarty->assign( 'totalwords', $totalwords );
 	$smarty->assign( 'todaywords', $todaywords );
 	$smarty->assign( 'yesterdaywords', $yesterdaywords );
 	$smarty->display( $g_tpl_path . 'html_addwordform.tpl' );
 }
-
-//このページへのリンク
-//echo '<a href="' . $g_script . '?p=' . $session['session_key'] . '">[このページへのリンク]</a><br>';
 
 //フッター
 $smarty->display( $g_tpl_path . 'footer.tpl' );

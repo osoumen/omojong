@@ -24,10 +24,6 @@ if ( is_login() == false ) {
 }
 $in['username'] = $_SESSION['access_token']['screen_name'];
 
-$members = array();
-$stock = array();
-$changerest = array();
-$change_amount = array();
 load_members( $link, $members, $stock, $changerest, $change_amount );
 
 if ( in_array($in['username'], $members) ) {

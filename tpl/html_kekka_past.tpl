@@ -1,3 +1,4 @@
+<div>
 {$kaitousya}<br>
 {$date}<br>
 {$sentence}<br>
@@ -10,5 +11,4 @@
 [つぶやく]
 </a>
 -->
-<br>
-<hr>
+</div>

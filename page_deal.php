@@ -25,10 +25,6 @@ if ( $phase != 'deal' ) {
 	header('Location: ' . $g_scripturl);
 }
 
-$members = array();
-$stock = array();
-$changerest = array();
-$change_amount = array();
 load_members( $link, $members, $stock, $changerest, $change_amount );
 
 //札を全員に配る

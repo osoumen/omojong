@@ -1,7 +1,7 @@
 <?php
 
-$g_title = 'なんとか作文ゲーム';		// タイトル
-$g_script = './oj.php';				//このファイル自身（705）
+$g_title = '作文ゲーム';		// タイトル
+$g_script = './oj.php';
 
 $g_scripturl = 'http://www.benjamin-lab.com/~ojbot/oj.php';
 

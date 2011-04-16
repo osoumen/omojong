@@ -1,6 +1,7 @@
 {include file={$header_path}}
-<hr>
-<font color=red>{$err_str}</font><br>
+{if $err_str != ''}
+<p><span class="err_msg">{$err_str}</span></p>
+{/if}
 <form action="page_start.php" method="post">
 <table>
 <input type="hidden" name="mode" value="start">

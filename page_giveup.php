@@ -20,10 +20,6 @@ if ( is_login() == false ) {
 	header('Location: ' . $g_scripturl);
 }
 
-$members = array();
-$stock = array();
-$changerest = array();
-$change_amount = array();
 load_members( $link, $members, $stock, $changerest, $change_amount );
 
 $err_str = '';

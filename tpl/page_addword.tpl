@@ -1,5 +1,4 @@
 {include file={$header_path}}
-<hr>
 <h3>“{$inword}”を追加しました</h3>
 <br>
 <form action="$page_addword.php" method="post">

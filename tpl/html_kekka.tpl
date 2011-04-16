@@ -1,3 +1,4 @@
+<div>
 {$kaitousya}<br>
 {$sentence}<br>
 {$hyousuu}
@@ -9,5 +10,4 @@
 [つぶやく]
 </a>
 -->
-<br>
-<hr>
+</div>

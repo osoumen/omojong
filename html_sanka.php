@@ -8,30 +8,20 @@ require_once 'common.php';
 $table_name = sprintf( '%s_0', $pastlog_table_name );
 $is_exist_pastlog = is_exist_table( $link, $table_name );
 
-$words = array();
-$totalwords = load_words_table( $link, $words );
-$todaywords = get_todaywords( $link );
-$yesterdaywords = get_yesterdaywords( $link );
-
-$members = array();
-$stock = array();
-$changerest = array();
-$change_amount = array();
 load_members( $link, $members, $stock, $changerest, $change_amount );
 
 //参加者名を取得
 $c_username = isset($_SESSION['access_token']['screen_name']) ? $_SESSION['access_token']['screen_name'] : '';
 
 //ヘッダー
-$pagetitle = '参加募集中';
+//$pagetitle = '参加募集中';
+$pagetitle = $c_username;
 $smarty->assign( 'pagetitle', $pagetitle );
 $smarty->display( $g_tpl_path . 'header.tpl' );
-?>
-<hr>
-<?php
+
 //過去の記録へのリンク
 if ( $is_exist_pastlog ) {
-	echo '<a href="page_pastlog.php">[過去ログ]</a><hr>';
+	echo '<a href="page_pastlog.php">[過去ログ]</a>';
 }
 ?>
 <table border=0>
@@ -40,7 +30,7 @@ if ( $is_exist_pastlog ) {
 //参加者一覧表示
 foreach ( $members as $memb ) {
 	if ($memb === $c_username) {
-		$nametext = "<font size=+1><b>$memb</b></font>";
+		$nametext = '<span class="its_me">' . $memb . '</span>';
 	}
 	else {
 		$nametext = $memb;
@@ -52,7 +42,7 @@ foreach ( $members as $memb ) {
 <?php
 //残り参加人数表示
 $rest = $session['ninzuu'] - count( $members );
-echo "あと$rest 人の参加が必要です。<br>";
+echo "<p>あと$rest 人の参加が必要です。</p>";
 
 if ( in_array($c_username, $members) ) {
 	if ( $c_username !== $session['leadername'] ) {
@@ -64,14 +54,17 @@ else {
 	//参加表明フォームを表示
 	$smarty->display( $g_tpl_path . 'html_sanka_form.tpl' );
 }
-?>
-<br>
-<?php
+
 if ( $c_username == $session['leadername'] ) {
 	echo '<a href="page_start_confirm.php?p=' . $session['session_key'] . '">[始めからやる]</a><br>';
 }
 
 if ( $allow_addword ) {
+	$words = array();
+	$totalwords = load_words_table( $link, $words );
+	$todaywords = get_todaywords( $link );
+	$yesterdaywords = get_yesterdaywords( $link );
+
 	//単語を追加フォーム
 	$smarty->assign( 'totalwords', $totalwords );
 	$smarty->assign( 'todaywords', $todaywords );
@@ -80,7 +73,7 @@ if ( $allow_addword ) {
 }
 
 //このページへのリンク
-echo '<a href="' . $g_script . '?p=' . $session['session_key'] . '">[このページへのリンク]</a><br>';
+write_urltweet( $g_scripturl, $session['session_key'] );
 
 //フッター
 $smarty->display( $g_tpl_path . 'footer.tpl' );

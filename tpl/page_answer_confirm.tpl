@@ -1,5 +1,5 @@
 {include file={$header_path}}
-<hr>
+
 <b>{$sentence}</b><br><br>
 でよろしいですか？<br>
 <form action="page_answer.php" method="post">

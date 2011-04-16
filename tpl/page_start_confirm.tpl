@@ -1,6 +1,5 @@
 {include file={$header_path}}
-<hr>
-以下の条件で始めますか？<br>
+<p>以下の条件で始めますか？</p>
 <table>
 <tr><td><b>人数</b></td><td>{$in.ninzuu}〜{$in.ninzuu_max}</td></tr>
 <tr><td><b>枚数</b></td><td>{$in.maisuu}</td></tr>
