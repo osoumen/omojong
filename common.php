@@ -114,6 +114,14 @@ function load_session_table( $link ) {
 	return $session;
 }
 
+function initialize_alldata( $link ) {
+	$sql = sprintf( 'CREATE TABLE IF NOT EXISTS `global` (
+			total int,
+			latest_pastlog int
+			)');
+	$query = mysql_query( $sql, $link );
+}
+
 function store_session_table( $link, $session ) {
 	global $words_table_name;
 	global $members_table_name;
@@ -229,9 +237,6 @@ function get_availablewordlist( $link, $members, $stock, $totalwords ) {
 }
 
 function commit_mention($mlad,$inmsg) {
-	$access_token        = '207520259-a5z3WtxYG807hJGT1Ulat1GUcqolTX2dUPF0oVZT';
-	$access_token_secret = '8c8P03bhKbOzwSnPYAxYBJZ6Hm9dscZ4Vwrffl356Pg';
-	
 	// OAuthオブジェクト生成
 	$to = new TwitterOAuth(CONSUMER_KEY,CONSUMER_SECRET,ACCESS_TOKEN,ACCESS_TOKEN_SECRET);
 	

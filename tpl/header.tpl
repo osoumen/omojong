@@ -11,4 +11,5 @@
 {/if}
 </head>
 <body>
+<a href="func_logout.php">[ログアウト]</a>
 <h1>{$g_title}</h1>

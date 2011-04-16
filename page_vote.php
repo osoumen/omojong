@@ -37,10 +37,30 @@ if ( !$query ) {
 }
 
 //投票した解答を得る
-$sql = sprintf( "SELECT content FROM %s WHERE id = %d", $kaitou_table_name, $in{'ansnum'} );
+$sql = sprintf( "SELECT content,author,votes FROM %s WHERE id = %d", $kaitou_table_name, $in{'ansnum'} );
 $query = mysql_query( $sql, $link );
 while ( $row = mysql_fetch_array( $query, MYSQL_NUM ) ) {
 	$sentence = $row[0];
+	$author = $row[1];
+	$votes = $row[2];
+}
+
+//HOT機能(一定数の得票数の作品を自動でツイートする)
+if ( $votes == $g_hot_votes ) {
+	$pre = 'ＨＯＴ：';
+	$host  = $_SERVER['HTTP_HOST'];
+	$uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+	$extra = 'page_pastlog.php?num=' . $in['num'];
+	$url = " http://$host$uri/$extra";
+	
+	//合計文字数140文字をオーバーしていたら本文を縮める
+	$max_len = 140 - mb_strlen( $pre . $url );
+	$sentence = mb_strimwidth( $sentence, 0, $max_len, '…' );
+	$msg = $pre . $sentence . $url;
+	
+	// OAuthオブジェクト生成
+	$to = new TwitterOAuth(CONSUMER_KEY,CONSUMER_SECRET,ACCESS_TOKEN,ACCESS_TOKEN_SECRET);
+	$req = $to->OAuthRequest("https://twitter.com/statuses/update.xml","POST",array("status"=>$msg));
 }
 
 //データベースを切断

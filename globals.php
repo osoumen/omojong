@@ -13,6 +13,8 @@ $g_giveup_confirm = 1;	//投了の確認画面を表示する？(1=YES 0=NO)
 
 $g_maxwords = 0;			//保持する単語の最大数　超えると古いものから消えていく　０だと無制限
 
+$g_hot_votes = 5;		//投票がこの数を超えたらtweetする
+
 //スタイルシートの設定
 $g_css_url = 'css/default.css';
 
