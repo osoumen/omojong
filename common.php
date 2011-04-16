@@ -185,13 +185,10 @@ function load_members( $link, &$members, &$stock, &$changerest, &$change_amount 
 }
 
 function numlist2sentence( $numlist, $words ) {
-//	if ( count($words) == 0 ) {
-//		load_words_table();
-//	}
 	$listwords = array();
 	foreach ($numlist as $num) {
 		$sent = $words[$num];
-		array_push( $listwords, $sent );
+		$listwords[] = $sent;
 	}
 	return implode(" ", $listwords);
 }
