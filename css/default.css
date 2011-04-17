@@ -79,32 +79,51 @@ h3 {
 	font-weight: normal;
 	text-decoration: none;
 	
-	border-radius: 2px;		/* CSS3 */
-	-moz-border-radius: 2px;	 /* Firefox */
-	-webkit-border-radius: 2px; /* Safari,Chrome */
-
-	border: 1px #000000 solid;	  /* 枠線の装飾 */
+	border: 1px #aaaaaa solid;	  /* 枠線の装飾 */
 	background-color: #FFFFFF;	/* 背景色 */
 	padding: 2px;
-	margin-bottom: 2px;
+	margin-bottom: 10px;
 	}
 
 #ans_input {
 	font-size: 1.5em;
 	font-weight: bold;
-	height: 64;
+	line-height: 31px;
+	min-height: 32px;
 	
-	border-radius: 5px;		/* CSS3 */
-	-moz-border-radius: 5px;	 /* Firefox */
-	-webkit-border-radius: 5px; /* Safari,Chrome */
+	border-radius: 8px;		/* CSS3 */
+	-moz-border-radius: 8px;	 /* Firefox */
+	-webkit-border-radius: 8px; /* Safari,Chrome */
 
-	border: 2px #000000 solid;	  /* 枠線の装飾 */
+	border: 3px #aaaaaa solid;	  /* 枠線の装飾 */
 	background-color: #FFFFFF;	/* 背景色 */
 	padding: 10px;
 	margin-bottom: 10px;
-
 	}
 
+.change_word {
+	color: #000000;
+	font-size: 1.1em;
+	font-weight: normal;
+	text-decoration: none;
+	
+	border: 1px #aaaaaa solid;	  /* 枠線の装飾 */
+	background-color: #FFFFFF;	/* 背景色 */
+	padding: 2px;
+	margin-bottom: 10px;
+	}
+
+#change_input {
+	font-size: 1.0em;
+	line-height: 16px;
+	min-height: 16px;
+	
+	border: 2px #dddddd solid;	  /* 枠線の装飾 */
+	background-color: #FFFFFF;	/* 背景色 */
+	padding: 8px;
+	margin-bottom: 5px;
+	}
+	
 .clearfix:after {
 	content: ".";
 	display: block;

@@ -137,10 +137,11 @@ else {
 	store_session_table( $link, $session );
 	store_members( $link, $members, $stock, $changerest, $change_amount );
 	
-	$pagetitle = '解答の確認';
-	$smarty->assign( 'pagetitle', $pagetitle );
-	$smarty->assign( 'sentence', $sentence );
-	$smarty->display( $g_tpl_path . 'page_answer.tpl' );
+	header('Location: ' . $g_scripturl);
+	//$pagetitle = '解答の確認';
+	//$smarty->assign( 'pagetitle', $pagetitle );
+	//$smarty->assign( 'sentence', $sentence );
+	//$smarty->display( $g_tpl_path . 'page_answer.tpl' );
 }
 
 //データベースを切断

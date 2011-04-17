@@ -447,6 +447,7 @@ function add_word_from_twitter( $link, $words_table_name ) {
 				$feature[0] == '動詞' ||
 				$feature[0] == '形容詞' ||
 				$feature[0] == '接頭詞' ||
+				(($feature[0] == '助詞')&&(rand(0,5)>0)) ||
 				$feature[0] == 'BOS/EOS'
 				)
 			{
@@ -473,7 +474,7 @@ function add_word_from_twitter( $link, $words_table_name ) {
 				}
 				$continued_word = $continued_word . $surface;
 			}
-			elseif ( $feature[0] == '助詞' || $feature[0] == '助動詞' )
+			elseif ( $feature[0] == '助動詞' )
 			{
 				//-切らない-
 				//助詞,助動詞

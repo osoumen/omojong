@@ -1,1 +1,0 @@
-<a href="page_giveup.php?confirm={$g_giveup_confirm}">[解答を終了する]</a><br>

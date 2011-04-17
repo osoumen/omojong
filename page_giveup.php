@@ -71,10 +71,11 @@ else {
 	store_session_table( $link, $session );
 	store_members( $link, $members, $stock, $changerest, $change_amount );
 
-	$pagetitle = '解答の終了';
-	$smarty->assign( 'pagetitle', $pagetitle );
-	$smarty->assign( 'c_username', $c_username );
-	$smarty->display( $g_tpl_path . 'page_giveup.tpl' );
+	header('Location: ' . $g_scripturl);
+	//$pagetitle = '解答の終了';
+	//$smarty->assign( 'pagetitle', $pagetitle );
+	//$smarty->assign( 'c_username', $c_username );
+	//$smarty->display( $g_tpl_path . 'page_giveup.tpl' );
 }
 
 //データベースを切断

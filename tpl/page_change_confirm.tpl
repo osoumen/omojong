@@ -1,7 +1,7 @@
 {include file={$header_path}}
 
 {foreach from="$disp_list" item="value" key="key"}
-{$key}：{$value}<br>
+『{$value}』<br>
 {/foreach}
 <p>を捨ててもよろしいですか？</p>
 <form action="page_change.php" method="post">

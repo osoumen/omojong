@@ -48,16 +48,17 @@ foreach ( $members as $memb ) {
 </table><br>
 <script type="text/javascript">
 function reset_input() {
-	document.answer_form.reset();
 	document.answer_form.answer.value = '';
-	$("#ans_input").html('');
+	$("#ans_input").empty();
 	return false;
 }
 function submit_input() {
-	document.answer_form.submit();
+	if ( document.answer_form.answer.value.length > 0 ) {
+		document.answer_form.submit();
+	}
 	return false;
 }
-function input_word( word ) {
+function input_word( word,scr_word ) {
 	var word_str = String(word);
 	var ans = document.answer_form.answer.value;
 	if ( ans.length == 0 ) {
@@ -65,12 +66,42 @@ function input_word( word ) {
 	}
 	else {
 		ans = ans + ',' + word_str;
+		scr_word = ' ' + scr_word;
 	}
 	var ans_array = document.answer_form.answer.value.split(',');
 	var match = ans_array.indexOf(word_str);
 	if ( match == -1 ) {
+		$("#ans_input").append(scr_word);
 		document.answer_form.answer.value = ans;
-		$("#ans_input").load("func_confirm_ans.php", {p: <?php echo $session['session_key'];?>, answer: document.answer_form.answer.value});
+	}
+	return false;
+}
+function reset_change() {
+	document.change_form.changelist.value = '';
+	$("#change_input").empty();
+	return false;
+}
+function submit_change() {
+	if ( document.change_form.changelist.value.length > 0 ) {
+		document.change_form.submit();
+	}
+	return false;
+}
+function input_changeword( word,scr_word ) {
+	var word_str = String(word);
+	var change = document.change_form.changelist.value;
+	if ( change.length == 0 ) {
+		change = word_str;
+	}
+	else {
+		change = change + ',' + word_str;
+	}
+	scr_word = '<span class="change_word">' + scr_word + '</div>';
+	var change_array = document.change_form.changelist.value.split(',');
+	var match = change_array.indexOf(word_str);
+	if ( match == -1 ) {
+		$("#change_input").append(scr_word);
+		document.change_form.changelist.value = change;
 	}
 	return false;
 }
@@ -91,9 +122,6 @@ if ( in_array($c_username, $members) ) {
 	$smarty->display( $g_tpl_path . 'html_answers.tpl' );
 	
 	if ( $stock[$c_username] !== '' ) {
-		//解答の表示
-		echo '<div id="ans_input"></div>';
-		
 		//持ち札の一覧を表示
 		$stock_array = explode( ',', $stock[$c_username] );
 		$word_array = array();
@@ -111,8 +139,8 @@ if ( in_array($c_username, $members) ) {
 			$smarty->display( $g_tpl_path . 'html_change_form.tpl' );
 		}
 		
-		//解答終了ボタンを表示
-		$smarty->display( $g_tpl_path . 'html_giveup_button.tpl' );
+		//解答終了ボタン
+		echo '<a href="page_giveup.php?confirm=' . $g_giveup_confirm . '">[解答を終了する]</a><br>';
 	}
 	else {
 		echo "<p>$c_username さんはもう解答できません。</p>";

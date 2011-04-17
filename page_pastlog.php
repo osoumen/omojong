@@ -36,7 +36,6 @@ $pagetitle = '過去ログ';
 $smarty->assign( 'pagetitle', $pagetitle );
 $smarty->display( $g_tpl_path . 'header.tpl' );
 ?>
-<hr>
 <?php
 if ( $exist_next ) {
 	echo '<a href="page_pastlog.php?num=' . $nextlog.'">[←もっと古い記録] </a>';
@@ -46,7 +45,6 @@ if ( $exist_prev && ($prevlog >= 0) ) {
 }
 ?>
 <br>
-<hr>
 <?php
 //結果表示
 $kekka_table = sprintf( "%s_%d", $pastlog_table_name, $num );
