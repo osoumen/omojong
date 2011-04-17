@@ -38,9 +38,6 @@ if ( ($session['phase'] == 'sanka' || $session['phase'] == 'toukou') && $player_
 if ( isset($in['confirm']) ) {
 	$totalwords = load_words_table( $link, $words );
 	
-//	elseif ($in['username'] == '') {
-//		$err_str = '名前を入力してください。';
-//	}
 	if ($in['ninzuu'] == '') {
 		$err_str = '人数のパラメータがありません。';
 	}
@@ -74,9 +71,6 @@ if ( isset($in['confirm']) ) {
 	elseif ($in['change_amount'] < 0) {
 		$err_str = '交換可能枚数の数値が不正です。';
 	}
-//	elseif ($totalwords < $in['ninzuu']*$in['maisuu']) {
-//		$err_str = '札が足りません。';
-//	}
 	if ($in['ninzuu_max'] == '') {
 		$in['ninzuu_max'] = $in['ninzuu'];
 	}
@@ -120,21 +114,6 @@ else {
 	}
 	else {
 		//確認画面でOKしたので、次の状態に遷移する
-		
-		//中断して始めた場合は、過去ログを更新しない
-		/*
-		if ($session['phase'] == 'kekka') {
-			$new_latest_log = refresh_kaitou_table( $link );
-		}
-		else {
-			if ( $session ) {
-				$new_latest_log = $session['latest_log'];
-			}
-			else {
-				$new_latest_log = -1;
-			}
-		}
-		*/
 		
 		//セッション情報の初期化
 		if ( $session ) {
@@ -227,6 +206,3 @@ else {
 		$smarty->display( $g_tpl_path . 'page_start_success.tpl' );
 	}
 }
-
-//データベースを切断
-mysql_close( $link );

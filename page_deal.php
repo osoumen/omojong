@@ -44,8 +44,5 @@ $session['phase'] = $phase;
 store_session_table( $link, $session );
 store_members( $link, $members, $stock, $changerest, $change_amount );
 
-//データベースを切断
-mysql_close( $link );
-
 //topへ飛ぶ
 header('Location: ' . $g_scripturl);

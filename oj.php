@@ -57,11 +57,9 @@ if ( $is_login ) {
 	switch ( $phase ) {
 		case 'sanka':
 			include 'html_sanka.php';
-			mysql_close( $link );	//データベースを切断
 			break;
 			
 		case 'deal':
-			mysql_close( $link );	//データベースを切断
 			//札を配るページへリダイレクト
 			$host  = $_SERVER['HTTP_HOST'];
 			$uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
@@ -72,17 +70,14 @@ if ( $is_login ) {
 		
 		case 'toukou':
 			include 'html_toukou.php';
-			mysql_close( $link );	//データベースを切断
 			break;
 			
 		case 'kekka':
 			include 'html_kekka.php';
-			mysql_close( $link );	//データベースを切断
 			break;
 		
 		case 'login':
 		default:
-			mysql_close( $link );	//データベースを切断
 			//新規開始ページへリダイレクト
 			$host  = $_SERVER['HTTP_HOST'];
 			$uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
@@ -95,5 +90,4 @@ if ( $is_login ) {
 else {
 	//twitterログインページを表示
 	include 'html_login.php';
-	mysql_close( $link );	//データベースを切断
 }

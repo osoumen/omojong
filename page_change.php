@@ -135,6 +135,3 @@ else {
 	$smarty->assign( 'out_list', $out_list );
 	$smarty->display( $g_tpl_path . 'page_change.tpl' );
 }
-
-//データベースを切断
-mysql_close( $link );

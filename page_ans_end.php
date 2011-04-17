@@ -40,8 +40,6 @@ foreach ( $members as $memb ) {
 	}
 }
 
-
-
 //ページを表示
 $pagetitle = 'メッセージの送信';
 $smarty->assign( 'pagetitle', $pagetitle );

@@ -63,9 +63,6 @@ if ( $votes == $g_hot_votes ) {
 	$req = $to->OAuthRequest("https://twitter.com/statuses/update.xml","POST",array("status"=>$msg));
 }
 
-//データベースを切断
-mysql_close( $link );
-
 $pagetitle = '参加';
 $smarty->assign( 'pagetitle', $pagetitle );
 $smarty->display( 'tpl/header.tpl' );

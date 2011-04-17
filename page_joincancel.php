@@ -38,7 +38,4 @@ if ($c_username == $session['leadername']) {
 $sql = sprintf( "DELETE FROM %s WHERE username = '%s';", $members_table_name, $c_username );
 $query = mysql_query( $sql, $link );
 
-//データベースを切断
-mysql_close( $link );
-
 message( '参加取り消し', $c_username . 'さんの参加を取り消しました。' );

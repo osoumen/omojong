@@ -29,9 +29,7 @@ if ( isset( $in['forceadd'] ) == FALSE ) {
 		$smarty->assign( 'pagetitle', $pagetitle );
 		$smarty->assign( 'inword', $in['word'] );
 		$smarty->display( $g_tpl_path . 'page_addword_duplicate.tpl' );
-		//データベースを切断
-		mysql_close( $link );
-		exit();
+		exit;
 	}
 }
 
@@ -49,5 +47,3 @@ $smarty->assign( 'pagetitle', $pagetitle );
 $smarty->assign( 'inword', $in['word'] );
 $smarty->display( $g_tpl_path . 'page_addword.tpl' );
 
-//データベースを切断
-mysql_close( $link );
