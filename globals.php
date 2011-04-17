@@ -1,6 +1,6 @@
 <?php
 
-$g_title = '作文ゲーム';		// タイトル
+$g_title = '作文ゲーム(仮)';		// タイトル
 $g_script = './oj.php';
 
 $g_scripturl = 'http://www.benjamin-lab.com/~ojbot/oj.php';
@@ -21,24 +21,29 @@ $g_css_url = 'css/default.css';
 define('G_DATABASE', 'omojong');
 define('CONSUMER_KEY', 'oVHQOYjXkfrEOGEVdRosQ');
 define('CONSUMER_SECRET', '5Z0zGHDWqBshT1nWa3wcCB7fx69kH7cNExPPdHAGR8');
+//アプリアカウントのアクセストークン
 define('ACCESS_TOKEN', '207520259-a5z3WtxYG807hJGT1Ulat1GUcqolTX2dUPF0oVZT');
 define('ACCESS_TOKEN_SECRET', '8c8P03bhKbOzwSnPYAxYBJZ6Hm9dscZ4Vwrffl356Pg');
 
 //mentionによる通知を使用する(1=YES 0=NO)
-$usenotification = 0;
+$usenotification0 = 0;	//参加時
+$usenotification1 = 1;	//最低人数に達した時
+$usenotification2 = 1;	//全員が解答を終えた時
+
+$use_useraccount_for_mension = 1;	//通知のときに最後の人のアカウントを使用する
 
 //Twitter以外の単語追加をありにするか
 //1にすると、スタート時に単語がリセットされない
 $allow_addword = 0;
 
 //参加したときの通知の内容
-$notifymsg0 = "ご参加ありがとうございます！まだまだ参加受付中です。 ($g_title $g_scripturl)";
+$notifymsg0 = ' ご参加ありがとうございます！まだまだ参加受付中です。 ' . $g_scripturl . '?p=';
 
 //参加人数が集まったときの通知の内容
-$notifymsg1 = "参加人数が集まりました。解答受付中です！ ($g_title $g_scripturl)";
+$notifymsg1 = ' 人数が集まりました。解答できます！ ' . $g_scripturl . '?p=';
 
 //解答が終わったときの通知の内容
-$notifymsg2 = "解答が出揃いました。結果を見られます！ ($g_title $g_scripturl)";
+$notifymsg2 = ' 解答が出揃いました。結果を見られます！ ' . $g_scripturl . '?p=';
 
 //Smarty関係
 define('SMARTY_DIR', '/usr/local/lib/smarty/');

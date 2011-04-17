@@ -201,8 +201,16 @@ else {
 		//}
 		
 		//ウェルカム通知
-		if ( $usenotification ) {
-			commit_mention( $player_name, $notifymsg0 );
+		if ( $usenotification0 ) {
+			if ( $use_useraccount_for_mension ) {
+				$error = commit_mention( $player_name, $notifymsg0 . $session['session_key'], $_SESSION['access_token']['oauth_token'],$_SESSION['access_token']['oauth_token_secret']);
+			}
+			else {
+				$error = commit_mention( $player_name, $notifymsg0 . $session['session_key'] );
+			}
+			if ( $error ) {
+				error('Twitterのエラーのため、発言出来ませんでした。('.$error.')');
+			}
 		}
 		$session['phase'] = 'sanka';
 		store_session_table( $link, $session );

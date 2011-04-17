@@ -124,6 +124,15 @@ h3 {
 	margin-bottom: 5px;
 	}
 	
+.tweet_example {
+	border-radius: 16px;		/* CSS3 */
+	-moz-border-radius: 16px;	 /* Firefox */
+	-webkit-border-radius: 16px; /* Safari,Chrome */
+	border: 1px #ff8888 dashed;	  /* 枠線の装飾 */
+	padding: 2px;
+	margin-bottom: 10px;
+	}
+
 .clearfix:after {
 	content: ".";
 	display: block;

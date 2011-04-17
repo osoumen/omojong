@@ -233,14 +233,19 @@ function get_availablewordlist( $link, $members, $stock, $totalwords ) {
 	return $wordnumber;
 }
 
-function commit_mention($mlad,$inmsg) {
+function commit_mention($mlad,$inmsg,$access_token=ACCESS_TOKEN,$access_token_secret=ACCESS_TOKEN_SECRET) {
+	$error = '';
 	// OAuthオブジェクト生成
-	$to = new TwitterOAuth(CONSUMER_KEY,CONSUMER_SECRET,ACCESS_TOKEN,ACCESS_TOKEN_SECRET);
+	$to = new TwitterOAuth(CONSUMER_KEY,CONSUMER_SECRET,$access_token,$access_token_secret);
 	
 	// 投稿
-	$notify_msg = "\@$mlad $inmsg";	
-	$req = $to->OAuthRequest("https://twitter.com/statuses/update.xml","POST",array("status"=>$notify_msg));	
-	return $req;
+	$notify_msg = '@' . $mlad . $inmsg;	
+	$req = $to->OAuthRequest("https://twitter.com/statuses/update.xml","POST",array("status"=>$notify_msg));
+	$xml = simplexml_load_string($req);
+	if ( isset( $xml->error ) ) {
+		$error = $xml->error;
+	}
+	return $error;
 }
 /*
 function is_member($name) {

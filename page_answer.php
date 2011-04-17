@@ -82,6 +82,8 @@ foreach ( $anslist as $ansnum ) {
 
 $sentence = numlist2sentence( $anslist, $words );
 
+$is_last = '';
+
 //ページを表示
 if ( isset($in['confirm']) ) {
 	//確認ページを表示
@@ -123,12 +125,9 @@ else {
 	}
 	if ( $remain == 0 ) {
 		$session['phase'] = 'kekka';
-		if ( $usenotification ) {
-			foreach ( $members as $memb ) {
-				if ( $memb !== $c_username ) {
-					commit_mention( $memb, $notifymsg2 );
-				}
-			}
+		if ( $usenotification2 ) {
+			$is_last = 1;
+			$_SESSION['is_last'] = 1;
 		}
 		//解答をログへ移動
 		$table_name = push_kaitou_table_pastlog( $link, $kaitou_table_name );
@@ -137,12 +136,15 @@ else {
 	store_session_table( $link, $session );
 	store_members( $link, $members, $stock, $changerest, $change_amount );
 	
-	header('Location: ' . $g_scripturl);
-	//$pagetitle = '解答の確認';
-	//$smarty->assign( 'pagetitle', $pagetitle );
-	//$smarty->assign( 'sentence', $sentence );
-	//$smarty->display( $g_tpl_path . 'page_answer.tpl' );
+	if ( $is_last ) {
+		$pagetitle = '解答の確認';
+		$smarty->assign( 'pagetitle', $pagetitle );
+		$smarty->assign( 'sentence', $sentence );
+		$twmsg = $notifymsg2 . $session['session_key'];
+		$smarty->assign( 'twmsg', $twmsg );
+		$smarty->display( $g_tpl_path . 'page_answer.tpl' );
+	}
+	else {
+		header('Location: ' . $g_scripturl);
+	}
 }
-
-//データベースを切断
-mysql_close( $link );

@@ -30,6 +30,8 @@ if ( in_array($in['username'], $members) ) {
 	error("既に参加しています。");
 }
 
+$is_last = '';
+
 if ($phase == 'sanka') {
 	//メンバーに追加
 	array_push( $members, $in['username'] );
@@ -38,27 +40,14 @@ if ($phase == 'sanka') {
 	$change_amount[$in['username']] = $session['change_amount'];
 	
 	//通常の参加
-	//人数が集まったなら投稿モードへ移行
+	//人数が集まったなら札配りモードへ移行、その後投稿モードへ移行
 	if ( count($members) >= $session['ninzuu'] ) {
-	/*
-		//札を全員に配る
-		$words = array();
-		$totalwords = load_words_table( $link, $words );
-		
-		$wordnumber = get_availablewordlist( $link, $members, $stock, $totalwords );
-		//札を配る
-		foreach ($members as $memb) {
-			$stock[$memb] = implode(',', array_splice( $wordnumber,0, $session['maisuu'] ) );
-		}
-	*/
 		$phase = 'deal';
+		
 		//人数集まりましたmentionを投げる
-		if ($usenotification) {
-			foreach ( $members as $memb ) {
-				if ( $memb != $in['username'] ) {
-					commit_mention( $memb, $notifymsg1 );
-				}
-			}
+		if ($usenotification1) {
+			$is_last = 1;
+			$_SESSION['is_last'] = 1;
 		}
 	}
 }
@@ -91,8 +80,16 @@ else {
 //}
 
 //ウェルカム通知
-if ($usenotification) {
-	commit_mention($in['username'],$notifymsg0);
+if ($usenotification0) {
+	if ( $use_useraccount_for_mension ) {
+		$error　=　commit_mention( $in['username'], $notifymsg0 . $session['session_key'], $_SESSION['access_token']['oauth_token'],$_SESSION['access_token']['oauth_token_secret']);
+	}
+	else {
+		$error　=　commit_mention( $in['username'], $notifymsg0 . $session['session_key'] );
+	}
+	if ( $error ) {
+		error('Twitterのエラーのため、発言出来ませんでした。('.$error.')');
+	}
 }
 
 //セッション情報をストア
@@ -100,12 +97,14 @@ $session['phase'] = $phase;
 store_session_table( $link, $session );
 store_members( $link, $members, $stock, $changerest, $change_amount );
 
-//データベースを切断
-mysql_close( $link );
-
-//ページを表示
-$pagetitle = '参加';
-$smarty->assign( 'pagetitle', $pagetitle );
-$smarty->assign( 'in', $in );
-$smarty->assign( 'allow_addword', $allow_addword );
-$smarty->display( $g_tpl_path . 'page_join.tpl' );
+if ( $is_last ) {
+	//ページを表示
+	$pagetitle = '参加';
+	$smarty->assign( 'pagetitle', $pagetitle );
+	$twmsg = $notifymsg1 . $session['session_key'];
+	$smarty->assign( 'twmsg', $twmsg );
+	$smarty->display( $g_tpl_path . 'page_join.tpl' );
+}
+else {
+	header('Location: ' . $g_scripturl);
+}
