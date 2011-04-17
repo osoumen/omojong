@@ -29,10 +29,10 @@ load_members( $link, $members, $stock, $changerest, $change_amount );
 foreach ( $members as $memb ) {
 	if ( $memb != $myname ) {
 		if ( $use_useraccount_for_mension ) {
-			$error = commit_mention( $memb, $notifymsg1 . $session['session_key'], $_SESSION['access_token']['oauth_token'],$_SESSION['access_token']['oauth_token_secret']);
+			$error = commit_mention( $memb, $notifymsg1 . $session['session_key'] . $hash_tag, $_SESSION['access_token']['oauth_token'],$_SESSION['access_token']['oauth_token_secret']);
 		}
 		else {
-			$error = commit_mention( $memb, $notifymsg1 . $session['session_key'] );
+			$error = commit_mention( $memb, $notifymsg1 . $session['session_key'] . $hash_tag );
 		}
 	}
 	if ( $error ) {

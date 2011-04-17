@@ -80,6 +80,7 @@ else {
 //}
 
 //ウェルカム通知
+/*
 if ($usenotification0) {
 	if ( $use_useraccount_for_mension ) {
 		$error　=　commit_mention( $in['username'], $notifymsg0 . $session['session_key'], $_SESSION['access_token']['oauth_token'],$_SESSION['access_token']['oauth_token_secret']);
@@ -91,7 +92,7 @@ if ($usenotification0) {
 		error('Twitterのエラーのため、発言出来ませんでした。('.$error.')');
 	}
 }
-
+*/
 //セッション情報をストア
 $session['phase'] = $phase;
 store_session_table( $link, $session );
@@ -101,7 +102,7 @@ if ( $is_last ) {
 	//ページを表示
 	$pagetitle = '参加';
 	$smarty->assign( 'pagetitle', $pagetitle );
-	$twmsg = $notifymsg1 . $session['session_key'];
+	$twmsg = $notifymsg1 . $session['session_key'] . $hash_tag;
 	$smarty->assign( 'twmsg', $twmsg );
 	$smarty->display( $g_tpl_path . 'page_join.tpl' );
 }

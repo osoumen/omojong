@@ -25,8 +25,8 @@ define('CONSUMER_SECRET', '5Z0zGHDWqBshT1nWa3wcCB7fx69kH7cNExPPdHAGR8');
 define('ACCESS_TOKEN', '207520259-a5z3WtxYG807hJGT1Ulat1GUcqolTX2dUPF0oVZT');
 define('ACCESS_TOKEN_SECRET', '8c8P03bhKbOzwSnPYAxYBJZ6Hm9dscZ4Vwrffl356Pg');
 
-//mentionによる通知を使用する(1=YES 0=NO)
-$usenotification0 = 0;	//参加時
+//mensionによる通知を使用する(1=YES 0=NO)
+//$usenotification0 = 0;	//参加時
 $usenotification1 = 1;	//最低人数に達した時
 $usenotification2 = 1;	//全員が解答を終えた時
 
@@ -36,8 +36,11 @@ $use_useraccount_for_mension = 1;	//通知のときに最後の人のアカウ�
 //1にすると、スタート時に単語がリセットされない
 $allow_addword = 0;
 
+//ハッシュタグ
+$hash_tag = ' というテスト';
+
 //参加したときの通知の内容
-$notifymsg0 = ' ご参加ありがとうございます！まだまだ参加受付中です。 ' . $g_scripturl . '?p=';
+//$notifymsg0 = ' ご参加ありがとうございます！まだまだ参加受付中です。 ' . $g_scripturl . '?p=';
 
 //参加人数が集まったときの通知の内容
 $notifymsg1 = ' 人数が集まりました。解答できます！ ' . $g_scripturl . '?p=';

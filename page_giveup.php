@@ -74,7 +74,7 @@ else {
 		$pagetitle = '解答の終了';
 		$smarty->assign( 'pagetitle', $pagetitle );
 		$smarty->assign( 'c_username', $c_username );
-		$twmsg = $notifymsg2 . $session['session_key'];
+		$twmsg = $notifymsg2 . $session['session_key'] . $hash_tag;
 		$smarty->assign( 'twmsg', $twmsg );
 		$smarty->display( $g_tpl_path . 'page_giveup.tpl' );
 	}
