@@ -405,6 +405,11 @@ function add_word_from_twitter( $link, $words_table_name ) {
 	$req = $to->OAuthRequest("https://twitter.com/statuses/user_timeline.xml","GET", array('screen_name' => $_SESSION['access_token']['screen_name'], 'count' => $tw_count));
 	$xml = simplexml_load_string($req);
 	
+	if ( isset( $xml->error ) ) {
+		$error = $xml->error;
+		return 0;
+	}
+	
 	$stored_words = array();
 	
 	//取得発言を解析し、単語抽出
