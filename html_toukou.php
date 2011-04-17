@@ -47,6 +47,17 @@ foreach ( $members as $memb ) {
 ?>
 </table><br>
 <script type="text/javascript">
+if(!Array.indexOf) {
+	Array.prototype.indexOf = function(o)
+	{
+		for(var i in this) {
+			if(this[i] == o) {
+			return i;
+			}
+		}
+		return -1;
+	}
+}
 function reset_input() {
 	document.answer_form.answer.value = '';
 	$("#ans_input").empty();
@@ -61,18 +72,22 @@ function submit_input() {
 function input_word( word,scr_word ) {
 	var word_str = String(word);
 	var ans = document.answer_form.answer.value;
+	var update = true;
 	if ( ans.length == 0 ) {
 		ans = word_str;
 	}
 	else {
 		ans = ans + ',' + word_str;
 		scr_word = ' ' + scr_word;
+		var ans_array = document.answer_form.answer.value.split(',');
+		var match = ans_array.indexOf(word_str);
+		if ( match > -1 ) {
+			update = false;
+		}
 	}
-	var ans_array = document.answer_form.answer.value.split(',');
-	var match = ans_array.indexOf(word_str);
-	if ( match == -1 ) {
-		$("#ans_input").append(scr_word);
+	if ( update ) {
 		document.answer_form.answer.value = ans;
+		$("#ans_input").append(scr_word);
 	}
 	return false;
 }
@@ -90,18 +105,22 @@ function submit_change() {
 function input_changeword( word,scr_word ) {
 	var word_str = String(word);
 	var change = document.change_form.changelist.value;
+	var update = true;
 	if ( change.length == 0 ) {
 		change = word_str;
 	}
 	else {
 		change = change + ',' + word_str;
+		var change_array = document.change_form.changelist.value.split(',');
+		var match = change_array.indexOf(word_str);
+		if ( match > -1 ) {
+			update = false;
+		}
 	}
-	scr_word = '<span class="change_word">' + scr_word + '</div>';
-	var change_array = document.change_form.changelist.value.split(',');
-	var match = change_array.indexOf(word_str);
-	if ( match == -1 ) {
-		$("#change_input").append(scr_word);
+	if ( update ) {
 		document.change_form.changelist.value = change;
+		scr_word = '<span class="change_word">' + scr_word + '</span>';
+		$("#change_input").append(scr_word);
 	}
 	return false;
 }
