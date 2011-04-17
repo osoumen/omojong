@@ -73,7 +73,7 @@ while ( $row = mysql_fetch_array( $query, MYSQL_NUM ) ) {
 	$smarty->display( $g_tpl_path . 'html_kekka.tpl' );
 }
 */
-echo '<a href="page_pastlog.php?num=' . $num . '">[結果を見る]</a><br><hr>';
+echo '<a href="page_pastlog.php?num=' . $num . '">[結果を見る]</a><br>';
 
 echo '<a href="page_start.php?p=' . $session['session_key'] . '">[始めからやる]</a><br>';
 
