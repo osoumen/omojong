@@ -2,7 +2,8 @@ body {
 	font-size: 0.9em;
 	font-family: "メイリオ","Arial";
 	color: #333;
-	margin: 0px; }
+	margin: 0px;
+}
  
 p {
 	margin-top: 5px;
@@ -38,7 +39,7 @@ div {
 	padding: 0; }
  
 a {
-	color: #00C2FC;
+	color: #00829C;
 	text-decoration: none;
 	font-weight: bold; 
 	}
@@ -123,7 +124,39 @@ h3 {
 	padding: 8px;
 	margin-bottom: 5px;
 	}
+
+.pastlog_content {
+	border-radius: 8px;		/* CSS3 */
+	-moz-border-radius: 8px;	 /* Firefox */
+	-webkit-border-radius: 8px; /* Safari,Chrome */
 	
+	border: 3px #aaaaaa solid;	  /* 枠線の装飾 */
+	background-color: #FFFFFF;	/* 背景色 */
+	padding: 10px;
+	margin-left: 20%;
+	margin-right: 20%;
+	margin-bottom: 10px;
+	margin-top: 10px;
+	min-width: 300px;
+}
+
+.creater_name {
+	font-size: 1.0em;
+	}
+
+.ans_present {
+	font-size: 1.5em;
+	font-weight: bold;
+	}
+
+.date_present {
+	font-size: 0.9em;
+	}
+
+.like_btn {
+	font-size: 0.9em;
+	}
+
 .tweet_example {
 	border-radius: 16px;		/* CSS3 */
 	-moz-border-radius: 16px;	 /* Firefox */
