@@ -19,16 +19,11 @@ $pagetitle = $c_username;
 $smarty->assign( 'pagetitle', $pagetitle );
 $smarty->display( $g_tpl_path . 'header.tpl' );
 
-//過去の記録へのリンク
-if ( $is_exist_pastlog ) {
-	echo '<a href="page_pastlog.php">[過去ログ]</a>';
-}
-
 //参加者一覧表示
 write_members_only_html( $members, $stock, $c_username );
 
-?>
-<?php
+echo '<div id="content_main">';
+
 //残り参加人数表示
 $rest = $session['ninzuu'] - count( $members );
 echo "<p>あと$rest 人の参加が必要です。</p>";
@@ -41,11 +36,8 @@ if ( in_array($c_username, $members) ) {
 else {
 	//参加者以外の場合
 	//参加表明フォームを表示
-	$smarty->display( $g_tpl_path . 'html_sanka_form.tpl' );
-}
-
-if ( $c_username == $session['leadername'] ) {
-	echo '<a href="page_start_confirm.php?p=' . $session['session_key'] . '">[始めからやる]</a><br />';
+	//$smarty->display( $g_tpl_path . 'html_sanka_form.tpl' );
+	echo '<a href="page_join.php">[参加する]</a><br />';
 }
 
 if ( $allow_addword ) {
@@ -61,8 +53,22 @@ if ( $allow_addword ) {
 	$smarty->display( $g_tpl_path . 'html_addwordform.tpl' );
 }
 
+echo '</div>';
+echo '<div id="pre_footer">';
+
+if ( $c_username == $session['leadername'] ) {
+	echo '<a href="page_start_confirm.php?p=' . $session['session_key'] . '">[始めからやる]</a>';
+}
+
 //このページへのリンク
 write_urltweet( $g_scripturl, $session['session_key'] );
+
+//過去の記録へのリンク
+if ( $is_exist_pastlog ) {
+	echo '<a href="page_pastlog.php">[過去ログ]</a>';
+}
+
+echo '</div>';
 
 //フッター
 $smarty->display( $g_tpl_path . 'footer.tpl' );

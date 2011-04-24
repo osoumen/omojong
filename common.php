@@ -536,11 +536,11 @@ function add_word_from_twitter( $link, $words_table_name ) {
 
 function write_urltweet( $url, $session_key ) {
 	$tweet_msg = urlencode($url . '?p=' . $session_key);
-	echo '<a href="http://twitter.com/home?status=' . $tweet_msg . '" target="_blank">[このページのURLをツイート]</a><br />';
+	echo '<a href="http://twitter.com/home?status=' . $tweet_msg . '" target="_blank">[このページのURLをツイート]</a>';
 }
 
 function write_members_html( $members, $stock, $myname ) {
-	echo '<div class="member">';
+	echo '<div id="content_left"><div class="member">';
 	echo '<h4>解答中の人</h4>';
 	echo '<ul>';
 	foreach ( $members as $memb ) {
@@ -569,11 +569,11 @@ function write_members_html( $members, $stock, $myname ) {
 		}
 	}
 	echo '</ul>';
-	echo '</div>';
+	echo '</div></div>';
 }
 
 function write_members_only_html( $members, $stock, $myname ) {
-	echo '<div class="member">';
+	echo '<div id="content_left"><div class="member">';
 	echo '<h4>参加している人</h4>';
 	echo '<ul>';
 	foreach ( $members as $memb ) {
@@ -586,5 +586,5 @@ function write_members_only_html( $members, $stock, $myname ) {
 		echo "<li>$nametext</li>\n";
 	}
 	echo '</ul>';
-	echo '</div>';
+	echo '</div></div>';
 }

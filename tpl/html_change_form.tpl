@@ -1,4 +1,5 @@
-<p>残り{$c_rest}回 {$c_amount}枚以内で交換できます</p>
+<div class="change_form">
+<div class="question">残り{$c_rest}回 {$c_amount}枚以内で交換できます。</div>
 {section name=list loop="$stock_array"}
 <button onclick="input_changeword({$stock_array[list]},'{$word_array[list]}')" class="change_word">
 {$word_array[list]}
@@ -20,3 +21,4 @@
 <input type="hidden" name="confirm" value="{$g_answer_confirm}">
 <input type="hidden" name="changelist" value="">
 </form>
+</div>

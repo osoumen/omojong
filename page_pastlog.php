@@ -35,17 +35,7 @@ $exist_prev = is_exist_table($link, sprintf('%s_%d', $pastlog_table_name, $prevl
 $pagetitle = '過去ログ';
 $smarty->assign( 'pagetitle', $pagetitle );
 $smarty->display( $g_tpl_path . 'header.tpl' );
-?>
-<?php
-if ( $exist_next ) {
-	echo '<a href="page_pastlog.php?num=' . $nextlog.'">[←もっと古い記録] </a>';
-}
-if ( $exist_prev && ($prevlog >= 0) ) {
-	echo '<a href="page_pastlog.php?num=' . $prevlog.'">[もっと新しい記録→] </a>';
-}
-?>
-<br />
-<?php
+
 //結果表示
 $kekka_table = sprintf( "%s_%d", $pastlog_table_name, $num );
 
@@ -86,7 +76,19 @@ while ( $row = mysql_fetch_array( $query, MYSQL_NUM ) ) {
 	$smarty->display( $g_tpl_path . 'html_kekka_past.tpl' );
 }
 ?>
+<div id="pre_footer">
+
+<?php
+if ( $exist_next ) {
+	echo '<a href="page_pastlog.php?num=' . $nextlog.'">[←もっと古い記録] </a>';
+}
+if ( $exist_prev && ($prevlog >= 0) ) {
+	echo '<a href="page_pastlog.php?num=' . $prevlog.'">[もっと新しい記録→] </a>';
+}
+?>
+<br />
 <a href="<?php echo $g_script; ?>" target=_top>[戻る]</a>
+</div>
 <?php
 //フッター
 $smarty->display( $g_tpl_path . 'footer.tpl' );

@@ -1,4 +1,5 @@
-<div id="ans_input"></div>
+<div class="answer_form">
+<div class="question">以下の単語を使用して、文を作って下さい。</div>
 {section name=list loop="$stock_array"}
 <button onclick="input_word({$stock_array[list]},'{$word_array[list]}')" class="ans_word">
 {$word_array[list]}
@@ -9,8 +10,10 @@
 </a>
 -->
 {/section}
+<div id="ans_input"></div>
 <button onclick="reset_input()">クリア</button>
-<button onclick="submit_input()">解答</button>
+<button onclick="submit_input()">決定</button>
+<a href="page_giveup.php?confirm={$g_giveup_confirm}">解答終了</a>
 <br />
 <!--
 <a href="javascript:reset_input()">[クリア]</a>
@@ -20,3 +23,4 @@
 <input type="hidden" name="confirm" value="{$g_answer_confirm}">
 <input type="hidden" name="answer" value="">
 </form>
+</div>

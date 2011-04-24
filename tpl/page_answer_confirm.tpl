@@ -1,6 +1,5 @@
 {include file={$header_path}}
-
-<b>{$sentence}</b><br /><br />
+<div id="ans_input">{$sentence}</div>
 でよろしいですか？<br />
 <form action="page_answer.php" method="post">
 <input type="hidden" name="answer" value="{$in.answer}">

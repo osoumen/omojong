@@ -124,6 +124,10 @@ else {
 		}
 	}
 	if ( $remain == 0 ) {
+		//交換回数を０にする
+		$changerest[$c_username] = 0;
+		$change_amount[$c_username] = 0;
+		
 		$session['phase'] = 'kekka';
 		if ( $usenotification2 ) {
 			$is_last = 1;

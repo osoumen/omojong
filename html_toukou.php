@@ -21,11 +21,6 @@ $pagetitle = '解答受付中';
 $smarty->assign( 'pagetitle', $pagetitle );
 $smarty->display( $g_tpl_path . 'header.tpl' );
 
-//過去の記録へのリンク
-if ( $is_exist_pastlog ) {
-	echo '<a href="page_pastlog.php">[過去ログ]</a>';
-}
-
 //参加者一覧表示
 write_members_html( $members, $stock, $c_username );
 
@@ -109,6 +104,7 @@ function input_changeword( word,scr_word ) {
 	return false;
 }
 </script>
+<div id="content_main">
 <?php
 if ( in_array($c_username, $members) ) {
 	//参加者である
@@ -133,32 +129,27 @@ if ( in_array($c_username, $members) ) {
 		}
 		$smarty->assign( 'stock_array', $stock_array );
 		$smarty->assign( 'word_array', $word_array );
+		$smarty->assign( 'g_giveup_confirm', $g_giveup_confirm );
 		$smarty->display( $g_tpl_path . 'html_answer_form.tpl' );
-		
-		//交換回数が残っている
-		if ( $changerest[$c_username] > 0 && $change_amount[$c_username] ) {
-			$smarty->assign( 'c_rest', $changerest[$c_username] );
-			$smarty->assign( 'c_amount', $change_amount[$c_username] );
-			$smarty->display( $g_tpl_path . 'html_change_form.tpl' );
-		}
-		
-		//解答終了ボタン
-		echo '<a href="page_giveup.php?confirm=' . $g_giveup_confirm . '">[解答を終了する]</a><br />';
 	}
 	else {
 		echo "<p>$c_username さんはもう解答できません。</p>";
 	}
+	
 }
 else {
 	//参加者以外
 	if ( count( $members ) < $session['ninzuu_max'] ) {
-		echo '<b>途中参加受付中！</b><br />';
+		echo '<p>途中参加受付中！</p>';
 		$smarty->display( $g_tpl_path . 'html_sanka_form.tpl' );
 	}
 }
 
-if ( $c_username == $session['leadername'] ) {
-	echo '<a href="page_start_confirm.php?p=' . $session['session_key'] . '">[始めからやる]</a><br />';
+//交換回数が残っている
+if ( $changerest[$c_username] > 0 && $change_amount[$c_username] ) {
+	$smarty->assign( 'c_rest', $changerest[$c_username] );
+	$smarty->assign( 'c_amount', $change_amount[$c_username] );
+	$smarty->display( $g_tpl_path . 'html_change_form.tpl' );
 }
 
 if ( $allow_addword ) {
@@ -172,8 +163,21 @@ if ( $allow_addword ) {
 	$smarty->display( $g_tpl_path . 'html_addwordform.tpl' );
 }
 
+echo '</div><div id="pre_footer">';
+
+if ( $c_username == $session['leadername'] ) {
+	echo '<a href="page_start_confirm.php?p=' . $session['session_key'] . '">[始めからやる]</a>';
+}
+
 //このページへのリンク
 write_urltweet( $g_scripturl, $session['session_key'] );
+
+//過去の記録へのリンク
+if ( $is_exist_pastlog ) {
+	echo '<a href="page_pastlog.php">[過去ログ]</a>';
+}
+
+echo '</div>';
 
 //フッター
 $smarty->display( $g_tpl_path . 'footer.tpl' );

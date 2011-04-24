@@ -22,13 +22,10 @@ $pagetitle = '結果';
 $smarty->assign( 'pagetitle', $pagetitle );
 $smarty->display( $g_tpl_path . 'header.tpl' );
 
-//過去の記録へのリンク
-if ( $is_exist_pastlog ) {
-	echo '<a href="page_pastlog.php">[過去ログ]</a>';
-}
-
 //参加者一覧表示
 write_members_html( $members, $stock, $c_username );
+
+echo '<div id="content_main">';
 
 //結果表示
 /*
@@ -55,9 +52,8 @@ while ( $row = mysql_fetch_array( $query, MYSQL_NUM ) ) {
 	$smarty->display( $g_tpl_path . 'html_kekka.tpl' );
 }
 */
-echo '<a href="page_pastlog.php?num=' . $num . '">[結果を見る]</a><br />';
 
-echo '<a href="page_start.php?p=' . $session['session_key'] . '">[始めからやる]</a><br />';
+echo '<a href="page_pastlog.php?num=' . $num . '"><span class="kekka_btn">結果を見る</span></a><br />';
 
 if ( $allow_addword ) {
 	$words = array();
@@ -71,6 +67,17 @@ if ( $allow_addword ) {
 	$smarty->assign( 'yesterdaywords', $yesterdaywords );
 	$smarty->display( $g_tpl_path . 'html_addwordform.tpl' );
 }
+echo '</div>';
+
+echo '<div id="pre_footer">';
+echo '<a href="page_start.php?p=' . $session['session_key'] . '">[始めからやる]</a>';
+
+//過去の記録へのリンク
+if ( $is_exist_pastlog ) {
+	echo '<a href="page_pastlog.php">[過去ログ]</a>';
+}
+
+echo '</div>';
 
 //フッター
 $smarty->display( $g_tpl_path . 'footer.tpl' );

@@ -50,6 +50,10 @@ else {
 	//持ち札を空にする
 	$stock[$c_username] = '';
 	
+	//交換回数を０にする
+	$changerest[$c_username] = 0;
+	$change_amount[$c_username] = 0;
+	
 	//全員の解答が終了したか調べてモード遷移を行う
 	$remain = 0;
 	foreach ( $members as $memb ) {
