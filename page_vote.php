@@ -68,7 +68,7 @@ $smarty->assign( 'pagetitle', $pagetitle );
 $smarty->display( 'tpl/header.tpl' );
 ?>
 <h3><?php echo $sentence; ?></h3>
-に投票しました。<br>
+に投票しました。<br />
 <a href="page_pastlog.php?num=<?php echo $in['num']; ?>" target=_top>[戻る]</a>
 <?php
 $smarty->display( 'tpl/footer.tpl' );

@@ -3,4 +3,4 @@
 {foreach from="$answers" item="value"}
 <tr><th>{$value}</th></tr>
 {/foreach}
-</table><br>
+</table><br />

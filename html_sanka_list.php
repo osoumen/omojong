@@ -8,11 +8,11 @@ $smarty->display( $g_tpl_path . 'header.tpl' );
 <?php
 for ($i=0; $i<count($session_key_list); $i++) {
 	echo '<a href="' . $g_script . '?p=' . $session_key_list[$i] . '">';
-	echo $phase_list[$i] . '<br>';
+	echo $phase_list[$i] . '<br />';
 	foreach ( $memberlist_list[$i] as $memb ) {
-		echo $memb . '<br>';
+		echo $memb . '<br />';
 	}
-	echo '</a><br>';
+	echo '</a><br />';
 }
 ?>
 <?php

@@ -15,7 +15,7 @@
 <input type="text" name="change_amount" value="{$in.change_amount}" size=4>枚以内
 </td></tr>
 </table>
-<input type="submit" name="submit" value="始める"><br>
+<input type="submit" name="submit" value="始める"><br />
 </form>
 <a href="{$g_script}" target=_top>[戻る]</a>
 {include file={$footer_path}}

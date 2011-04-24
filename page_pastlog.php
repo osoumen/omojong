@@ -44,17 +44,17 @@ if ( $exist_prev && ($prevlog >= 0) ) {
 	echo '<a href="page_pastlog.php?num=' . $prevlog.'">[もっと新しい記録→] </a>';
 }
 ?>
-<br>
+<br />
 <?php
 //結果表示
 $kekka_table = sprintf( "%s_%d", $pastlog_table_name, $num );
 
 /*
 if ( $num == 0 ) {
-	echo '<h2>前回の結果</h2><br>';
+	echo '<h2>前回の結果</h2><br />';
 }
 else {
-	echo '<h2>過去の結果 '.$num.'</h2><br>';
+	echo '<h2>過去の結果 '.$num.'</h2><br />';
 }
 */
 if ( is_exist_table( $link, $kekka_table ) == FALSE ) {

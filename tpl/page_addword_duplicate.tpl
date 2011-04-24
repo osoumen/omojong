@@ -3,7 +3,7 @@
 <form action="$page_addword.php" method="post">
 <input type="hidden" name="word" value="{$inword}">
 <input type="hidden" name="forceadd" value="1">
-<input type="submit" name="submit" value="追加する"><br>
+<input type="submit" name="submit" value="追加する"><br />
 </form>
 <a href="{$g_script}" target=_top>[やめる]</a>
 {include file={$footer_path}}

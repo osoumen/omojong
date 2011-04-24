@@ -11,11 +11,11 @@
 {/section}
 <!--
 <a href="javascript:reset_change()">[クリア]</a>
-<a href="javascript:submit_change()">[交換]</a><br>
+<a href="javascript:submit_change()">[交換]</a><br />
 -->
 <div id="change_input"></div>
 <button onclick="reset_change()">クリア</button>
-<button onclick="submit_change()">交換</button><br>
+<button onclick="submit_change()">交換</button><br />
 <form name="change_form" action="page_change.php" method="post">
 <input type="hidden" name="confirm" value="{$g_answer_confirm}">
 <input type="hidden" name="changelist" value="">

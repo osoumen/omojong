@@ -1,6 +1,6 @@
 {include file={$header_path}}
-<b>{$sentence}</b><br>
-を解答しました。<br>
+<b>{$sentence}</b><br />
+を解答しました。<br />
 <p>他のメンバーに知らせますか？</p>
 <p>あなたのTwitterアカウントを使用して、自動的に以下のような発言を行います。</p>
 <div class="tweet_example">{$twmsg}</div>

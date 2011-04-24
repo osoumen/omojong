@@ -25,27 +25,11 @@ $smarty->display( $g_tpl_path . 'header.tpl' );
 if ( $is_exist_pastlog ) {
 	echo '<a href="page_pastlog.php">[過去ログ]</a>';
 }
-?>
-<table>
-<tr><th>参加者</th><th>解答状況</th></tr>
-<?php
+
 //参加者一覧表示
-foreach ( $members as $memb ) {
-	if ($memb === $c_username) {
-		$nametext = '<span class="its_me">' . $memb . '</span>';
-	}
-	else {
-		$nametext = $memb;
-	}
-	if ($stock[$memb] === '') {
-		echo "<tr><td>$nametext さん</td><td><font color=blue>解答終了</font></td></tr>\n";
-	}
-	else {
-		echo "<tr><td>$nametext さん</td><td><font color=red>解答中</font></td></tr>\n";
-	}
-}
+write_members_html( $members, $stock, $c_username );
+
 ?>
-</table><br>
 <script type="text/javascript">
 if(!Array.indexOf) {
 	Array.prototype.indexOf = function(o)
@@ -159,7 +143,7 @@ if ( in_array($c_username, $members) ) {
 		}
 		
 		//解答終了ボタン
-		echo '<a href="page_giveup.php?confirm=' . $g_giveup_confirm . '">[解答を終了する]</a><br>';
+		echo '<a href="page_giveup.php?confirm=' . $g_giveup_confirm . '">[解答を終了する]</a><br />';
 	}
 	else {
 		echo "<p>$c_username さんはもう解答できません。</p>";
@@ -168,13 +152,13 @@ if ( in_array($c_username, $members) ) {
 else {
 	//参加者以外
 	if ( count( $members ) < $session['ninzuu_max'] ) {
-		echo '<b>途中参加受付中！</b><br>';
+		echo '<b>途中参加受付中！</b><br />';
 		$smarty->display( $g_tpl_path . 'html_sanka_form.tpl' );
 	}
 }
 
 if ( $c_username == $session['leadername'] ) {
-	echo '<a href="page_start_confirm.php?p=' . $session['session_key'] . '">[始めからやる]</a><br>';
+	echo '<a href="page_start_confirm.php?p=' . $session['session_key'] . '">[始めからやる]</a><br />';
 }
 
 if ( $allow_addword ) {

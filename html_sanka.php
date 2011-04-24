@@ -23,22 +23,11 @@ $smarty->display( $g_tpl_path . 'header.tpl' );
 if ( $is_exist_pastlog ) {
 	echo '<a href="page_pastlog.php">[過去ログ]</a>';
 }
-?>
-<table border=0>
-<tr><th>参加者</th></tr>
-<?php
+
 //参加者一覧表示
-foreach ( $members as $memb ) {
-	if ($memb === $c_username) {
-		$nametext = '<span class="its_me">' . $memb . '</span>';
-	}
-	else {
-		$nametext = $memb;
-	}
-	echo "<tr><td>$nametext さん</td></tr>";
-}
+write_members_html( $members, $stock, $c_username );
+
 ?>
-</table><br>
 <?php
 //残り参加人数表示
 $rest = $session['ninzuu'] - count( $members );
@@ -56,7 +45,7 @@ else {
 }
 
 if ( $c_username == $session['leadername'] ) {
-	echo '<a href="page_start_confirm.php?p=' . $session['session_key'] . '">[始めからやる]</a><br>';
+	echo '<a href="page_start_confirm.php?p=' . $session['session_key'] . '">[始めからやる]</a><br />';
 }
 
 if ( $allow_addword ) {

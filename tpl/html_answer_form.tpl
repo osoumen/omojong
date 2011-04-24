@@ -11,10 +11,10 @@
 {/section}
 <button onclick="reset_input()">クリア</button>
 <button onclick="submit_input()">解答</button>
-<br>
+<br />
 <!--
 <a href="javascript:reset_input()">[クリア]</a>
-<a href="javascript:submit_input()">[解答]</a><br>
+<a href="javascript:submit_input()">[解答]</a><br />
 -->
 <form name="answer_form" action="page_answer.php" method="post">
 <input type="hidden" name="confirm" value="{$g_answer_confirm}">

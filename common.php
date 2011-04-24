@@ -536,5 +536,38 @@ function add_word_from_twitter( $link, $words_table_name ) {
 
 function write_urltweet( $url, $session_key ) {
 	$tweet_msg = urlencode($url . '?p=' . $session_key);
-	echo '<a href="http://twitter.com/home?status=' . $tweet_msg . '" target="_blank">[このページのURLをツイート]</a><br>';
+	echo '<a href="http://twitter.com/home?status=' . $tweet_msg . '" target="_blank">[このページのURLをツイート]</a><br />';
+}
+
+function write_members_html( $members, $stock, $myname ) {
+	echo '<div class="member">';
+	echo '<h4>解答中</h4>';
+	echo '<ul>';
+	foreach ( $members as $memb ) {
+		if ($memb === $myname) {
+			$nametext = '<span class="its_me">' . $memb . '</span>';
+		}
+		else {
+			$nametext = $memb;
+		}
+		if ($stock[$memb] !== '') {
+			echo "<li>$nametext</li>\n";
+		}
+	}
+	echo '</ul>';
+	echo '<h4>解答終了</h4>';
+	echo '<ul>';
+	foreach ( $members as $memb ) {
+		if ($memb === $myname) {
+			$nametext = '<span class="its_me">' . $memb . '</span>';
+		}
+		else {
+			$nametext = $memb;
+		}
+		if ($stock[$memb] === '') {
+			echo "<li>$nametext</li>\n";
+		}
+	}
+	echo '</ul>';
+	echo '</div>';
 }

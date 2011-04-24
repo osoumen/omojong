@@ -1,5 +1,5 @@
 {include file={$header_path}}
-{$c_username}さんの解答を終了しました。<br>
+{$c_username}さんの解答を終了しました。<br />
 <p>他のメンバーに知らせますか？</p>
 <p>あなたのTwitterアカウントを使用して、自動的に以下のような発言を行います。</p>
 <div class="tweet_example">{$twmsg}</div>

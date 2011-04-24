@@ -26,27 +26,9 @@ $smarty->display( $g_tpl_path . 'header.tpl' );
 if ( $is_exist_pastlog ) {
 	echo '<a href="page_pastlog.php">[過去ログ]</a>';
 }
-?>
-<table border=0>
-<tr><th>参加者</th><th>解答状況</th></tr>
-<?php
-//参加者一覧表示
-foreach ( $members as $memb ) {
-	if ($memb === $c_username) {
-		$nametext = '<span class="its_me">' . $memb . '</span>';
-	}
-	else {
-		$nametext = $memb;
-	}
-	if ($stock[$memb] === '') {
-		echo "<tr><td>$nametext さん</td><td><font color=blue>解答終了</font></td></tr>\n";
-	}
-	else {
-		echo "<tr><td>$nametext さん</td><td><font color=red>解答中</font></td></tr>\n";
-	}
-}
 
-echo '</table><br>';
+//参加者一覧表示
+write_members_html( $members, $stock, $c_username );
 
 //結果表示
 /*
@@ -73,9 +55,9 @@ while ( $row = mysql_fetch_array( $query, MYSQL_NUM ) ) {
 	$smarty->display( $g_tpl_path . 'html_kekka.tpl' );
 }
 */
-echo '<a href="page_pastlog.php?num=' . $num . '">[結果を見る]</a><br>';
+echo '<a href="page_pastlog.php?num=' . $num . '">[結果を見る]</a><br />';
 
-echo '<a href="page_start.php?p=' . $session['session_key'] . '">[始めからやる]</a><br>';
+echo '<a href="page_start.php?p=' . $session['session_key'] . '">[始めからやる]</a><br />';
 
 if ( $allow_addword ) {
 	$words = array();

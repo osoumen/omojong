@@ -1,6 +1,6 @@
 <div>
-{$kaitousya}<br>
-{$sentence}<br>
+{$kaitousya}<br />
+{$sentence}<br />
 {$hyousuu}
 <a href="page_vote.php?p={$session_key}&ansnum={$ansindex}&increment=1">
 [いいね！]
