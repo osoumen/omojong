@@ -571,3 +571,20 @@ function write_members_html( $members, $stock, $myname ) {
 	echo '</ul>';
 	echo '</div>';
 }
+
+function write_members_only_html( $members, $stock, $myname ) {
+	echo '<div class="member">';
+	echo '<h4>参加している人</h4>';
+	echo '<ul>';
+	foreach ( $members as $memb ) {
+		if ($memb === $myname) {
+			$nametext = '<span class="its_me">' . $memb . '</span>';
+		}
+		else {
+			$nametext = $memb;
+		}
+		echo "<li>$nametext</li>\n";
+	}
+	echo '</ul>';
+	echo '</div>';
+}

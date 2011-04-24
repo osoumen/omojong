@@ -25,7 +25,7 @@ if ( $is_exist_pastlog ) {
 }
 
 //参加者一覧表示
-write_members_html( $members, $stock, $c_username );
+write_members_only_html( $members, $stock, $c_username );
 
 ?>
 <?php

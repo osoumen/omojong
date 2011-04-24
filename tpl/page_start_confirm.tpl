@@ -1,11 +1,13 @@
 {include file={$header_path}}
 <p>以下の条件で始めますか？</p>
-<table>
-<tr><td><b>人数</b></td><td>{$in.ninzuu}〜{$in.ninzuu_max}</td></tr>
-<tr><td><b>枚数</b></td><td>{$in.maisuu}</td></tr>
-<tr><td><b>札の交換</b></td><td>{$in.change_quant}回まで{$in.change_amount}枚以内
-</td></tr>
-</table>
+<dl>
+<dt>人数</dt>
+<dd>{$in.ninzuu}〜{$in.ninzuu_max}</dd>
+<dt>枚数</dt>
+<dd>{$in.maisuu}</dd>
+<dt>札の交換</dt>
+<dd>{$in.change_quant}回まで{$in.change_amount}枚以内</dd>
+</dl>
 <form action="page_start.php" method="post">
 <input type="hidden" name="mode" value="start">
 <input type="hidden" name="confirm" value="0">
