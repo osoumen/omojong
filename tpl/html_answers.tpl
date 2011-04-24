@@ -1,6 +1,8 @@
-<table>
-<tr><th>{$c_username} さんが投稿した解答</th></tr>
+<div class="answers">
+<h4>{$c_username} さんが作成した文</h4>
+<ul>
 {foreach from="$answers" item="value"}
-<tr><th>{$value}</th></tr>
+<li>{$value}</li>
 {/foreach}
-</table><br />
+</ul>
+</div>
