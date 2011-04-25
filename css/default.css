@@ -48,7 +48,7 @@ div {
 	padding: 0; }
  
 a {
-	color: #00829C;
+//	color: #00829C;
 	text-decoration: none;
 	font-weight: bold; 
 	}
@@ -58,6 +58,7 @@ a {
 
 #toptitle {
 	color: #000000;
+	font-family: "ＭＳ明朝","Arial";
 	text-decoration: none;
 	font-weight: bold; 
 	display: inline;
@@ -101,15 +102,22 @@ h4 {
 
 #content {
 	position: relative;
-//	margin-left: 10%;
-//	margin-right: 10%;
 	}
 
 #header {
+	background-color: #ccddcc;
 	position: relative;
 	width: 100%;
-	background-color: #ccddcc;
-/*	height: 50px;*/
+	height: 1.5em;
+}
+
+#post_header {
+	position: relative;
+	clear: both;
+	width: 100%;
+	background-color: #ffffff;
+	text-align: center;
+	font-size: 0.8em;
 }
 
 #pre_footer {

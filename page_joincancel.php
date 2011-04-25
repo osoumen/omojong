@@ -13,7 +13,6 @@ if ( empty( $session ) ) {
 }
 
 //ログインしてなかったらtopに飛ぶ
-session_start();
 if ( is_login() == false ) {
 	header('Location: ' . $g_scripturl);
 }

@@ -40,7 +40,7 @@ $use_useraccount_for_mension = 1;	//通知のときに最後の人のアカウ�
 $allow_addword = 0;
 
 //ハッシュタグ
-$hash_tag = ' via つぶやきメモリアル(β)';
+$hash_tag = ' via ' . $g_title;
 
 //参加したときの通知の内容
 //$notifymsg0 = ' ご参加ありがとうございます！まだまだ参加受付中です。 ' . $g_scripturl . '?p=';
@@ -91,3 +91,7 @@ $pastlog_table_name = 'pastlog';
 
 //ゲームIDのパラメーター名
 $gameid_param_name = 'p';
+
+session_start();
+$g_screen_name = isset($_SESSION['access_token']['screen_name']) ? $_SESSION['access_token']['screen_name'] : '';
+$smarty->assign( 'g_screen_name', $g_screen_name );

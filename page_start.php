@@ -21,7 +21,6 @@ $link = connect_db();
 $session = load_session_table( $link );
 
 //ログインしてなかったらtopに飛ぶ
-session_start();
 if ( is_login() == false ) {
 	header('Location: ' . $g_scripturl);
 }

@@ -80,10 +80,10 @@ while ( $row = mysql_fetch_array( $query, MYSQL_NUM ) ) {
 
 <?php
 if ( $exist_next ) {
-	echo '<a href="page_pastlog.php?num=' . $nextlog.'">[←もっと古い記録] </a>';
+	echo '<a href="page_pastlog.php?num=' . $nextlog.'"><<もっと古い記録 </a>';
 }
 if ( $exist_prev && ($prevlog >= 0) ) {
-	echo '<a href="page_pastlog.php?num=' . $prevlog.'">[もっと新しい記録→] </a>';
+	echo '<a href="page_pastlog.php?num=' . $prevlog.'">もっと新しい記録>> </a>';
 }
 ?>
 <br />

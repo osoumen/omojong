@@ -16,8 +16,16 @@
 <body>
 <div id="content">
 <div id="header">
-<a id="usernav" href="func_logout.php">[ログアウト]</a>
 <a href="{$g_scripturl}">
-<h1 id="toptitle">{$g_title}</h1>
+<span id="toptitle">{$g_title}</span>
 </a>
+{if ($g_screen_name !== '')}
+<div id="usernav">
+Twitter: <span class="its_me">{$g_screen_name}</span> |
+<a href="func_logout.php">ログアウト</a>
+</div>
+{/if}
+</div>
+<div id="post_header">
+ゲームの簡単な説明
 </div>

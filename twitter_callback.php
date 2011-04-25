@@ -2,7 +2,6 @@
 require_once 'globals.php';
 require_once 'twitteroauth.php';
 
-session_start();
 //oauth_tokenが古くなっている場合は、topに戻る
 if (isset($_REQUEST['oauth_token']) && $_SESSION['oauth_token'] !== $_REQUEST['oauth_token']) {
 	$_SESSION['oauth_status'] = 'oldtoken';
