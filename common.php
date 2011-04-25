@@ -541,7 +541,7 @@ function write_urltweet( $url, $session_key ) {
 
 function write_members_html( $members, $stock, $myname ) {
 	echo '<div id="content_left"><div class="member">';
-	echo '<h4>解答中の人</h4>';
+	echo '<h4>解答中</h4>';
 	echo '<ul>';
 	foreach ( $members as $memb ) {
 		if ($memb === $myname) {
@@ -555,7 +555,7 @@ function write_members_html( $members, $stock, $myname ) {
 		}
 	}
 	echo '</ul>';
-	echo '<h4>解答終了した人</h4>';
+	echo '<h4>解答終了</h4>';
 	echo '<ul>';
 	foreach ( $members as $memb ) {
 		if ($memb === $myname) {
@@ -572,13 +572,16 @@ function write_members_html( $members, $stock, $myname ) {
 	echo '</div></div>';
 }
 
-function write_members_only_html( $members, $stock, $myname ) {
+function write_members_only_html( $members, $stock, $myname, $session ) {
 	echo '<div id="content_left"><div class="member">';
-	echo '<h4>参加している人</h4>';
+	echo '<h4>参加中</h4>';
 	echo '<ul>';
 	foreach ( $members as $memb ) {
 		if ($memb === $myname) {
 			$nametext = '<span class="its_me">' . $memb . '</span>';
+			if ( $myname !== $session['leadername'] ) {
+				echo '<a id="joincancel" href="page_joincancel.php">キャンセル</a>';
+			}
 		}
 		else {
 			$nametext = $memb;
@@ -586,5 +589,18 @@ function write_members_only_html( $members, $stock, $myname ) {
 		echo "<li>$nametext</li>\n";
 	}
 	echo '</ul>';
-	echo '</div></div>';
+	echo '</div>';
+	
+	//残り参加人数表示
+	$rest = $session['ninzuu'] - count( $members );
+	if ( $rest > 0 ) {
+		echo "<p>あと$rest 人の参加が必要です。</p>";
+	}
+	
+	if ( !in_array($myname, $members) ) {
+		//参加者以外の場合
+		echo '<a href="page_join.php"><p>参加する</p></a><br />';
+	}
+
+	echo '</div>';
 }

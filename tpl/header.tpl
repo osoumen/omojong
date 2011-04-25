@@ -16,6 +16,8 @@
 <body>
 <div id="content">
 <div id="header">
-<a href="func_logout.php">[ログアウト]</a>
-<h1>{$g_title}</h1>
+<a id="usernav" href="func_logout.php">[ログアウト]</a>
+<a href="{$g_scripturl}">
+<h1 id="toptitle">{$g_title}</h1>
+</a>
 </div>

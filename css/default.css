@@ -36,7 +36,7 @@ li {
 }
 
 form {
-	display: inline
+	display: block;
 }
 
 b {
@@ -52,9 +52,20 @@ a {
 	text-decoration: none;
 	font-weight: bold; 
 	}
- 
+
 	a:hover {
 	text-decoration: underline; }
+
+#toptitle {
+	color: #000000;
+	text-decoration: none;
+	font-weight: bold; 
+	display: inline;
+	}
+
+#usernav {
+	float: right;
+}
 
 h1 {
 	margin: 0;
@@ -95,6 +106,7 @@ h4 {
 	}
 
 #header {
+	position: relative;
 	width: 100%;
 	background-color: #ccddcc;
 /*	height: 50px;*/
@@ -124,6 +136,14 @@ h4 {
 
 #content_right {
 	margin-left: 300px;
+}
+
+#joincancel {
+	border: 1px #888888 dotted;
+	font-size: 0.6em;
+	float: right;
+	margin: 5px;
+	padding: 0;
 }
 
 .kekka_btn {
