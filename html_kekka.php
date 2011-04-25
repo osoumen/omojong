@@ -25,7 +25,7 @@ $smarty->display( $g_tpl_path . 'header.tpl' );
 //参加者一覧表示
 write_members_html( $members, $stock, $c_username );
 
-echo '<div id="content_main">';
+echo '<div id="content_right">';
 
 //結果表示
 /*

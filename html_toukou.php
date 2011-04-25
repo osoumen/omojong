@@ -104,7 +104,7 @@ function input_changeword( word,scr_word ) {
 	return false;
 }
 </script>
-<div id="content_main">
+<div id="content_right">
 <?php
 if ( in_array($c_username, $members) ) {
 	//参加者である

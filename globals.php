@@ -1,6 +1,6 @@
 <?php
 
-$g_title = '作文ゲーム(仮)';		// タイトル
+$g_title = 'つぶやきメモリアル';		// タイトル
 $g_script = './oj.php';
 
 $g_scripturl = 'http://www.benjamin-lab.com/~ojbot/oj.php';
@@ -18,7 +18,10 @@ $g_hot_votes = 5;		//投票がこの数を超えたらtweetする
 //スタイルシートの設定
 $g_css_url = 'css/default.css';
 
+//データベース名
 define('G_DATABASE', 'omojong');
+
+//アプリ固有トークン
 define('CONSUMER_KEY', 'oVHQOYjXkfrEOGEVdRosQ');
 define('CONSUMER_SECRET', '5Z0zGHDWqBshT1nWa3wcCB7fx69kH7cNExPPdHAGR8');
 //アプリアカウントのアクセストークン
@@ -37,7 +40,7 @@ $use_useraccount_for_mension = 1;	//通知のときに最後の人のアカウ�
 $allow_addword = 0;
 
 //ハッシュタグ
-$hash_tag = ' というテスト';
+$hash_tag = ' via つぶやきメモリアル';
 
 //参加したときの通知の内容
 //$notifymsg0 = ' ご参加ありがとうございます！まだまだ参加受付中です。 ' . $g_scripturl . '?p=';

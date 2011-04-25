@@ -85,22 +85,23 @@ h4 {
 	font-size: 1em;
 	font-weight: bold;
 	display: block;
-	background: #eef0ee;
-	padding:2px 10px;
+	background-color: #eef0ee;
 }
 
 #content {
 	position: relative;
-	margin-left: 10px;
-	margin-right: 10px;
+//	margin-left: 10%;
+//	margin-right: 10%;
 	}
 
 #header {
 	width: 100%;
+	background-color: #ccddcc;
 /*	height: 50px;*/
 }
 
 #pre_footer {
+	background-color: #ddeedd;
 	width: 100%;
 	clear: both;
 	text-align: center;
@@ -118,12 +119,19 @@ h4 {
 }
 
 #content_main {
+	text-align: center;
+}
+
+#content_right {
 	margin-left: 300px;
 }
 
 .kekka_btn {
 	font-size: 2em;
 	font-weight: bold;
+	text-align: center;
+	vertical-align: middle;
+	margin-top: 40px;
 }
 
 .question {
@@ -139,7 +147,7 @@ h4 {
 }
 
 .member {
-	border: 1px #000000 solid;	  /* 枠線の装飾 */
+	border: 1px #eef0ee solid;	  /* 枠線の装飾 */
 	background-color: #FFFFFF;	/* 背景色 */
 	margin-left: 30px;
 	margin-right: 30px;
