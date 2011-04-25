@@ -4,6 +4,7 @@ $pagetitle = '参加リスト';
 $smarty->assign( 'pagetitle', $pagetitle );
 $smarty->display( $g_tpl_path . 'header.tpl' );
 ?>
+<div id="content_main">
 <p>以下のゲームに参加中</p>
 <?php
 for ($i=0; $i<count($session_key_list); $i++) {
@@ -15,6 +16,9 @@ for ($i=0; $i<count($session_key_list); $i++) {
 	echo '</a><br />';
 }
 ?>
+</div>
+<div id="pre_footer">
+</div>
 <?php
 //フッター
 $smarty->display( $g_tpl_path . 'footer.tpl' );

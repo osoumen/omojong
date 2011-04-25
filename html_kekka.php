@@ -53,7 +53,7 @@ while ( $row = mysql_fetch_array( $query, MYSQL_NUM ) ) {
 }
 */
 
-echo '<a href="page_pastlog.php?num=' . $num . '"><span class="kekka_btn">結果を見る</span></a><br />';
+echo '<a href="page_pastlog.php?num=' . $num . '"><div class="kekka_btn">結果を見る</div></a>';
 
 if ( $allow_addword ) {
 	$words = array();

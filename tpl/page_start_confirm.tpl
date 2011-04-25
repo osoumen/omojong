@@ -1,4 +1,5 @@
 {include file={$header_path}}
+<div id="content_main">
 <p>以下の条件で始めますか？</p>
 <dl>
 <dt>人数</dt>
@@ -18,5 +19,8 @@
 <input type="hidden" name="change_amount" value="{$in.change_amount}">
 <input type="submit" name="submit" value="ＯＫ">
 </form>
+</div>
+<div id="pre_footer">
 <a href="{$g_script}" target=_top>[戻る]</a>
+</div>
 {include file={$footer_path}}
