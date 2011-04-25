@@ -200,10 +200,11 @@ else {
 		setcookie( $gameid_param_name, $session['session_key'], time() + 3600 * 24 * 75 );	//75日有効
 		
 		//ページを表示
-		$pagetitle = '新しく始める';
-		$smarty->assign( 'pagetitle', $pagetitle );
-		$smarty->assign( 'in', $in );
-		$smarty->assign( 'allow_addword', $allow_addword );
-		$smarty->display( $g_tpl_path . 'page_start_success.tpl' );
+		header('Location: ' . $g_scripturl);
+		//$pagetitle = '新しく始める';
+		//$smarty->assign( 'pagetitle', $pagetitle );
+		//$smarty->assign( 'in', $in );
+		//$smarty->assign( 'allow_addword', $allow_addword );
+		//$smarty->display( $g_tpl_path . 'page_start_success.tpl' );
 	}
 }

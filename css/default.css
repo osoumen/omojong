@@ -5,7 +5,7 @@
 
 body {
 	font-size: 0.9em;
-	font-family: "メイリオ","Arial";
+	font-family: "Arial", sans-serif;
 	color: #333;
 	margin: 0px;
 }
@@ -35,6 +35,18 @@ li {
 	display: block;
 }
 
+.input_form {
+	border: 3px #ddeedd solid;	  /* 枠線の装飾 */
+	text-align: left;
+	width: 200px;
+	padding: 8px;
+	margin:10px auto;
+}
+
+.right_btn {
+	margin: 16px 50px;
+}
+
 form {
 	display: block;
 }
@@ -58,7 +70,7 @@ a {
 
 #toptitle {
 	color: #000000;
-	font-family: "ＭＳ明朝","Arial";
+	font-family: serif;
 	text-decoration: none;
 	font-weight: bold; 
 	display: inline;
