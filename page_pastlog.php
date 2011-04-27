@@ -64,7 +64,8 @@ while ( $row = mysql_fetch_array( $query, MYSQL_NUM ) ) {
 	$kaitousya = $row[2];
 	$hyousuu = $row[3];
 	$date = $row[4];
-	$tweet_msg = urlencode(' 『' . $sentence . '』by @' . $kaitousya . ' ');
+	$wj_search = $hash_tag . ' ' . $g_scripturl . '?num=' . $num . '#' . $ansindex;
+	$tweet_msg = urlencode(' ＜' . $sentence . '＞' . $wj_search );
 	
 	$smarty->assign( 'pastno', $num );
 	$smarty->assign( 'ansindex', $ansindex );
@@ -73,6 +74,7 @@ while ( $row = mysql_fetch_array( $query, MYSQL_NUM ) ) {
 	$smarty->assign( 'hyousuu', $hyousuu );
 	$smarty->assign( 'tweet_msg', $tweet_msg );
 	$smarty->assign( 'date', $date );
+	$smarty->assign( 'wj_search', $wj_search );
 	$smarty->display( $g_tpl_path . 'html_kekka_past.tpl' );
 }
 ?>

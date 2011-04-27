@@ -3,7 +3,7 @@
 $g_title = 'つぶやきメモリアル(β)';		// タイトル
 $g_script = './';
 
-$g_scripturl = 'http://www.benjamin-lab.com/~ojbot/';
+$g_scripturl = 'http://benjamin-lab.com/~ojbot/';
 
 $g_kekkasort = 0;			//結果発表を投票数順に表示する（0なら投稿順）
 
