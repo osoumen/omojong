@@ -25,6 +25,19 @@ function is_exist_table( $link, $table_name ) {
 	return $exists;
 }
 
+function get_disclosed_session_key( $link ) {
+	$disclosed_session_key = array();
+	
+	$sql = 'SELECT * FROM session WHERE allow_disclose = 1';
+	$query = mysql_query( $sql, $link );
+	if ( $query ) {
+		while ( $row = @mysql_fetch_array( $query, MYSQL_ASSOC ) ) {
+			$disclosed_session_key[$row['leadername']] = $row['session_key'];
+		}
+	}
+	return $disclosed_session_key;
+}
+
 function get_new_session_key( $link, $leader_name ) {
 	$session_key = 99999;
 	//セッションテーブル内にleader_nameがあればそのセッションのキーを返す
@@ -91,7 +104,7 @@ function load_session_table( $link ) {
 	if ( !$query || mysql_num_rows( $query ) == 0 ) {
 		//cookieを削除してエラー表示
 		setcookie( $gameid_param_name, '', time() - 3600 );
-		error( '指定されたページは存在しないか、削除されました。' );
+		error( '指定されたページは存在しないか、既に消滅しています。' );
 		return NULL;
 	}
 	

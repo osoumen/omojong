@@ -1,11 +1,12 @@
 <?php
 //ヘッダー
-$pagetitle = '参加リスト';
+//$pagetitle = '参加リスト';
+$pagetitle = '';
 $smarty->assign( 'pagetitle', $pagetitle );
 $smarty->display( $g_tpl_path . 'header.tpl' );
 ?>
 <div id="content_main">
-<p>以下のゲームに参加中</p>
+<h1>以下のゲームに参加中</h1>
 <?php
 for ($i=0; $i<count($session_key_list); $i++) {
 	echo '<a href="' . $g_script . '?p=' . $session_key_list[$i] . '">';
@@ -15,7 +16,17 @@ for ($i=0; $i<count($session_key_list); $i++) {
 	}
 	echo '</a><br />';
 }
+echo '<h1>最近始めたユーザー</h1>';
+
+$disclosed_session_key = get_disclosed_session_key( $link );
+foreach ( $disclosed_session_key as $key => $value ) {
+	$url = sprintf( "%s?%s=%d", $g_script, $gameid_param_name, $value );
+	echo '<a href="' . $url . '">';
+	echo $key;
+	echo '</a><br />';
+}
 ?>
+</div>
 </div>
 <div id="pre_footer">
 </div>
