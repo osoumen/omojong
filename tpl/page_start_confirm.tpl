@@ -4,11 +4,11 @@
 <div class="input_form">
 <dl>
 <dt>参加人数</dt>
-<dd>{$in.ninzuu}〜{$in.ninzuu_max}</dd>
+<dd>{$in.ninzuu}人〜{$in.ninzuu_max}人</dd>
 <dt>使用単語数</dt>
-<dd>{$in.maisuu}</dd>
+<dd>{$in.maisuu}語</dd>
 <dt>単語交換回数</dt>
-<dd>{$in.change_quant}回まで{$in.change_amount}枚以内</dd>
+<dd>{$in.change_quant}回まで{$in.change_amount}語以内</dd>
 <dt>公開／非公開</dt>
 <dd>
 {if isset($in.allow_disclose) && ($in.allow_disclose != 0)}

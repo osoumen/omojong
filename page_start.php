@@ -82,7 +82,7 @@ if ( isset($in['confirm']) ) {
 if ( isset($in['confirm']) == FALSE || $err_str != '' ) {
 	$in['username'] = $player_name;
 	if ( !isset($in['ninzuu']) ) {
-		$in['ninzuu'] = 2;
+		$in['ninzuu'] = 3;
 	}
 	if ( !isset($in['ninzuu_max']) ) {
 		$in['ninzuu_max'] = 10;
@@ -115,12 +115,12 @@ if ( isset($in['confirm']) == FALSE || $err_str != '' ) {
 	);
 		
 	$maisuu_options = array(
-		'5'=>'５枚',
-		'8'=>'８枚',
-		'10'=>'１０枚',
-		'12'=>'１２枚',
-		'15'=>'１５枚',
-		'20'=>'２０枚'
+		'5'=>'５語',
+		'8'=>'８語',
+		'10'=>'１０語',
+		'12'=>'１２語',
+		'15'=>'１５語',
+		'20'=>'２０語'
 	);
 	
 	$change_quant_options = array(
