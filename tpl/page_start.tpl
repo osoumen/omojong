@@ -10,16 +10,28 @@
 <dl>
 <dt>人数</dt>
 <dd>
-<input type="text" name="ninzuu" value="{$in.ninzuu}" size=4>〜<input type="text" name="ninzuu_max" value="{$in.ninzuu_max}" size=4>人
+<select name="ninzuu">
+{html_options options=$ninzuu_options selected=$in.ninzuu}
+</select>
+〜
+<select name="ninzuu_max">
+{html_options options=$ninzuu_options selected=$in.ninzuu_max}
+</select>
 </dd>
 <dt>枚数</dt>
 <dd>
-<input type="text" name="maisuu" value="{$in.maisuu}" size=4>枚
+<select name="maisuu">
+{html_options options=$maisuu_options selected=$in.maisuu}
+</select>
 </dd>
-<dt>札の交換</dt>
+<dt>交換</dt>
 <dd>
-<input type="text" name="change_quant" value="{$in.change_quant}" size=4>回まで
-<input type="text" name="change_amount" value="{$in.change_amount}" size=4>枚以内
+<select name="change_quant">
+{html_options options=$change_quant_options selected=$in.change_quant}
+</select>
+<select name="change_amount">
+{html_options options=$change_amount_options selected=$in.change_amount}
+</select>
 </dd>
 </dl>
 <input class="right_btn" type="submit" name="submit" value="この条件で始める">

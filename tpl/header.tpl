@@ -27,5 +27,5 @@ Twitter: <span class="its_me">{$g_screen_name}</span> |
 {/if}
 </div>
 <div id="post_header">
-ゲームの簡単な説明
+Twitterの発言から抽出した単語を並べ替えて全く新しい文を作成するサイト。
 </div>

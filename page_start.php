@@ -101,6 +101,66 @@ if ( isset($in['confirm']) == FALSE || $err_str != '' ) {
 	$smarty->assign( 'pagetitle', $pagetitle );
 	$smarty->assign( 'in', $in );
 	$smarty->assign( 'err_str', $err_str );
+	
+	$ninzuu_options = array(
+		'2'=>'２人',
+		'3'=>'３人',
+		'4'=>'４人',
+		'5'=>'５人',
+		'6'=>'６人',
+		'7'=>'７人',
+		'8'=>'８人',
+		'9'=>'９人',
+		'10'=>'１０人'
+	);
+		
+	$maisuu_options = array(
+		'5'=>'５枚',
+		'8'=>'８枚',
+		'10'=>'１０枚',
+		'12'=>'１２枚',
+		'15'=>'１５枚',
+		'20'=>'２０枚'
+	);
+	
+	$change_quant_options = array(
+		'0'=>'交換なし',
+		'1'=>'１回まで',
+		'2'=>'２回まで',
+		'3'=>'３回まで',
+		'4'=>'４回まで',
+		'5'=>'５回まで'
+	);
+	
+	$change_amount_options = array(
+		'0'=>'交換なし',
+		'1'=>'１語以内',
+		'2'=>'２語以内',
+		'3'=>'３語以内',
+		'4'=>'４語以内',
+		'5'=>'５語以内',
+		'6'=>'６語以内',
+		'7'=>'７語以内',
+		'8'=>'８語以内',
+		'9'=>'９語以内',
+		'10'=>'１０語以内',
+		'11'=>'１１語以内',
+		'12'=>'１２語以内',
+		'13'=>'１３語以内',
+		'14'=>'１４語以内',
+		'15'=>'１５語以内',
+		'16'=>'１６語以内',
+		'17'=>'１７語以内',
+		'18'=>'１８語以内',
+		'19'=>'１９語以内',
+		'20'=>'２０語以内'
+	);
+	
+	$smarty->assign( 'ninzuu_options', $ninzuu_options );
+	$smarty->assign( 'maisuu_options', $maisuu_options );
+	$smarty->assign( 'change_quant_options', $change_quant_options );
+	$smarty->assign( 'change_amount_options', $change_amount_options );
+
 	$smarty->display( $g_tpl_path . 'page_start.tpl' );
 }
 else {
