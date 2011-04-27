@@ -189,7 +189,12 @@ else {
 		$session['maisuu'] = $in['maisuu'];
 		$session['change_quant'] = $in['change_quant'];
 		$session['change_amount'] = $in['change_amount'];
-		//$session['latest_log'] = $new_latest_log;
+		if ( isset($in['allow_disclose']) ) {
+			$session['allow_disclose'] = $in['allow_disclose'];
+		}
+		else {
+			$session['allow_disclose'] = $in['allow_disclose'];
+		}
 
 		$members[0] = $player_name;
 		$stock[$player_name] = '';

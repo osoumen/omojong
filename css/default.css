@@ -82,6 +82,14 @@ dl {
 	list-style-position: inside;
 }
 
+dt {
+	font-weight: bold;
+}
+
+dd {
+	margin: 8px 30px;
+}
+
 li {
 	border-bottom: 1px #cccccc dashed;	  /* 枠線の装飾 */
 	display: block;
@@ -90,14 +98,14 @@ li {
 .input_form {
 	border: 3px #ddeedd solid;	  /* 枠線の装飾 */
 	text-align: left;
-	min-width: 250px;
-	width: 250px;
+	min-width: 270px;
+	width: 270px;
 	padding: 8px;
 	margin: 10px auto;
 }
 
 .right_btn {
-	margin: 0px 20px;
+	margin: 4px 20px;
 }
 
 form {

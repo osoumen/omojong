@@ -110,6 +110,7 @@ function load_session_table( $link ) {
 	$words_table_name = $row['words_table_name'];
 	$members_table_name = $row['members_table_name'];
 	$kaitou_table_name = $row['kaitou_table_name'];
+	$session['allow_disclose'] = $row['allow_disclose'];
 	
 	return $session;
 }
@@ -139,7 +140,8 @@ function store_session_table( $link, $session ) {
 			change_amount int,
 			words_table_name text,
 			members_table_name text,
-			kaitou_table_name text
+			kaitou_table_name text,
+			allow_disclose bool
 			)');
 	$query = mysql_query( $sql, $link );
 	
@@ -148,7 +150,7 @@ function store_session_table( $link, $session ) {
 	$query = mysql_query( $sql, $link );
 	
 	//セッション情報を書き込む
-	$sql = sprintf( "INSERT INTO session VALUES( '%s', '%s', '%s', %d, %d, %d, %d, %d, '%s', '%s', '%s' )",
+	$sql = sprintf( "INSERT INTO session VALUES( '%s', '%s', '%s', %d, %d, %d, %d, %d, '%s', '%s', '%s', %d )",
 	$session['leadername'],
 	$session['session_key'],
 	$session['phase'],
@@ -159,7 +161,8 @@ function store_session_table( $link, $session ) {
 	$session['change_amount'],
 	$words_table_name,
 	$members_table_name,
-	$kaitou_table_name
+	$kaitou_table_name,
+	$session['allow_disclose']
 	);
 	$query = mysql_query( $sql, $link );
 }

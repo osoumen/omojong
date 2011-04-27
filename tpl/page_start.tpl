@@ -8,7 +8,7 @@
 <input type="hidden" name="mode" value="start">
 <input type="hidden" name="confirm" value="{$g_start_confirm}">
 <dl>
-<dt>人数</dt>
+<dt>参加人数</dt>
 <dd>
 <select name="ninzuu">
 {html_options options=$ninzuu_options selected=$in.ninzuu}
@@ -18,13 +18,13 @@
 {html_options options=$ninzuu_options selected=$in.ninzuu_max}
 </select>
 </dd>
-<dt>枚数</dt>
+<dt>使用単語数</dt>
 <dd>
 <select name="maisuu">
 {html_options options=$maisuu_options selected=$in.maisuu}
 </select>
 </dd>
-<dt>交換</dt>
+<dt>単語交換回数</dt>
 <dd>
 <select name="change_quant">
 {html_options options=$change_quant_options selected=$in.change_quant}
@@ -32,6 +32,17 @@
 <select name="change_amount">
 {html_options options=$change_amount_options selected=$in.change_amount}
 </select>
+</dd>
+<dt>公開／非公開</dt>
+<dd>
+<input type='checkbox' name='allow_disclose' value='1' 
+{if isset($in.allow_disclose)}
+{if ($in.allow_disclose != 0)}
+checked='checked'
+{/if}
+{/if}
+>
+新着リストに公開する
 </dd>
 </dl>
 <input class="right_btn" type="submit" name="submit" value="この条件で始める">
