@@ -651,8 +651,8 @@ function redirect_to_prevpage() {
 		header('Location: ' . $g_scripturl);
 	}
 }
-
-function write_pastlog_nav( $link, $current_num, $pastlog_table_name ) {
+/*
+function write_pastlog_nav( $link, $current_num, $pastlog_table_name, $pages=20 ) {
 	global $pastlog_param_name;
 	global $g_script;
 	$nextlog = $current_num-1;
@@ -665,6 +665,29 @@ function write_pastlog_nav( $link, $current_num, $pastlog_table_name ) {
 	}
 	if ( $exist_prev && ($prevlog >= 0) ) {
 		echo '<a href="' .$g_script. '?' .$pastlog_param_name. '=' . $prevlog.'">もっと新しい記録>> </a>';
+	}
+	echo '</div>';
+}
+*/
+function write_pastlog_nav( $link, $current_num, $pastlog_table_name, $pages=20 ) {
+	global $pastlog_param_name;
+	global $g_script;
+	$minlog = $current_num-round($pages/2);
+	$maxlog = $current_num+round($pages/2);
+	if ( $minlog < 0 ) {
+		$minlog = 0;
+	}
+	echo '<div id="log_navi">';
+	for ($num=$minlog; $num<$maxlog; $num++) {
+		$exist = is_exist_table($link, sprintf('%s_%d', $pastlog_table_name, $num) );
+		if ( $exist ) {
+			if ( $num == $current_num ) {
+				echo '['.$num.'] ';
+			}
+			else {
+				echo '<a href="' .$g_script. '?' .$pastlog_param_name. '=' . $num.'">['.$num.'] </a>';
+			}
+		}
 	}
 	echo '</div>';
 }

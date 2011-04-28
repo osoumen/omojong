@@ -74,7 +74,7 @@ echo '<a href="page_start.php?p=' . $session['session_key'] . '">[始めから�
 
 //過去の記録へのリンク
 if ( $is_exist_pastlog ) {
-	echo '<a href="'.$g_script.'?' . $pastlog_param_name. '=new">[過去ログ]</a>';
+	echo '<a href="'.$g_script.'?' . $pastlog_param_name. '=new">これまでの模様</a>';
 }
 
 echo '</div>';

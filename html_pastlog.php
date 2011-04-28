@@ -24,7 +24,7 @@ if ( $latest_pastlog < 0 ) {
 }
 
 //ヘッダー
-$pagetitle = '過去ログ';
+$pagetitle = 'これまでの模様';
 $smarty->assign( 'pagetitle', $pagetitle );
 $smarty->display( $g_tpl_path . 'header.tpl' );
 
