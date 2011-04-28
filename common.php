@@ -639,3 +639,15 @@ function write_members_only_html( $members, $stock, $myname, $session ) {
 
 	echo '</div>';
 }
+
+function redirect_to_prevpage() {
+	global $g_scripturl;
+	//直前のページに戻る
+	if ( isset( $_SERVER['HTTP_REFERER'] ) ) {
+		$auth_back_url = $_SERVER['HTTP_REFERER'];
+		header('Location: ' . $auth_back_url);
+	}
+	else {
+		header('Location: ' . $g_scripturl);
+	}
+}
