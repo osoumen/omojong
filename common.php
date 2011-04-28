@@ -263,6 +263,22 @@ function commit_mention($mlad,$inmsg,$access_token=ACCESS_TOKEN,$access_token_se
 	}
 	return $error;
 }
+
+function post_tweet($inmsg,$access_token,$access_token_secret) {
+	$error = '';
+	// OAuthオブジェクト生成
+	$to = new TwitterOAuth(CONSUMER_KEY,CONSUMER_SECRET,$access_token,$access_token_secret);
+	
+	// 投稿
+	$notify_msg = $inmsg;	
+	$req = $to->OAuthRequest("https://twitter.com/statuses/update.xml","POST",array("status"=>$notify_msg));
+	$xml = simplexml_load_string($req);
+	if ( isset( $xml->error ) ) {
+		$error = $xml->error;
+	}
+	return $error;
+}
+
 /*
 function is_member($name) {
 	if ( in_array($name, $members) ) {
@@ -566,6 +582,7 @@ function write_members_html( $members, $stock, $myname ) {
 		else {
 			$nametext = $memb;
 		}
+//		$nametext = "<a href=\"http://twitter.com/$memb\">$nametext</a>";
 		if ($stock[$memb] !== '') {
 			echo "<li>$nametext</li>\n";
 		}
@@ -580,6 +597,7 @@ function write_members_html( $members, $stock, $myname ) {
 		else {
 			$nametext = $memb;
 		}
+//		$nametext = "<a href=\"http://twitter.com/$memb\">$nametext</a>";
 		if ($stock[$memb] === '') {
 			echo "<li>$nametext</li>\n";
 		}
@@ -602,6 +620,7 @@ function write_members_only_html( $members, $stock, $myname, $session ) {
 		else {
 			$nametext = $memb;
 		}
+//		$nametext = "<a href=\"http://twitter.com/$memb\">$nametext</a>";
 		echo "<li>$nametext</li>\n";
 	}
 	echo '</ul>';

@@ -96,7 +96,7 @@ li {
 }
 
 .input_form {
-	border: 3px #ddeedd solid;	  /* 枠線の装飾 */
+	border: 3px #FFCCCC solid;	  /* 枠線の装飾 */
 	text-align: left;
 	min-width: 270px;
 	width: 270px;
@@ -376,6 +376,7 @@ h4 {
 }
 
 .creater_name {
+	font-weight: bold;
 	font-size: 1.0em;
 	border-bottom: 1px #cccccc dashed;	  /* 枠線の装飾 */
 	display: block;

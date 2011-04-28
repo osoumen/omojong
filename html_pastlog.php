@@ -36,6 +36,11 @@ $smarty->display( $g_tpl_path . 'header.tpl' );
 //結果表示
 $kekka_table = sprintf( "%s_%d", $pastlog_table_name, $num );
 
+//投稿用トークン生成
+$seed = $_SERVER['REMOTE_ADDR'] . date('c');
+$post_token = hash('ripemd160', $seed);
+$_SESSION['post_token'] = $post_token;
+
 /*
 if ( $num == 0 ) {
 	echo '<h2>前回の結果</h2><br />';
@@ -62,7 +67,8 @@ while ( $row = mysql_fetch_array( $query, MYSQL_NUM ) ) {
 	$hyousuu = $row[3];
 	$date = $row[4];
 	$wj_search = sprintf( '%s?%s=%d#%d%s', $g_scripturl, $pastlog_param_name, $num, $ansindex, $hash_tag );
-	$tweet_msg = urlencode(' ＜' . $sentence . '＞ ' . $wj_search );
+//	$tweet_msg = urlencode(' ＜' . $sentence . '＞ ' . $wj_search );
+	$tweet_msg = ' ＜' . $sentence . '＞ ' . $wj_search;
 	
 	$smarty->assign( 'pastno', $num );
 	$smarty->assign( 'ansindex', $ansindex );
@@ -72,6 +78,7 @@ while ( $row = mysql_fetch_array( $query, MYSQL_NUM ) ) {
 	$smarty->assign( 'tweet_msg', $tweet_msg );
 	$smarty->assign( 'date', $date );
 	$smarty->assign( 'wj_search', $wj_search );
+	$smarty->assign( 'post_token', $post_token );
 	$smarty->display( $g_tpl_path . 'html_kekka_past.tpl' );
 }
 ?>
