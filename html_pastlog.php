@@ -23,15 +23,13 @@ if ( $latest_pastlog < 0 ) {
 	error( 'ログがまだありません。');
 }
 
-$nextlog = $num-1;
-$prevlog = $num+1;
-$exist_next = is_exist_table($link, sprintf('%s_%d', $pastlog_table_name, $nextlog) );
-$exist_prev = is_exist_table($link, sprintf('%s_%d', $pastlog_table_name, $prevlog) );
-
 //ヘッダー
 $pagetitle = '過去ログ';
 $smarty->assign( 'pagetitle', $pagetitle );
 $smarty->display( $g_tpl_path . 'header.tpl' );
+
+//過去ログナビゲーション
+write_pastlog_nav( $link, $num, $pastlog_table_name );
 
 //結果表示
 $kekka_table = sprintf( "%s_%d", $pastlog_table_name, $num );
@@ -41,14 +39,6 @@ $seed = $_SERVER['REMOTE_ADDR'] . date('c');
 $post_token = hash('ripemd160', $seed);
 $_SESSION['post_token'] = $post_token;
 
-/*
-if ( $num == 0 ) {
-	echo '<h2>前回の結果</h2><br />';
-}
-else {
-	echo '<h2>過去の結果 '.$num.'</h2><br />';
-}
-*/
 if ( is_exist_table( $link, $kekka_table ) == FALSE ) {
 	error( 'データが存在しません。' );
 }
@@ -83,16 +73,6 @@ while ( $row = mysql_fetch_array( $query, MYSQL_NUM ) ) {
 }
 ?>
 <div id="pre_footer">
-
-<?php
-if ( $exist_next ) {
-	echo '<a href="' .$g_script. '?' .$pastlog_param_name. '=' . $nextlog.'"><<もっと古い記録 </a>';
-}
-if ( $exist_prev && ($prevlog >= 0) ) {
-	echo '<a href="' .$g_script. '?' .$pastlog_param_name. '=' . $prevlog.'">もっと新しい記録>> </a>';
-}
-?>
-<br />
 <a href="<?php echo $g_script; ?>" target=_top>[戻る]</a>
 </div>
 <?php

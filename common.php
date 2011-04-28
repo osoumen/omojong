@@ -651,3 +651,20 @@ function redirect_to_prevpage() {
 		header('Location: ' . $g_scripturl);
 	}
 }
+
+function write_pastlog_nav( $link, $current_num, $pastlog_table_name ) {
+	global $pastlog_param_name;
+	global $g_script;
+	$nextlog = $current_num-1;
+	$prevlog = $current_num+1;
+	$exist_next = is_exist_table($link, sprintf('%s_%d', $pastlog_table_name, $nextlog) );
+	$exist_prev = is_exist_table($link, sprintf('%s_%d', $pastlog_table_name, $prevlog) );
+	echo '<div id="log_navi">';
+	if ( $exist_next ) {
+		echo '<a href="' .$g_script. '?' .$pastlog_param_name. '=' . $nextlog.'"><<もっと古い記録 </a>';
+	}
+	if ( $exist_prev && ($prevlog >= 0) ) {
+		echo '<a href="' .$g_script. '?' .$pastlog_param_name. '=' . $prevlog.'">もっと新しい記録>> </a>';
+	}
+	echo '</div>';
+}

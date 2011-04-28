@@ -6,7 +6,7 @@ $smarty->assign( 'pagetitle', $pagetitle );
 $smarty->display( $g_tpl_path . 'header.tpl' );
 ?>
 <div id="content_main">
-<h1>以下のゲームに参加中</h1>
+<h1>以下に参加中</h1>
 <?php
 for ($i=0; $i<count($session_key_list); $i++) {
 	echo '<a href="' . $g_script . '?p=' . $session_key_list[$i] . '">';
