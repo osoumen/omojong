@@ -24,11 +24,15 @@ unset($_SESSION['oauth_token_secret']);
 if (200 == $connection->http_code) {
 	/* The user has been verified and the access tokens can be saved for future use */
 	$_SESSION['status'] = 'verified';
-
-//アクセストークンをデバッグ表示
-//print_r($access_token);
 	
-	header('Location: ' . $g_scripturl);
+	if ( isset( $_SESSION['auth_back_url'] ) ) {
+		$auth_back_url = $_SESSION['auth_back_url'];
+		unset($_SESSION['auth_back_url']);
+		header('Location: ' . $auth_back_url);
+	}
+	else {
+		header('Location: ' . $g_scripturl);
+	}
 }
 else {
 	//200以外を返した場合はアクセストークンの取得に失敗

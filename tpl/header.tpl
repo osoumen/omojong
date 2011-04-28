@@ -19,13 +19,15 @@
 <a href="{$g_scripturl}">
 <span id="toptitle">{$g_title}</span>
 </a>
-{if ($g_screen_name !== '')}
 <div id="usernav">
+{if ($g_screen_name !== '')}
 Twitter: <span class="its_me">{$g_screen_name}</span> |
 <a href="func_logout.php">ログアウト</a>
-</div>
+{else}
+<a href="twitter_request.php">Twitterでログイン</a>
 {/if}
 </div>
+</div>
 <div id="post_header">
-Twitterの発言から抽出した単語を並べ替えて短歌を作り、詠み合うサイト。
+Twitterの発言から抽出した単語を並べ替えて短歌のような文を作って詠み合うサイトです。
 </div>
