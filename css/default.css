@@ -371,6 +371,7 @@ h4 {
 	}
 
 .ans_present {
+	color: #000000;
 	font-size: 1.5em;
 	font-weight: bold;
 	border-bottom: 1px #cccccc dashed;	  /* 枠線の装飾 */

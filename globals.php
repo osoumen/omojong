@@ -51,6 +51,10 @@ $notifymsg1 = ' 人数が集まりました。解答できます！ ' . $g_scrip
 //解答が終わったときの通知の内容
 $notifymsg2 = ' 解答が出揃いました。結果を見られます！ ' . $g_scripturl . '?p=';
 
+//ユーザーに見せるパラメーター名
+$gameid_param_name = 'p';
+$pastlog_param_name = 'n';
+
 //Smarty関係
 define('SMARTY_DIR', '/usr/local/lib/smarty/');
 define('SMARTY_TEMP', '/var/www/smarty/');
@@ -83,14 +87,14 @@ $smarty->assign( 'g_start_confirm', $g_start_confirm );
 $smarty->assign( 'g_answer_confirm', $g_answer_confirm );
 $smarty->assign( 'g_giveup_confirm', $g_giveup_confirm );
 
+$smarty->assign( 'gameid_param_name', $gameid_param_name );
+$smarty->assign( 'pastlog_param_name', $pastlog_param_name );
+
 //各データへのテーブル名
 $words_table_name = 'words';
 $members_table_name = 'members';
 $kaitou_table_name = 'kaitou';
 $pastlog_table_name = 'pastlog';
-
-//ゲームIDのパラメーター名
-$gameid_param_name = 'p';
 
 session_start();
 $g_screen_name = isset($_SESSION['access_token']['screen_name']) ? $_SESSION['access_token']['screen_name'] : '';

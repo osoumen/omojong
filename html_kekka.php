@@ -53,7 +53,7 @@ while ( $row = mysql_fetch_array( $query, MYSQL_NUM ) ) {
 }
 */
 
-echo '<a href="page_pastlog.php?num=' . $num . '"><div class="kekka_btn">結果を見る</div></a>';
+echo '<a href="' .$g_script. '?' .$pastlog_param_name.'=' . $num . '"><div class="kekka_btn">結果を見る</div></a>';
 
 if ( $allow_addword ) {
 	$words = array();
@@ -74,7 +74,7 @@ echo '<a href="page_start.php?p=' . $session['session_key'] . '">[始めから�
 
 //過去の記録へのリンク
 if ( $is_exist_pastlog ) {
-	echo '<a href="page_pastlog.php">[過去ログ]</a>';
+	echo '<a href="'.$g_script.'?' . $pastlog_param_name. '=new">[過去ログ]</a>';
 }
 
 echo '</div>';

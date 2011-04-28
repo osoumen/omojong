@@ -5,9 +5,6 @@ require_once 'common.php';
 
 $in = array_merge( $_POST, $_GET );
 
-//データベースに接続
-$link = connect_db();
-
 //最新の過去ログ値を取得する
 $sql = sprintf( "SELECT * FROM global" );
 $query = mysql_query( $sql, $link );
@@ -15,15 +12,15 @@ while ( $row = @mysql_fetch_array( $query, MYSQL_ASSOC ) ) {
 	$latest_pastlog = $row['latest_pastlog'];
 }
 
-if ( isset( $in['num'] ) ) {
-	$num = $in['num'];
+if ( $in[$pastlog_param_name] == 'new' ) {
+	$num = $latest_pastlog;
 }
 else {
-	$num = $latest_pastlog;
+	$num = $in[$pastlog_param_name];
 }
 
 if ( $latest_pastlog < 0 ) {
-	error( '過去ログがまだありません。');
+	error( 'ログがまだありません。');
 }
 
 $nextlog = $num-1;
@@ -64,8 +61,8 @@ while ( $row = mysql_fetch_array( $query, MYSQL_NUM ) ) {
 	$kaitousya = $row[2];
 	$hyousuu = $row[3];
 	$date = $row[4];
-	$wj_search = $hash_tag . ' ' . $g_scripturl . '?num=' . $num . '#' . $ansindex;
-	$tweet_msg = urlencode(' ＜' . $sentence . '＞' . $wj_search );
+	$wj_search = sprintf( '%s?%s=%d#%d%s', $g_scripturl, $pastlog_param_name, $num, $ansindex, $hash_tag );
+	$tweet_msg = urlencode(' ＜' . $sentence . '＞ ' . $wj_search );
 	
 	$smarty->assign( 'pastno', $num );
 	$smarty->assign( 'ansindex', $ansindex );
@@ -82,10 +79,10 @@ while ( $row = mysql_fetch_array( $query, MYSQL_NUM ) ) {
 
 <?php
 if ( $exist_next ) {
-	echo '<a href="page_pastlog.php?num=' . $nextlog.'"><<もっと古い記録 </a>';
+	echo '<a href="' .$g_script. '?' .$pastlog_param_name. '=' . $nextlog.'"><<もっと古い記録 </a>';
 }
 if ( $exist_prev && ($prevlog >= 0) ) {
-	echo '<a href="page_pastlog.php?num=' . $prevlog.'">もっと新しい記録>> </a>';
+	echo '<a href="' .$g_script. '?' .$pastlog_param_name. '=' . $prevlog.'">もっと新しい記録>> </a>';
 }
 ?>
 <br />

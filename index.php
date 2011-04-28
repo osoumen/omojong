@@ -6,6 +6,12 @@ require_once 'common.php';
 //データベースに接続
 $link = connect_db();
 
+if ( isset($_GET[$pastlog_param_name]) ) {
+	//結果表示ページへリダイレクト
+	include 'html_pastlog.php';
+	exit;
+}
+
 //twitterにログインしているか調べる
 $is_login = is_login();
 
