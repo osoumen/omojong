@@ -174,6 +174,11 @@ h4 {
 	background-color: #eef0ee;
 }
 
+textarea {
+	font-size: 1.0em;
+	padding: 2px;
+}
+
 .login_link {
 	font-size: 30px;
 }

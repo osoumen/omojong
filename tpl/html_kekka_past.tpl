@@ -11,13 +11,17 @@
 いいね！
 </a>
 <div class="twitter_input">
+{if ($g_screen_name !== '')}
 <form id="twitter_form" action="func_tweet.php" method="post">
 <input type="hidden" name="post_token" value="{$post_token}"/>
 <input type="hidden" name="tweet_msg" value="{$tweet_msg}"/>
-<textarea id="twitter-field" name="entry_content" tabindex=3 rows="2" cols="60"></textarea>
+<textarea id="twitter-field" name="entry_content" tabindex=3 rows="2" cols="50"></textarea>
 <input id="twitter-button" type="submit" value="Twitterでコメント">
 </form>
 + {$tweet_msg}
+{else}
+<p>Twitterでログインするとコメントが出来ます。</p>
+{/if}
 </div>
 <div class="timeline">
 	<script src="http://widgets.twimg.com/j/2/widget.js"></script>
