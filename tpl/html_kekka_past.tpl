@@ -17,7 +17,7 @@
 	  search: '{$wj_search}',
 	  interval: 6000,
 	  title: 'Twitter Widget',
-	  subject: 'Twitterの反応',
+	  subject: 'この解答へのコメント',
 	  width: 'auto',
 	  height: '100',
 	  theme: {
