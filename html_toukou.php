@@ -21,9 +21,35 @@ $pagetitle = '解答受付中';
 $smarty->assign( 'pagetitle', $pagetitle );
 $smarty->display( $g_tpl_path . 'header.tpl' );
 
+echo '<div id="content_left">';
 //参加者一覧表示
 write_members_html( $members, $stock, $c_username );
 
+echo '<div id="user_navi">';
+
+if ( in_array($c_username, $members) ) {
+	if ( $stock[$c_username] !== '' ) {
+		echo "<a href=\"page_giveup.php?confirm=$g_giveup_confirm\"><p>解答を終わりにする</p></a>";
+	}
+	else {
+		echo "<p>$c_username さんはもう解答できません。</p>";
+	}
+	
+	if ( $c_username == $session['leadername'] ) {
+		echo '<a href="page_start_confirm.php?p=' . $session['session_key'] . '"><p>始めからやる</p></a>';
+	}
+}
+else {
+	//参加者以外
+	if ( count( $members ) < $session['ninzuu_max'] ) {
+		echo '<a href="page_join.php"><p>途中参加する</p></a>';
+	}
+}
+//このページへのリンク
+write_urltweet( $g_scripturl, $session['session_key'] );
+echo '</div>';
+
+echo '</div>';
 ?>
 <script type="text/javascript">
 if(!Array.indexOf) {
@@ -129,27 +155,15 @@ if ( in_array($c_username, $members) ) {
 		}
 		$smarty->assign( 'stock_array', $stock_array );
 		$smarty->assign( 'word_array', $word_array );
-		$smarty->assign( 'g_giveup_confirm', $g_giveup_confirm );
 		$smarty->display( $g_tpl_path . 'html_answer_form.tpl' );
 	}
-	else {
-		echo "<p>$c_username さんはもう解答できません。</p>";
+		
+	//交換回数が残っている
+	if ( $changerest[$c_username] > 0 && $change_amount[$c_username] ) {
+		$smarty->assign( 'c_rest', $changerest[$c_username] );
+		$smarty->assign( 'c_amount', $change_amount[$c_username] );
+		$smarty->display( $g_tpl_path . 'html_change_form.tpl' );
 	}
-	
-}
-else {
-	//参加者以外
-	if ( count( $members ) < $session['ninzuu_max'] ) {
-		echo '<p>途中参加受付中！</p>';
-		$smarty->display( $g_tpl_path . 'html_sanka_form.tpl' );
-	}
-}
-
-//交換回数が残っている
-if ( $changerest[$c_username] > 0 && $change_amount[$c_username] ) {
-	$smarty->assign( 'c_rest', $changerest[$c_username] );
-	$smarty->assign( 'c_amount', $change_amount[$c_username] );
-	$smarty->display( $g_tpl_path . 'html_change_form.tpl' );
 }
 
 if ( $allow_addword ) {
@@ -165,16 +179,9 @@ if ( $allow_addword ) {
 
 echo '</div><div id="pre_footer">';
 
-if ( $c_username == $session['leadername'] ) {
-	echo '<a href="page_start_confirm.php?p=' . $session['session_key'] . '">[始めからやる]</a>';
-}
-
-//このページへのリンク
-write_urltweet( $g_scripturl, $session['session_key'] );
-
 //過去の記録へのリンク
 if ( $is_exist_pastlog ) {
-	echo '<a href="'.$g_script.'?'.$pastlog_param_name.'=new">これまでの模様</a>';
+	echo '<a href="'.$g_script.'?'.$pastlog_param_name.'=new">今までの結果を見る</a>';
 }
 
 echo '</div>';

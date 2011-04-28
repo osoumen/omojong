@@ -29,7 +29,7 @@ foreach ( $disclosed_session_key as $key => $value ) {
 </div>
 </div>
 <div id="pre_footer">
-<a href="<?php echo $g_script.'?'.$pastlog_param_name.'=new';?>">これまでの模様</a>
+<a href="<?php echo $g_script.'?'.$pastlog_param_name.'=new';?>">今までの結果を見る</a>
 </div>
 <?php
 //フッター

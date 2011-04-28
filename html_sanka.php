@@ -19,8 +19,21 @@ $pagetitle = $c_username;
 $smarty->assign( 'pagetitle', $pagetitle );
 $smarty->display( $g_tpl_path . 'header.tpl' );
 
+echo '<div id="content_left">';
 //参加者一覧表示
 write_members_only_html( $members, $stock, $c_username, $session );
+
+echo '<div id="user_navi">';
+write_sanka_navi( $session, $members, $c_username );
+
+if ( $c_username == $session['leadername'] ) {
+	echo '<a href="page_start_confirm.php?p=' . $session['session_key'] . '"><p>始めからやる</p></a>';
+}
+//このページへのリンク
+write_urltweet( $g_scripturl, $session['session_key'] );
+echo '</div>';
+
+echo '</div>';
 
 echo '<div id="content_right">';
 
@@ -40,16 +53,9 @@ if ( $allow_addword ) {
 echo '</div>';
 echo '<div id="pre_footer">';
 
-if ( $c_username == $session['leadername'] ) {
-	echo '<a href="page_start_confirm.php?p=' . $session['session_key'] . '">[始めからやる]</a>';
-}
-
-//このページへのリンク
-write_urltweet( $g_scripturl, $session['session_key'] );
-
 //過去の記録へのリンク
 if ( $is_exist_pastlog ) {
-	echo '<a href="'.$g_script.'?'.$pastlog_param_name.'=new">これまでの模様</a>';
+	echo '<a href="'.$g_script.'?'.$pastlog_param_name.'=new">今までの結果を見る</a>';
 }
 
 echo '</div>';

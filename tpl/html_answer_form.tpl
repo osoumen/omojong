@@ -13,8 +13,6 @@
 <div id="ans_input"></div>
 <button onclick="reset_input()">クリア</button>
 <button onclick="submit_input()">決定</button>
-<a href="page_giveup.php?confirm={$g_giveup_confirm}">解答終了</a>
-<br />
 <!--
 <a href="javascript:reset_input()">[クリア]</a>
 <a href="javascript:submit_input()">[解答]</a><br />

@@ -22,8 +22,19 @@ $pagetitle = '結果';
 $smarty->assign( 'pagetitle', $pagetitle );
 $smarty->display( $g_tpl_path . 'header.tpl' );
 
+echo '<div id="content_left">';
 //参加者一覧表示
 write_members_html( $members, $stock, $c_username );
+
+echo '<div id="user_navi">';
+
+echo '<a href="' .$g_script. '?' .$pastlog_param_name.'=' . $num . '"><p class="kekka_btn">結果を見る</p></a>';
+
+echo '<a href="page_start.php?p=' . $session['session_key'] . '"><p>始めからやる</p></a>';
+
+echo '</div>';
+
+echo '</div>';
 
 echo '<div id="content_right">';
 
@@ -53,8 +64,6 @@ while ( $row = mysql_fetch_array( $query, MYSQL_NUM ) ) {
 }
 */
 
-echo '<a href="' .$g_script. '?' .$pastlog_param_name.'=' . $num . '"><div class="kekka_btn">結果を見る</div></a>';
-
 if ( $allow_addword ) {
 	$words = array();
 	$totalwords = load_words_table( $link, $words );
@@ -70,11 +79,10 @@ if ( $allow_addword ) {
 echo '</div>';
 
 echo '<div id="pre_footer">';
-echo '<a href="page_start.php?p=' . $session['session_key'] . '">[始めからやる]</a>';
 
 //過去の記録へのリンク
 if ( $is_exist_pastlog ) {
-	echo '<a href="'.$g_script.'?' . $pastlog_param_name. '=new">これまでの模様</a>';
+	echo '<a href="'.$g_script.'?' . $pastlog_param_name. '=new">今までの結果を見る</a>';
 }
 
 echo '</div>';

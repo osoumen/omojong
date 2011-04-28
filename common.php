@@ -568,11 +568,11 @@ function add_word_from_twitter( $link, $words_table_name ) {
 
 function write_urltweet( $url, $session_key ) {
 	$tweet_msg = urlencode($url . '?p=' . $session_key);
-	echo '<a href="http://twitter.com/home?status=' . $tweet_msg . '" target="_blank">[このページのURLをツイート]</a>';
+	echo '<a href="http://twitter.com/home?status=' . $tweet_msg . '" target="_blank"><p>このページのURLをツイート</p></a>';
 }
 
 function write_members_html( $members, $stock, $myname ) {
-	echo '<div id="content_left"><div class="member">';
+	echo '<div class="member">';
 	echo '<h4>解答中</h4>';
 	echo '<ul>';
 	foreach ( $members as $memb ) {
@@ -603,11 +603,11 @@ function write_members_html( $members, $stock, $myname ) {
 		}
 	}
 	echo '</ul>';
-	echo '</div></div>';
+	echo '</div>';
 }
 
 function write_members_only_html( $members, $stock, $myname, $session ) {
-	echo '<div id="content_left"><div class="member">';
+	echo '<div class="member">';
 	echo '<h4>参加中</h4>';
 	echo '<ul>';
 	foreach ( $members as $memb ) {
@@ -625,7 +625,9 @@ function write_members_only_html( $members, $stock, $myname, $session ) {
 	}
 	echo '</ul>';
 	echo '</div>';
-	
+}
+
+function write_sanka_navi( $session, $members, $myname ) {
 	//残り参加人数表示
 	$rest = $session['ninzuu'] - count( $members );
 	if ( $rest > 0 ) {
@@ -634,10 +636,8 @@ function write_members_only_html( $members, $stock, $myname, $session ) {
 	
 	if ( !in_array($myname, $members) ) {
 		//参加者以外の場合
-		echo '<a href="page_join.php"><p>参加する</p></a><br />';
+		echo '<a href="page_join.php"><p>参加する</p></a>';
 	}
-
-	echo '</div>';
 }
 
 function redirect_to_prevpage() {
@@ -651,24 +651,7 @@ function redirect_to_prevpage() {
 		header('Location: ' . $g_scripturl);
 	}
 }
-/*
-function write_pastlog_nav( $link, $current_num, $pastlog_table_name, $pages=20 ) {
-	global $pastlog_param_name;
-	global $g_script;
-	$nextlog = $current_num-1;
-	$prevlog = $current_num+1;
-	$exist_next = is_exist_table($link, sprintf('%s_%d', $pastlog_table_name, $nextlog) );
-	$exist_prev = is_exist_table($link, sprintf('%s_%d', $pastlog_table_name, $prevlog) );
-	echo '<div id="log_navi">';
-	if ( $exist_next ) {
-		echo '<a href="' .$g_script. '?' .$pastlog_param_name. '=' . $nextlog.'"><<もっと古い記録 </a>';
-	}
-	if ( $exist_prev && ($prevlog >= 0) ) {
-		echo '<a href="' .$g_script. '?' .$pastlog_param_name. '=' . $prevlog.'">もっと新しい記録>> </a>';
-	}
-	echo '</div>';
-}
-*/
+
 function write_pastlog_nav( $link, $current_num, $pastlog_table_name, $pages=20 ) {
 	global $pastlog_param_name;
 	global $g_script;

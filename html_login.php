@@ -9,7 +9,7 @@ $smarty->display( $g_tpl_path . 'header.tpl' );
 <a class="login_link" href="twitter_request.php">Twitterでログイン</a><br />
 </div>
 <div id="pre_footer">
-<a href="<?php echo $g_script.'?'.$pastlog_param_name.'=new';?>">これまでの模様</a>
+<a href="<?php echo $g_script.'?'.$pastlog_param_name.'=new';?>">今までの結果を見る</a>
 </div>
 <?php
 //フッター

@@ -59,7 +59,6 @@ body {
 p {
 	margin-top: 3px;
 	margin-bottom: 1em;
-//	text-align: center;
 }
 
 img {
@@ -188,6 +187,11 @@ textarea {
 	margin: 4px 0;
 }
 
+#user_navi {
+	text-align: center;
+	margin-top: 2px;
+}
+
 #recent_started {
 	text-align: center;
 }
@@ -257,9 +261,8 @@ textarea {
 }
 
 .kekka_btn {
-	font-size: 2em;
+	font-size: 1.4em;
 	font-weight: bold;
-	text-align: left;
 	vertical-align: middle;
 	margin-top: 5px;
 }
@@ -414,7 +417,9 @@ textarea {
 	-webkit-border-radius: 16px; /* Safari,Chrome */
 	border: 1px #ff8888 dashed;	  /* 枠線の装飾 */
 	padding: 2px;
-	margin-bottom: 10px;
+	margin: 10px auto;
+	min-width: 600px;
+	width: 600px;
 	}
 
 .timeline {

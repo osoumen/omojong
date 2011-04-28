@@ -10,7 +10,7 @@
 {if empty($pagetitle)}
 <title>{$g_title}</title>
 {else}
-<title>{$g_title} / {$pagetitle}</title>
+<title>{$g_title}</title>
 {/if}
 </head>
 <body>
