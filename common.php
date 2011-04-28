@@ -606,15 +606,22 @@ function write_members_html( $members, $stock, $myname ) {
 	echo '</div>';
 }
 
-function write_members_only_html( $members, $stock, $myname, $session ) {
+function write_members_only_html( $members, $myname, $session=NULL, $caption=NULL ) {
 	echo '<div class="member">';
-	echo '<h4>参加中</h4>';
+	if ( $caption ) {
+		echo "<h4>$caption</h4>";
+	}
+	else {
+		echo '<h4>参加中</h4>';
+	}
 	echo '<ul>';
 	foreach ( $members as $memb ) {
 		if ($memb === $myname) {
 			$nametext = '<span class="its_me">' . $memb . '</span>';
-			if ( $myname !== $session['leadername'] ) {
-				echo '<a id="joincancel" href="page_joincancel.php">キャンセル</a>';
+			if ( $session ) {
+				if ( $myname !== $session['leadername'] ) {
+					echo '<a id="joincancel" href="page_joincancel.php">キャンセル</a>';
+				}
 			}
 		}
 		else {

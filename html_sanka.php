@@ -21,7 +21,7 @@ $smarty->display( $g_tpl_path . 'header.tpl' );
 
 echo '<div id="content_left">';
 //参加者一覧表示
-write_members_only_html( $members, $stock, $c_username, $session );
+write_members_only_html( $members, $c_username, $session );
 
 echo '<div id="user_navi">';
 write_sanka_navi( $session, $members, $c_username );
