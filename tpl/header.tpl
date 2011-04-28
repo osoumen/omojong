@@ -27,5 +27,5 @@ Twitter: <span class="its_me">{$g_screen_name}</span> |
 {/if}
 </div>
 <div id="post_header">
-Twitterの発言から抽出した単語を並べ替えて出来る短歌の詠み合いをするサイト。
+Twitterの発言から抽出した単語を並べ替えて短歌を作り、詠み合うサイト。
 </div>

@@ -17,7 +17,7 @@
 	  search: '{$wj_search}',
 	  interval: 6000,
 	  title: 'Twitter Widget',
-	  subject: 'この解答へのコメント',
+	  subject: 'この作品へのコメント',
 	  width: 'auto',
 	  height: '100',
 	  theme: {
@@ -28,7 +28,7 @@
 		tweets: {
 		  background: '#ffffff',
 		  color: '#444444',
-		  links: '#33ccff'
+		  links: '#ff33cc'
 		}
 	  },
 	  features: {

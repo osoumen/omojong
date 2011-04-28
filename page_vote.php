@@ -51,9 +51,9 @@ if ( $votes == $g_hot_votes ) {
 	$url = '＞ ' . $g_scripturl . '?' .$pastlog_param_name. '=' . $in[$pastlog_param_name] . '#' . $in['ansnum'];
 	
 	//合計文字数140文字をオーバーしていたら本文を縮める
-	$max_len = 140 - mb_strlen( $pre . $url . $hash_tag );
+	$max_len = 140 - mb_strlen( $pre . $url );
 	$sentence = mb_strimwidth( $sentence, 0, $max_len, '…' );
-	$msg = $pre . $sentence . $url . $hash_tag;
+	$msg = $pre . $sentence . $url;
 	
 	// OAuthオブジェクト生成
 	$to = new TwitterOAuth(CONSUMER_KEY,CONSUMER_SECRET,ACCESS_TOKEN,ACCESS_TOKEN_SECRET);
