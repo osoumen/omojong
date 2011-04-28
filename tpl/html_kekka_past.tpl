@@ -1,8 +1,11 @@
 <div class="pastlog_content">
 <div class="creater_name"><a href="http://twitter.com/{$kaitousya}" target="_blank">{$kaitousya}</a></div>
 <a name="{$ansindex}" href="http://twitter.com/home?status={$tweet_msg}" target="_blank"><div class="ans_present">{$sentence}</div></a>
-<span class="date_present">{$date}</span>・<span class="good_num">{$hyousuu}</span>・
-<a class="like_btn" href="page_vote.php?{$pastlog_param_name}={$pastno}&ansnum={$ansindex}&increment=1">
+<span class="date_present">{$date}</span>
+・
+<span class="good_num">{$hyousuu}</span>
+・
+<a class="like_btn" href="page_vote.php?{$pastlog_param_name}={$pastno}&ansnum={$ansindex}">
 いいね！
 </a>
 <div class="timeline">
