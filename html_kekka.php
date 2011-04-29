@@ -18,7 +18,7 @@ $num = explode( '_', $kaitou_table_name );
 $num = $num[1];
 
 //ヘッダー
-$pagetitle = '結果';
+$pagetitle = '終了';
 $smarty->assign( 'pagetitle', $pagetitle );
 $smarty->display( $g_tpl_path . 'header.tpl' );
 
@@ -31,6 +31,9 @@ echo '<div id="user_navi">';
 echo '<a href="' .$g_script. '?' .$pastlog_param_name.'=' . $num . '"><p class="kekka_btn">結果を見る</p></a>';
 
 echo '<a href="page_start.php?p=' . $session['session_key'] . '"><p>始めからやる</p></a>';
+
+//ツイートボタン
+write_urltweet( $g_scripturl, $session['session_key'] );
 
 echo '</div>';
 

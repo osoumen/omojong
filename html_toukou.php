@@ -17,7 +17,7 @@ load_members( $link, $members, $stock, $changerest, $change_amount );
 $c_username = isset($_SESSION['access_token']['screen_name']) ? $_SESSION['access_token']['screen_name'] : '';
 
 //ヘッダー
-$pagetitle = '解答受付中';
+$pagetitle = '解答中';
 $smarty->assign( 'pagetitle', $pagetitle );
 $smarty->display( $g_tpl_path . 'header.tpl' );
 

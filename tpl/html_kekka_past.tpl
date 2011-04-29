@@ -15,10 +15,11 @@
 <form id="twitter_form" action="func_tweet.php" method="post">
 <input type="hidden" name="post_token" value="{$post_token}"/>
 <input type="hidden" name="tweet_msg" value="{$tweet_msg}"/>
-<textarea id="twitter-field" name="entry_content" tabindex=3 rows="2" cols="50"></textarea>
-<input id="twitter-button" type="submit" value="Twitterでコメント">
+<textarea onKeyup="mojilen(value,{$ansindex},'{$tweet_msg}')" id="twitter-field" name="entry_content" tabindex=3 rows="2" cols="50"></textarea>
+<input id="twitter-button{$ansindex}" type="submit" disabled="disabled" value="Twitterでコメント">
 </form>
-+ {$tweet_msg}
++ {$tweet_msg}<br />
+<span id="msg{$ansindex}"> </span>
 {else}
 <p>Twitterでログインするとコメントが出来ます。</p>
 {/if}
@@ -31,8 +32,8 @@
 	  type: 'search',
 	  search: '{$wj_search}',
 	  interval: 6000,
-	  title: 'Twitter Widget',
-	  subject: 'この作品へのコメント',
+	  title: 'Twitterの反応',
+	  subject: 'コメント',
 	  width: 'auto',
 	  height: '100',
 	  theme: {

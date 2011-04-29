@@ -27,7 +27,26 @@ if ( $latest_pastlog < 0 ) {
 $pagetitle = '今までの結果を見る';
 $smarty->assign( 'pagetitle', $pagetitle );
 $smarty->display( $g_tpl_path . 'header.tpl' );
-
+?>
+<script type="text/javascript">
+<!-- 
+function mojilen(str,ansnum,tweetmsg) {
+	limitM=140;
+	limitS=tweetmsg.length;
+	val=str.length + limitS;
+	if (val<=limitS || val>limitM) { //文字数の条件
+		document.getElementById('twitter-button'+ansnum).disabled = true; //ボタン無効化
+	}
+	else {
+		document.getElementById('twitter-button'+ansnum).disabled = false; //ボタン有効化
+	}
+	//残り文字数表示
+	document.getElementById('msg'+ansnum).innerHTML=
+	"残り<span>"+(limitM-val)+"</span>文字";
+}
+//-->
+</script>
+<?php
 //過去ログナビゲーション
 write_pastlog_nav( $link, $num, $pastlog_table_name );
 

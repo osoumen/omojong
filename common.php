@@ -567,8 +567,11 @@ function add_word_from_twitter( $link, $words_table_name ) {
 }
 
 function write_urltweet( $url, $session_key ) {
-	$tweet_msg = urlencode($url . '?p=' . $session_key);
-	echo '<a href="http://twitter.com/home?status=' . $tweet_msg . '" target="_blank"><p>このページのURLをツイート</p></a>';
+	$page_url = $url . '?p=' . $session_key;
+	echo "<a href=\"http://twitter.com/share\" class=\"twitter-share-button\" data-url=\"$page_url\" data-text=\"\" data-count=\"none\" data-via=\"tbmemo\" data-related=\"osoumen:作った人\" data-lang=\"ja\">Tweet</a><script type=\"text/javascript\" src=\"http://platform.twitter.com/widgets.js\"></script>";
+	
+	//$tweet_msg = urlencode($url . '?p=' . $session_key);
+	//echo '<a href="http://twitter.com/home?status=' . $tweet_msg . '" target="_blank"><p>このページのURLをツイート</p></a>';
 }
 
 function write_members_html( $members, $stock, $myname ) {

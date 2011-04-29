@@ -141,6 +141,18 @@ a {
 	float: right;
 }
 
+.sanka_list {
+	border-radius: 8px;		/* CSS3 */
+	-moz-border-radius: 8px;	 /* Firefox */
+	-webkit-border-radius: 8px; /* Safari,Chrome */
+	
+	border: 3px #aaaaaa solid;	  /* 枠線の装飾 */
+	background-color: #FFFFFF;	/* 背景色 */
+	padding: 10px;
+	margin: 10px auto;
+	width: 600px;
+}
+
 h1 {
 	margin: 0;
 	font-size: 2em;
