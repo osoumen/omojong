@@ -3,7 +3,7 @@
 $g_title = 'つぶや記念日(β)';		// タイトル
 $g_script = './';
 
-$g_scripturl = 'http://benjamin-lab.com/~ojbot/';
+$g_scripturl = 'http://tsubmemo.com/';
 
 $g_kekkasort = 0;			//結果発表を投票数順に表示する（0なら投稿順）
 
@@ -40,7 +40,7 @@ $use_useraccount_for_mension = 1;	//通知のときに最後の人のアカウ�
 $allow_addword = 0;
 
 //ハッシュタグ
-$hash_tag = ' #tbmemo';
+$hash_tag = ' #tsubmemo';
 
 //参加したときの通知の内容
 //$notifymsg0 = ' ご参加ありがとうございます！まだまだ参加受付中です。 ' . $g_scripturl . '?p=';

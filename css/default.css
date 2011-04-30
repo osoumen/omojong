@@ -42,7 +42,7 @@ table {
 	border-spacing: 0;
 }
 
-
+///////////////////////////////////////////////////////////////
 
 * {
 	margin :0;
@@ -120,7 +120,7 @@ div {
 	padding: 0; }
  
 a {
-	color: #000000;
+	color: #FF6699;
 	text-decoration: none;
 	font-weight: bold; 
 	}
@@ -213,7 +213,7 @@ textarea {
 	}
 
 #header {
-	background-color: #FFCCCC;
+	background-color: #ffffff;
 	position: relative;
 	width: 100%;
 	height: 1.5em;
@@ -224,23 +224,20 @@ textarea {
 	position: relative;
 	clear: both;
 	width: 100%;
-	background-color: #434343;
+	background-color: #FF6699;
 	color: #ffffff;
-	text-align: center;
+	text-align: left;
 	font-size: 0.8em;
-	padding: 2px 0;
+	padding: 4px 0;
 }
 
 #pre_footer {
-	background-color: #848484;
+	border-top: 1px #888888 dashed;
+	background-color: #ffffff;
 	width: 100%;
 	clear: both;
 	text-align: center;
-	padding: 2px 0;
-}
-
-#pre_footer a {
-	color: #ffffff;
+	padding: 8px 0;
 }
 
 #footer {
@@ -248,7 +245,7 @@ textarea {
 	clear: both;
 	text-align: center;
 	padding: 2px 0;
-	background-color: #FFCCCC;
+	background-color: #ffffff;
 }
 
 #content_left {
@@ -393,7 +390,7 @@ textarea {
 	-moz-border-radius: 8px;	 /* Firefox */
 	-webkit-border-radius: 8px; /* Safari,Chrome */
 	
-	border: 3px #aaaaaa solid;	  /* 枠線の装飾 */
+	border: 3px #444444 solid;	  /* 枠線の装飾 */
 	background-color: #FFFFFF;	/* 背景色 */
 	padding: 10px;
 	margin: 10px auto;

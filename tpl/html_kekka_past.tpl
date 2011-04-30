@@ -44,7 +44,7 @@
 		tweets: {
 		  background: '#ffffff',
 		  color: '#444444',
-		  links: '#ff33cc'
+		  links: '#FF6699'
 		}
 	  },
 	  features: {
