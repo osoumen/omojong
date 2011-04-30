@@ -11,7 +11,7 @@ $smarty->display( 'tpl/header.tpl' );
 <a href="page_start.php?p=<?php echo $_REQUEST[$gameid_param_name] ?>" target=_top>[ＯＫ]</a><br />
 </div>
 <div id="pre_footer">
-<a href="<?php echo $g_script; ?>" target=_top>[戻る]</a>
+<a href="<?php echo $g_script; ?>" target=_top>戻る</a>
 </div>
 <?php
 $smarty->display( 'tpl/footer.tpl' );

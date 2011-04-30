@@ -151,6 +151,12 @@ a {
 	padding: 10px;
 	margin: 10px auto;
 	width: 600px;
+	
+	text-align: left;
+}
+
+.sanka_list h2 {
+	text-align: left;
 }
 
 h1 {
@@ -410,6 +416,7 @@ textarea {
 	font-weight: bold;
 	border-bottom: 1px #cccccc dashed;	  /* 枠線の装飾 */
 	display: block;
+	text-align: center;
 	}
 
 .date_present {

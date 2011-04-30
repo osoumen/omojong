@@ -67,7 +67,7 @@ $smarty->display( 'tpl/header.tpl' );
 <div id="content_main">
 <h3><?php echo $sentence; ?></h3>
 に対して「おみごと！」と言いました。<br />
-<a href="<?php echo "$g_script?$pastlog_param_name=$in[$pastlog_param_name]"; ?>" target=_top>[戻る]</a>
+<a href="<?php echo "$g_script?$pastlog_param_name=$in[$pastlog_param_name]"; ?>" target=_top>戻る</a>
 </div>
 <?php
 $smarty->display( 'tpl/footer.tpl' );

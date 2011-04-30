@@ -10,7 +10,7 @@ $smarty->display( $g_tpl_path . 'header.tpl' );
 $myname = $_SESSION['access_token']['screen_name'];
 
 echo '<div class="sanka_list"';
-echo '<h1>参加中</h1>';
+echo '<h2>参加中</h2>';
 for ($i=0; $i<count($session_key_list); $i++) {
 	echo '<a href="' . $g_script . '?p=' . $session_key_list[$i] . '">';
 	

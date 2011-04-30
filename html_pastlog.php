@@ -92,7 +92,7 @@ while ( $row = mysql_fetch_array( $query, MYSQL_NUM ) ) {
 }
 ?>
 <div id="pre_footer">
-<a href="<?php echo $g_script; ?>" target=_top>[戻る]</a>
+<a href="<?php echo $g_script; ?>" target=_top>戻る</a>
 </div>
 <?php
 //フッター
