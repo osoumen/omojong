@@ -258,7 +258,7 @@ function commit_mention($mlad,$inmsg,$access_token=ACCESS_TOKEN,$access_token_se
 	$to = new TwitterOAuth(CONSUMER_KEY,CONSUMER_SECRET,$access_token,$access_token_secret);
 	
 	// 投稿
-	$notify_msg = '@' . $mlad . $inmsg;	
+	$notify_msg = '@' . $mlad . $inmsg;
 	$req = $to->OAuthRequest("https://twitter.com/statuses/update.xml","POST",array("status"=>$notify_msg));
 	$xml = simplexml_load_string($req);
 	if ( isset( $xml->error ) ) {

@@ -110,8 +110,17 @@ if ( $is_last ) {
 	//ページを表示
 	$pagetitle = '参加';
 	$smarty->assign( 'pagetitle', $pagetitle );
-	$twmsg = $notifymsg1 . $session['session_key'] . $hash_tag;
-	$smarty->assign( 'twmsg', $twmsg );
+	
+	$default_msg = $notifymsg1;
+	$post_msg = $g_scripturl . '?p=' . $session['session_key'];
+	//投稿用トークン生成
+	$seed = $_SERVER['REMOTE_ADDR'] . date('c');
+	$post_token = hash('ripemd160', $seed);
+	$_SESSION['post_token'] = $post_token;
+
+	$smarty->assign( 'default_msg', $default_msg );
+	$smarty->assign( 'post_msg', $post_msg );
+	$smarty->assign( 'post_token', $post_token );
 	$smarty->display( $g_tpl_path . 'page_join.tpl' );
 }
 else {

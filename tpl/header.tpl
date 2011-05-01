@@ -7,6 +7,7 @@
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <link rel="stylesheet" href="{$g_css_url}" type="text/css" />
 <script src="js/jquery.js"></script>
+<script src="js/mojilen.js"></script>
 {if empty($pagetitle)}
 <title>{$g_title}</title>
 {else}

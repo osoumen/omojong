@@ -143,8 +143,17 @@ else {
 		$pagetitle = '解答の確認';
 		$smarty->assign( 'pagetitle', $pagetitle );
 		$smarty->assign( 'sentence', $sentence );
-		$twmsg = $notifymsg2 . $session['session_key'] . $hash_tag;
-		$smarty->assign( 'twmsg', $twmsg );
+		
+		$default_msg = $notifymsg2;
+		$post_msg = $g_scripturl . '?p=' . $session['session_key'];
+		//投稿用トークン生成
+		$seed = $_SERVER['REMOTE_ADDR'] . date('c');
+		$post_token = hash('ripemd160', $seed);
+		$_SESSION['post_token'] = $post_token;
+	
+		$smarty->assign( 'default_msg', $default_msg );
+		$smarty->assign( 'post_msg', $post_msg );
+		$smarty->assign( 'post_token', $post_token );
 		$smarty->display( $g_tpl_path . 'page_answer.tpl' );
 	}
 	else {

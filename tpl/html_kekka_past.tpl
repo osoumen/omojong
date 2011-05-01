@@ -12,14 +12,14 @@
 </a>
 <div class="twitter_input">
 {if ($g_screen_name !== '')}
-<form id="twitter_form" action="func_tweet.php" method="post">
+<form class="twitter_form" action="func_tweet.php" method="post">
 <input type="hidden" name="post_token" value="{$post_token}"/>
 <input type="hidden" name="tweet_msg" value="{$tweet_msg}"/>
-<textarea onKeyup="mojilen(value,{$ansindex},'{$tweet_msg}')" id="twitter-field" name="entry_content" tabindex=3 rows="2" cols="50"></textarea>
+<textarea onKeyup="mojirest(value,{$ansindex},'{$tweet_msg}')" class="twitter-field" name="entry_content" tabindex=3 rows="2" cols="50"></textarea>
 <input id="twitter-button{$ansindex}" type="submit" disabled="disabled" value="Twitterでコメント">
 </form>
 + {$tweet_msg}<br />
-<span id="msg{$ansindex}"> </span>
+<span id="msg{$ansindex}"></span>
 {else}
 <p>Twitterでログインするとコメントが出来ます。</p>
 {/if}
