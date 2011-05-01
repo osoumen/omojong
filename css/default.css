@@ -53,6 +53,7 @@ body {
 	font-size: 0.9em;
 	font-family: "Arial", sans-serif;
 	color: #333;
+	background-color: #FFCCCC;
 	margin: 0px;
 }
  
@@ -87,6 +88,7 @@ dt {
 
 dd {
 	margin: 8px 30px;
+	font-size: 0.8em;
 }
 
 li {
@@ -95,10 +97,14 @@ li {
 }
 
 .input_form {
-	border: 3px #FFCCCC solid;	  /* 枠線の装飾 */
+	border-radius: 6px;		/* CSS3 */
+	-moz-border-radius: 6px;	 /* Firefox */
+	-webkit-border-radius: 6px; /* Safari,Chrome */
+	border: 1px #444444 solid;	  /* 枠線の装飾 */
+	background-color: #FFFFFF;	/* 背景色 */
 	text-align: left;
-	min-width: 270px;
-	width: 270px;
+	min-width: 400px;
+	width: 400px;
 	padding: 8px;
 	margin: 10px auto;
 }
@@ -141,22 +147,19 @@ a {
 	float: right;
 }
 
-.sanka_list {
-	border-radius: 8px;		/* CSS3 */
-	-moz-border-radius: 8px;	 /* Firefox */
-	-webkit-border-radius: 8px; /* Safari,Chrome */
-	
-	border: 3px #aaaaaa solid;	  /* 枠線の装飾 */
+.general_container {
+	border-radius: 6px;		/* CSS3 */
+	-moz-border-radius: 6px;	 /* Firefox */
+	-webkit-border-radius: 6px; /* Safari,Chrome */
+	border: 1px #444444 solid;	  /* 枠線の装飾 */
 	background-color: #FFFFFF;	/* 背景色 */
 	padding: 10px;
-	margin: 10px auto;
-	width: 600px;
-	
+	margin: 10px 10px;
 	text-align: left;
 }
 
-.sanka_list h2 {
-	text-align: left;
+.general_container h2 {
+	text-align: center;
 }
 
 h1 {
@@ -184,7 +187,11 @@ h3 {
 }
 
 h4 {
+	border-radius: 4px;		/* CSS3 */
+	-moz-border-radius: 4px;	 /* Firefox */
+	-webkit-border-radius: 4px; /* Safari,Chrome */
 	margin: 0;
+	padding: 4px;
 	font-size: 1em;
 	font-weight: bold;
 	display: block;
@@ -198,16 +205,31 @@ textarea {
 
 .login_link {
 	font-size: 30px;
+	text-align: center;
 }
 
 #log_navi {
+	border-radius: 8px;		/* CSS3 */
+	-moz-border-radius: 8px;	 /* Firefox */
+	-webkit-border-radius: 8px; /* Safari,Chrome */
+	
+	border: 1px #444444 solid;	  /* 枠線の装飾 */
+	background-color: #FFFFFF;	/* 背景色 */
+	margin: 10px 10px;
+
+	clear: both;
 	text-align: center;
-	margin: 4px 0;
+	padding: 8px 0;
 }
 
 #user_navi {
 	text-align: center;
-	margin-top: 2px;
+	border-radius: 6px;		/* CSS3 */
+	-moz-border-radius: 6px;	 /* Firefox */
+	-webkit-border-radius: 6px; /* Safari,Chrome */
+	border: 1px #eef0ee solid;	  /* 枠線の装飾 */
+	background-color: #FFFFFF;	/* 背景色 */
+	margin: 10px;
 }
 
 #recent_started {
@@ -238,9 +260,14 @@ textarea {
 }
 
 #pre_footer {
-	border-top: 1px #888888 dashed;
-	background-color: #ffffff;
-	width: 100%;
+	border-radius: 8px;		/* CSS3 */
+	-moz-border-radius: 8px;	 /* Firefox */
+	-webkit-border-radius: 8px; /* Safari,Chrome */
+	
+	border: 1px #444444 solid;	  /* 枠線の装飾 */
+	background-color: #FFFFFF;	/* 背景色 */
+	margin: 10px 10px;
+
 	clear: both;
 	text-align: center;
 	padding: 8px 0;
@@ -251,7 +278,6 @@ textarea {
 	clear: both;
 	text-align: center;
 	padding: 2px 0;
-	background-color: #ffffff;
 }
 
 #content_left {
@@ -261,6 +287,8 @@ textarea {
 
 #content_main {
 	text-align: center;
+	width: 640px;
+	margin: 0 auto;
 }
 
 #content_right {
@@ -295,21 +323,21 @@ textarea {
 }
 
 .member {
+	border-radius: 6px;		/* CSS3 */
+	-moz-border-radius: 6px;	 /* Firefox */
+	-webkit-border-radius: 6px; /* Safari,Chrome */
 	border: 1px #eef0ee solid;	  /* 枠線の装飾 */
 	background-color: #FFFFFF;	/* 背景色 */
-	margin-left: 30px;
-	margin-right: 30px;
-	margin-bottom: 10px;
-	margin-top: 10px;
+	margin: 10px;
 }
 
 .answers {
-	border: 1px #000000 solid;	  /* 枠線の装飾 */
+	border-radius: 6px;		/* CSS3 */
+	-moz-border-radius: 6px;	 /* Firefox */
+	-webkit-border-radius: 6px; /* Safari,Chrome */
+	border: 1px #eef0ee solid;	  /* 枠線の装飾 */
 	background-color: #FFFFFF;	/* 背景色 */
-	margin-left: 30px;
-	margin-right: 30px;
-	margin-bottom: 10px;
-	margin-top: 10px;
+	margin: 10px;
 }
 
 .err_msg {
@@ -326,21 +354,20 @@ textarea {
 	font-size: 1.1em;
 	font-weight: normal;
 	text-decoration: none;
-	
-	border: 1px #aaaaaa solid;	  /* 枠線の装飾 */
+	border: 1px #000000 solid;	  /* 枠線の装飾 */
 	background-color: #FFFFFF;	/* 背景色 */
 	padding: 2px;
-	margin-bottom: 10px;
+	font-family: serif;
 	}
 
 .answer_form {
-	border: 1px #000000 solid;	  /* 枠線の装飾 */
+	border-radius: 6px;		/* CSS3 */
+	-moz-border-radius: 6px;	 /* Firefox */
+	-webkit-border-radius: 6px; /* Safari,Chrome */
+	border: 1px #444444 solid;	  /* 枠線の装飾 */
 	background-color: #FFFFFF;	/* 背景色 */
 	padding:5px 20px;
-	margin-left: 30px;
-	margin-right: 30px;
-	margin-bottom: 10px;
-	margin-top: 10px;
+	margin: 10px;
 }
 
 #ans_input {
@@ -356,6 +383,7 @@ textarea {
 	border: 3px #aaaaaa solid;	  /* 枠線の装飾 */
 	background-color: #FFFFFF;	/* 背景色 */
 	padding: 10px;
+	margin-top: 10px;
 	margin-bottom: 10px;
 	}
 
@@ -364,20 +392,20 @@ textarea {
 	font-size: 1.1em;
 	font-weight: normal;
 	text-decoration: none;
-	border: 1px #aaaaaa solid;	  /* 枠線の装飾 */
+	border: 1px #000000 solid;	  /* 枠線の装飾 */
 	background-color: #FFFFFF;	/* 背景色 */
 	padding: 2px;
-	margin-bottom: 10px;
+	font-family: serif;
 	}
 
 .change_form {
-	border: 1px #000000 solid;	  /* 枠線の装飾 */
+	border-radius: 6px;		/* CSS3 */
+	-moz-border-radius: 6px;	 /* Firefox */
+	-webkit-border-radius: 6px; /* Safari,Chrome */
+	border: 1px #444444 solid;	  /* 枠線の装飾 */
 	background-color: #FFFFFF;	/* 背景色 */
 	padding:5px 20px;
-	margin-left: 30px;
-	margin-right: 30px;
-	margin-bottom: 10px;
-	margin-top: 10px;
+	margin: 10px;
 }
 
 #change_input {
@@ -387,8 +415,9 @@ textarea {
 	
 	border: 2px #dddddd solid;	  /* 枠線の装飾 */
 	background-color: #FFFFFF;	/* 背景色 */
-	padding: 8px;
-	margin-bottom: 5px;
+	padding: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
 	}
 
 .pastlog_content {
@@ -396,11 +425,11 @@ textarea {
 	-moz-border-radius: 8px;	 /* Firefox */
 	-webkit-border-radius: 8px; /* Safari,Chrome */
 	
-	border: 3px #444444 solid;	  /* 枠線の装飾 */
+	border: 1px #444444 solid;	  /* 枠線の装飾 */
 	background-color: #FFFFFF;	/* 背景色 */
 	padding: 10px;
-	margin: 10px auto;
-	width: 600px;
+	margin: 10px 10px;
+	text-align: left;
 }
 
 .creater_name {

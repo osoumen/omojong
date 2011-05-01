@@ -1,7 +1,7 @@
 {include file={$header_path}}
 <div id="content_main">
-<p>以下の条件で始めますか？</p>
 <div class="input_form">
+<h3>以下の条件で始めますか？</h3>
 <dl>
 <dt>参加人数</dt>
 <dd>{$in.ninzuu}人〜{$in.ninzuu_max}人</dd>
@@ -17,6 +17,13 @@
 新着リストに公開しない
 {/if}
 </dd>
+<dd>
+{if isset($in.friends_only) && ($in.friends_only != 0)}
+参加をfollowerのみに制限する
+{else}
+誰でも参加可能
+{/if}
+</dd>
 </dl>
 <form action="page_start.php" method="post">
 <input type="hidden" name="mode" value="start">
@@ -30,6 +37,11 @@
 <input type="hidden" name="allow_disclose" value="{$in.allow_disclose}">
 {else}
 <input type="hidden" name="allow_disclose" value="0">
+{/if}
+{if isset($in.friends_only)}
+<input type="hidden" name="friends_only" value="{$in.friends_only}">
+{else}
+<input type="hidden" name="friends_only" value="0">
 {/if}
 <input type="submit" class="right_btn" name="submit" value="ＯＫ">
 </form>

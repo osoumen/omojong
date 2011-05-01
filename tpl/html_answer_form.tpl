@@ -1,5 +1,5 @@
 <div class="answer_form">
-<div class="question">以下の単語を使用して、文を作って下さい。</div>
+<div class="question">以下の単語を使って、文を作って下さい。</div>
 {section name=list loop="$stock_array"}
 <button onclick="input_word({$stock_array[list]},'{$word_array[list]}')" class="ans_word">
 {$word_array[list]}

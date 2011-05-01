@@ -46,6 +46,7 @@ function mojilen(str,ansnum,tweetmsg) {
 }
 //-->
 </script>
+<div id="content_main">
 <?php
 //過去ログナビゲーション
 write_pastlog_nav( $link, $num, $pastlog_table_name );
@@ -93,6 +94,7 @@ while ( $row = mysql_fetch_array( $query, MYSQL_NUM ) ) {
 ?>
 <div id="pre_footer">
 <a href="<?php echo $g_script; ?>" target=_top>戻る</a>
+</div>
 </div>
 <?php
 //フッター

@@ -5,12 +5,12 @@ $pagetitle = '';
 $smarty->assign( 'pagetitle', $pagetitle );
 $smarty->display( $g_tpl_path . 'header.tpl' );
 ?>
-<div id="content_main">
+<div id="content_left">
 <?php
 $myname = $_SESSION['access_token']['screen_name'];
 
-echo '<div class="sanka_list"';
-echo '<h2>参加中</h2>';
+echo '<div class="general_container">';
+echo "<h2>$myname さんが参加中</h2>";
 for ($i=0; $i<count($session_key_list); $i++) {
 	echo '<a href="' . $g_script . '?p=' . $session_key_list[$i] . '">';
 	
@@ -30,8 +30,8 @@ for ($i=0; $i<count($session_key_list); $i++) {
 }
 echo '</div>';
 
-echo '<div class="sanka_list"';
-echo '<h2>最近始めたユーザー</h2>';
+echo '<div class="general_container"';
+echo '<h3>最近始めたユーザー</h3>';
 $disclosed_session_key = get_disclosed_session_key( $link );
 foreach ( $disclosed_session_key as $key => $value ) {
 	$url = sprintf( "%s?%s=%d", $g_script, $gameid_param_name, $value );

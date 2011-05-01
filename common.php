@@ -124,6 +124,7 @@ function load_session_table( $link ) {
 	$members_table_name = $row['members_table_name'];
 	$kaitou_table_name = $row['kaitou_table_name'];
 	$session['allow_disclose'] = $row['allow_disclose'];
+	$session['friends_only'] = $row['friends_only'];
 	
 	return $session;
 }
@@ -154,7 +155,8 @@ function store_session_table( $link, $session ) {
 			words_table_name text,
 			members_table_name text,
 			kaitou_table_name text,
-			allow_disclose bool
+			allow_disclose bool,
+			friends_only bool
 			)');
 	$query = mysql_query( $sql, $link );
 	
@@ -163,7 +165,7 @@ function store_session_table( $link, $session ) {
 	$query = mysql_query( $sql, $link );
 	
 	//セッション情報を書き込む
-	$sql = sprintf( "INSERT INTO session VALUES( '%s', '%s', '%s', %d, %d, %d, %d, %d, '%s', '%s', '%s', %d )",
+	$sql = sprintf( "INSERT INTO session VALUES( '%s', '%s', '%s', %d, %d, %d, %d, %d, '%s', '%s', '%s', %d, %d )",
 	$session['leadername'],
 	$session['session_key'],
 	$session['phase'],
@@ -175,7 +177,8 @@ function store_session_table( $link, $session ) {
 	$words_table_name,
 	$members_table_name,
 	$kaitou_table_name,
-	$session['allow_disclose']
+	$session['allow_disclose'],
+	$session['friends_only']
 	);
 	$query = mysql_query( $sql, $link );
 }
@@ -287,6 +290,22 @@ function is_member($name) {
 	return FALSE;
 }
 */
+
+function is_follower( $myname, $session,$access_token,$access_token_secret ) {
+	$is_friend = '';
+	// OAuthオブジェクト生成
+	$to = new TwitterOAuth(CONSUMER_KEY,CONSUMER_SECRET,$access_token,$access_token_secret);
+
+	$req = $to->OAuthRequest("http://api.twitter.com/1/friendships/exists.xml","GET",array("user_a"=>$myname,"user_b"=>$session['leadername']));
+	$xml = (array)simplexml_load_string($req);
+	if ( empty($xml[0]) ) {
+		$is_friend = 'error';
+	}
+	else {
+		$is_friend = $xml[0];
+	}
+	return $is_friend;
+}
 
 function store_members( $link, $members, $stock, $changerest, $change_amount ) {
 	global $members_table_name;

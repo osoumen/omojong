@@ -193,7 +193,13 @@ else {
 			$session['allow_disclose'] = $in['allow_disclose'];
 		}
 		else {
-			$session['allow_disclose'] = $in['allow_disclose'];
+			$session['allow_disclose'] = false;
+		}
+		if ( isset($in['friends_only']) ) {
+			$session['friends_only'] = $in['friends_only'];
+		}
+		else {
+			$session['friends_only'] = false;
 		}
 
 		$members[0] = $player_name;

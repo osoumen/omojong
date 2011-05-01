@@ -23,6 +23,7 @@ $smarty->assign( 'pagetitle', $pagetitle );
 $smarty->display( $g_tpl_path . 'header.tpl' );
 
 echo '<div id="content_left">';
+
 //参加者一覧表示
 write_members_html( $members, $stock, $c_username );
 
