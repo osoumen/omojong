@@ -111,7 +111,7 @@ if ( $is_last ) {
 	$pagetitle = '参加';
 	$smarty->assign( 'pagetitle', $pagetitle );
 	
-	$message = '参加しました。';
+	$message = '参加しました';
 	$smarty->assign( 'message', $message );
 
 	$default_msg = $notifymsg1;
@@ -120,9 +120,12 @@ if ( $is_last ) {
 	$post_token = generate_post_token();
 	$_SESSION['post_token'] = $post_token;
 
+	$to = $members;
+	
 	$smarty->assign( 'default_msg', $default_msg );
 	$smarty->assign( 'post_msg', $post_msg );
 	$smarty->assign( 'post_token', $post_token );
+	$smarty->assign( 'to', $to );
 	$smarty->display( $g_tpl_path . 'page_send_mention.tpl' );
 }
 else {

@@ -53,7 +53,8 @@ body {
 	font-size: 0.9em;
 	font-family: "Arial", sans-serif;
 	color: #333;
-	background-color: #FFCCCC;
+	background-color: #ffeeee;
+//	background-color: #FFCCCC;
 	margin: 0px;
 }
  
@@ -137,7 +138,6 @@ a {
 #toptitle {
 	color: #000000;
 	font-size: 1.2em;
-//	font-family: serif;
 	text-decoration: none;
 	font-weight: bold; 
 	display: inline;
@@ -155,7 +155,6 @@ a {
 	background-color: #FFFFFF;	/* 背景色 */
 	padding: 10px;
 	margin: 10px 10px;
-	text-align: left;
 }
 
 .general_container h2 {
@@ -456,19 +455,20 @@ textarea {
 	font-size: 0.9em;
 	}
 
-.tweet_example {
-	border-radius: 16px;		/* CSS3 */
-	-moz-border-radius: 16px;	 /* Firefox */
-	-webkit-border-radius: 16px; /* Safari,Chrome */
-	border: 1px #ff8888 dashed;	  /* 枠線の装飾 */
-	padding: 2px;
-	margin: 10px auto;
-	min-width: 600px;
-	width: 600px;
-	}
+.twitter_input {
+	text-align: left;
+}
+
+.twitter-field {
+	float: left;
+}
 
 .timeline {
 	text-align: left;
+}
+
+.post_msg {
+	clear: both;
 }
 
 .clearfix:after {

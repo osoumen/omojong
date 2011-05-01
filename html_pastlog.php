@@ -28,6 +28,7 @@ $pagetitle = '今までの結果を見る';
 $smarty->assign( 'pagetitle', $pagetitle );
 $smarty->display( $g_tpl_path . 'header.tpl' );
 ?>
+<script src="http://widgets.twimg.com/j/2/widget.js"></script>
 <div id="content_main">
 <?php
 //過去ログナビゲーション

@@ -77,7 +77,7 @@ else {
 		$pagetitle = '解答の終了';
 		$smarty->assign( 'pagetitle', $pagetitle );
 		
-		$message = '全員の解答が終わりました。';
+		$message = '全員の解答が終わりました';
 		$smarty->assign( 'message', $message );
 		
 		$default_msg = $notifymsg2;
@@ -86,9 +86,12 @@ else {
 		$post_token = generate_post_token();
 		$_SESSION['post_token'] = $post_token;
 	
+		$to = $members;
+		
 		$smarty->assign( 'default_msg', $default_msg );
 		$smarty->assign( 'post_msg', $post_msg );
 		$smarty->assign( 'post_token', $post_token );
+		$smarty->assign( 'to', $to );
 		$smarty->display( $g_tpl_path . 'page_send_mention.tpl' );
 	}
 	else {

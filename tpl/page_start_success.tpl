@@ -1,5 +1,6 @@
 {include file={$header_path}}
 <div id="content_main">
+<div class="general_container">
 <h3>スタートしました</h3>
 <dl>
 <dt>人数</dt>
@@ -12,5 +13,6 @@
 </div>
 <div id="pre_footer">
 <a href="{$g_script}" target=_top>戻る</a>
+</div>
 </div>
 {include file={$footer_path}}

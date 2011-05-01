@@ -51,7 +51,7 @@ foreach ( $members as $memb ) {
 		}
 	}
 	if ( $error ) {
-		error('Twitterのエラーのため、発言出来ませんでした。('.$error.')');
+		error('Twitterのエラーのため処理されませんでした。('.$error.')');
 	}
 }
 

@@ -16,16 +16,15 @@
 <input type="hidden" name="post_token" value="{$post_token}"/>
 <input type="hidden" name="tweet_msg" value="{$tweet_msg}"/>
 <textarea onKeyup="mojirest(value,{$ansindex},'{$tweet_msg}')" class="twitter-field" name="entry_content" tabindex=3 rows="2" cols="50"></textarea>
-<input id="twitter-button{$ansindex}" type="submit" disabled="disabled" value="Twitterでコメント">
+<span id="msg{$ansindex}">残り</span>
+<input id="twitter-button{$ansindex}" type="submit" disabled="disabled" value="コメントをツイート">
 </form>
-+ {$tweet_msg}<br />
-<span id="msg{$ansindex}"></span>
+<div class="post_msg">+ {$tweet_msg}</div>
 {else}
 <p>Twitterでログインするとコメントが出来ます。</p>
 {/if}
 </div>
 <div class="timeline">
-	<script src="http://widgets.twimg.com/j/2/widget.js"></script>
 	<script>
 	new TWTR.Widget({
 	  version: 2,

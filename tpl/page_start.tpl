@@ -53,7 +53,7 @@ checked='checked'
 >
 新着リストに公開する
 </dd>
-<dd>あなたをフォローしている人だけ参加できるように制限します。</dd>
+<dd>あなたをフォローしている人だけ参加できるようにします。</dd>
 <dd>
 <input type='checkbox' name='friends_only' value='1' 
 {if isset($in.friends_only)}
