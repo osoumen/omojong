@@ -28,7 +28,7 @@ function is_exist_table( $link, $table_name ) {
 function get_disclosed_session_key( $link ) {
 	$disclosed_session_key = array();
 	
-	$sql = 'SELECT * FROM session WHERE allow_disclose = 1';
+	$sql = 'SELECT * FROM session WHERE allow_disclose = 1 ORDER BY session_key DESC LIMIT 20';
 	$query = mysql_query( $sql, $link );
 	if ( $query ) {
 		while ( $row = @mysql_fetch_array( $query, MYSQL_ASSOC ) ) {

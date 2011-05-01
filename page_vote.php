@@ -47,7 +47,7 @@ while ( $row = mysql_fetch_array( $query, MYSQL_NUM ) ) {
 
 //HOT機能(一定数の得票数の作品を自動でツイートする)
 if ( $votes == $g_hot_votes ) {
-	$pre = 'ＨＯＴ＜';
+	$pre = 'おみごと！＜';
 	$url = '＞ ' . $g_scripturl . '?' .$pastlog_param_name. '=' . $in[$pastlog_param_name] . '#' . $in['ansnum'];
 	
 	//合計文字数140文字をオーバーしていたら本文を縮める
@@ -65,9 +65,13 @@ $smarty->assign( 'pagetitle', $pagetitle );
 $smarty->display( 'tpl/header.tpl' );
 ?>
 <div id="content_main">
+<div class="general_container">
 <h3><?php echo $sentence; ?></h3>
 に対して「おみごと！」と言いました。<br />
+</div>
+<div id="pre_footer">
 <a href="<?php echo "$g_script?$pastlog_param_name=$in[$pastlog_param_name]"; ?>" target=_top>戻る</a>
+</div>
 </div>
 <?php
 $smarty->display( 'tpl/footer.tpl' );

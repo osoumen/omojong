@@ -10,9 +10,8 @@
 <input type="hidden" name="confirm" value="{$g_start_confirm}">
 <dl>
 <dt>参加人数</dt>
-<dd>必要人数と最大人数を設定します。必要人数が集まった時点で、
-参加者のTwitterの発言から単語を取得します。それ以降の参加者は途中参加となるため、
-発言を取得しません。</dd>
+<dd>必要人数と最大人数を設定します。必要人数が集まると解答出来るようになります。
+集まった時点での参加者の発言を取得します。それ以降の途中参加者の単語は取得しません。</dd>
 <dd>
 <select name="ninzuu">
 {html_options options=$ninzuu_options selected=$in.ninzuu}

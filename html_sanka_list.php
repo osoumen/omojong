@@ -30,21 +30,22 @@ for ($i=0; $i<count($session_key_list); $i++) {
 }
 echo '</div>';
 
-echo '<div class="general_container"';
-echo '<h3>最近始めたユーザー</h3>';
+echo '<div class="member">';
+echo '<h4>最近始めたユーザー</h4>';
+echo '<ul>';
 $disclosed_session_key = get_disclosed_session_key( $link );
 foreach ( $disclosed_session_key as $key => $value ) {
 	$url = sprintf( "%s?%s=%d", $g_script, $gameid_param_name, $value );
-	echo '<a href="' . $url . '">';
+	echo '<li><a href="' . $url . '">';
 	echo $key;
-	echo '</a><br />';
+	echo 'さん</a></li>';
 }
+echo '</ul>';
 echo '</div>';
 ?>
 </div>
-</div>
 <div id="pre_footer">
-<a href="<?php echo $g_script.'?'.$pastlog_param_name.'=new';?>">今までの結果を見る</a>
+<a href="<?php echo $g_script.'?'.$pastlog_param_name.'=new';?>">これまでに作成された文を見る</a>
 </div>
 <?php
 //フッター
