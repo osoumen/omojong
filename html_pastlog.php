@@ -37,8 +37,7 @@ write_pastlog_nav( $link, $num, $pastlog_table_name );
 $kekka_table = sprintf( "%s_%d", $pastlog_table_name, $num );
 
 //投稿用トークン生成
-$seed = $_SERVER['REMOTE_ADDR'] . date('c');
-$post_token = hash('ripemd160', $seed);
+$post_token = generate_post_token();
 $_SESSION['post_token'] = $post_token;
 
 if ( is_exist_table( $link, $kekka_table ) == FALSE ) {

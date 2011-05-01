@@ -1,6 +1,7 @@
 {include file={$header_path}}
 <div id="content_main">
-<h3>参加しました。</h3>
+<div class="general_container">
+<h3>{$message}</h3>
 <p>他のメンバーに知らせますか？</p>
 <p>Twitterのmentionを使用して他のメンバーに知らせることが出来ます。</p>
 <form class="twitter_form" action="page_msg_send.php" method="post">
@@ -11,6 +12,9 @@
 </form>
 + {$post_msg}<br />
 <span id="msg0"></span>
+</div>
+<div id="pre_footer">
 <a href="{$g_script}" target=_top>戻る</a>
+</div>
 </div>
 {include file={$footer_path}}

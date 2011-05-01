@@ -142,19 +142,20 @@ else {
 	if ( $is_last ) {
 		$pagetitle = '解答の確認';
 		$smarty->assign( 'pagetitle', $pagetitle );
-		$smarty->assign( 'sentence', $sentence );
+		
+		$message = '全員の解答が終わりました。';
+		$smarty->assign( 'message', $message );
 		
 		$default_msg = $notifymsg2;
 		$post_msg = $g_scripturl . '?p=' . $session['session_key'];
 		//投稿用トークン生成
-		$seed = $_SERVER['REMOTE_ADDR'] . date('c');
-		$post_token = hash('ripemd160', $seed);
+		$post_token = generate_post_token();
 		$_SESSION['post_token'] = $post_token;
 	
 		$smarty->assign( 'default_msg', $default_msg );
 		$smarty->assign( 'post_msg', $post_msg );
 		$smarty->assign( 'post_token', $post_token );
-		$smarty->display( $g_tpl_path . 'page_answer.tpl' );
+		$smarty->display( $g_tpl_path . 'page_send_mention.tpl' );
 	}
 	else {
 		header('Location: ' . $g_scripturl);

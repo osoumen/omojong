@@ -739,3 +739,9 @@ function write_pastlog_nav( $link, $current_num, $pastlog_table_name, $pages=20 
 	}
 	echo '</div>';
 }
+
+function generate_post_token() {
+	$seed = $_SERVER['REMOTE_ADDR'] . date('c');
+	$post_token = hash('ripemd160', $seed);
+	return $post_token;
+}
