@@ -41,9 +41,7 @@ if ( in_array($c_username, $members) ) {
 }
 else {
 	//参加者以外
-	if ( count( $members ) < $session['ninzuu_max'] ) {
-		echo '<a href="page_join.php"><p>途中参加する</p></a>';
-	}
+	write_sanka_navi( $session, $members, $c_username );
 }
 //このページへのリンク
 write_urltweet( $g_scripturl, $session['session_key'] );

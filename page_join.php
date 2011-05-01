@@ -33,7 +33,7 @@ if ( in_array($in['username'], $members) ) {
 if ( $session['friends_only'] ) {
 	$is_follower = is_follower( $in['username'], $session,
 	$_SESSION['access_token']['oauth_token'],$_SESSION['access_token']['oauth_token_secret'] );
-	if ( $is_follower != 'true' ) {
+	if ( $is_follower !== true ) {
 		message( '参加', $session['leadername'] . "さんのフォロアーのみに制限されています。");
 	}
 }

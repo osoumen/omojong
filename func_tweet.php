@@ -19,7 +19,7 @@ if ( empty( $in['entry_content'] ) ) {
 }
 
 //データベースに接続
-$link = connect_db();
+//$link = connect_db();
 
 //ログインしてなかったらtopに飛ぶ
 if ( is_login() == false ) {

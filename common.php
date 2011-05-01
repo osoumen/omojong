@@ -282,14 +282,20 @@ function post_tweet($inmsg,$access_token,$access_token_secret) {
 	return $error;
 }
 
-/*
-function is_member($name) {
-	if ( in_array($name, $members) ) {
-		return TRUE;
+function follow_id($id,$access_token,$access_token_secret) {
+	$error = '';
+	// OAuthオブジェクト生成
+	$to = new TwitterOAuth(CONSUMER_KEY,CONSUMER_SECRET,$access_token,$access_token_secret);
+	
+	// フォロー
+	$req = $to->OAuthRequest("https://api.twitter.com/1/friendships/create.xml","POST",array("id"=>$id));
+	$xml = simplexml_load_string($req);
+
+	if ( isset( $xml->error ) ) {
+		$error = $xml->error;
 	}
-	return FALSE;
+	return $error;
 }
-*/
 
 function is_follower( $myname, $session,$access_token,$access_token_secret ) {
 	$is_friend = '';
@@ -302,7 +308,7 @@ function is_follower( $myname, $session,$access_token,$access_token_secret ) {
 		$is_friend = 'error';
 	}
 	else {
-		$is_friend = $xml[0];
+		$is_friend = ($xml[0]==='true')?true:false;
 	}
 	return $is_friend;
 }
@@ -654,15 +660,48 @@ function write_members_only_html( $members, $myname, $session=NULL, $caption=NUL
 }
 
 function write_sanka_navi( $session, $members, $myname ) {
-	//残り参加人数表示
-	$rest = $session['ninzuu'] - count( $members );
-	if ( $rest > 0 ) {
-		echo "<p>あと$rest 人の参加が必要です。</p>";
+	global $gameid_param_name;
+	//リーダーをフォローしているかどうか調べる
+	$is_follower = true;
+	if ( $session['friends_only'] ) {
+		$is_follower = is_follower( $myname, $session,
+		$_SESSION['access_token']['oauth_token'],$_SESSION['access_token']['oauth_token_secret'] );
 	}
-	
-	if ( !in_array($myname, $members) ) {
-		//参加者以外の場合
-		echo '<a href="page_join.php"><p>参加する</p></a>';
+	if ( $is_follower === 'error' ) {
+		echo '<p>現在Twitterが利用できません。</p>';
+		return;
+	}
+
+	if ( $session['phase'] == 'sanka' ) {
+		//残り参加人数表示
+		$rest = $session['ninzuu'] - count( $members );
+		if ( $rest > 0 ) {
+			echo "<p>あと$rest 人の参加が必要です。</p>";
+		}
+		
+		if ( !in_array($myname, $members) ) {
+			if ( $is_follower ) {
+				//参加者以外の場合
+				echo '<a href="page_join.php"><p>参加する</p></a>';
+			}
+			else {
+				echo '<p>参加するには<a href="func_follow.php?' . $gameid_param_name . '=';
+				echo $session['session_key'] . '">';
+				echo $session['leadername'] .'さんをフォロー</a>してください。</p>';
+			}
+		}
+	}
+	elseif ( $session['phase'] == 'toukou' ) {
+		if ( count( $members ) < $session['ninzuu_max'] ) {
+			if ( $is_follower ) {
+				echo '<a href="page_join.php"><p>途中参加する</p></a>';
+			}
+			else {
+				echo '<p>参加するには<a href="func_follow.php?' . $gameid_param_name . '=';
+				echo $session['session_key'] . '">';
+				echo $session['leadername'] .'さんをフォロー</a>してください。</p>';
+			}
+		}
 	}
 }
 
