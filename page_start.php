@@ -83,11 +83,15 @@ if ( isset($in['confirm']) ) {
 	if ($in['maisuu'] == '') {
 		$in['maisuu'] = 10;
 	}
-	if ( ctype_digit($in['allow_disclose']) == FALSE ) {
-		$err_str = '入力値が範囲外です。';
+	if ( isset( $in['allow_disclose'] ) ) {
+		if ( ctype_digit($in['allow_disclose']) == FALSE ) {
+			$err_str = '入力値が範囲外です。';
+		}
 	}
-	if ( ctype_digit($in['friends_only']) == FALSE ) {
-		$err_str = '入力値が範囲外です。';
+	if ( isset( $in['friends_only'] ) ) {
+		if ( ctype_digit($in['friends_only']) == FALSE ) {
+			$err_str = '入力値が範囲外です。';
+		}
 	}
 }
 

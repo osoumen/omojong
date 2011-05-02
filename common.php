@@ -445,18 +445,19 @@ function is_login() {
 	if (empty($_SESSION['access_token']) || empty($_SESSION['access_token']['oauth_token']) || empty($_SESSION['access_token']['oauth_token_secret'])) {
 		$is_login = false;
 	}
-	
-	$to = new TwitterOAuth(CONSUMER_KEY,CONSUMER_SECRET,
-	$_SESSION['access_token']['oauth_token'],$_SESSION['access_token']['oauth_token_secret']);
-	
-	$count = 0;
-	$req = $to->OAuthRequest("https://twitter.com/statuses/home_timeline.xml","POST",array("count"=>$count));
-	$xml = simplexml_load_string($req);
-print_r( $xml );
-	if ( isset( $xml->error ) ) {
-		$is_login = false;
+	/*
+	else {
+		//ログイン情報が正しいかチェック
+		$to = new TwitterOAuth(CONSUMER_KEY,CONSUMER_SECRET,
+		$_SESSION['access_token']['oauth_token'],$_SESSION['access_token']['oauth_token_secret']);
+		$count = 0;
+		$req = $to->OAuthRequest("https://twitter.com/statuses/home_timeline.xml","GET",array("count"=>$count));
+		$xml = simplexml_load_string($req);
+		if ( isset( $xml->error ) ) {
+			$is_login = false;
+		}
 	}
-
+	*/
 	return $is_login;
 }
 
