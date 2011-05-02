@@ -5,10 +5,14 @@ require_once 'common.php';
 $pagetitle = '中断';
 $smarty->assign( 'pagetitle', $pagetitle );
 $smarty->display( 'tpl/header.tpl' );
+
+if ( ctype_digit( $_REQUEST[$gameid_param_name] ) == FALSE ) {
+	error("送信内容が不正です。");
+}
 ?>
 <div id="content_main">
 <div class="general_container">
-進行中のゲームを中断して最初からやり直しますか？<br />
+<p>進行中のゲームを中断して最初からやり直しますか？</p>
 <a href="page_start.php?p=<?php echo $_REQUEST[$gameid_param_name] ?>" target=_top>ＯＫ</a><br />
 </div>
 <div id="pre_footer">

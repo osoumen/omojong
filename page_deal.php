@@ -17,7 +17,7 @@ $phase = $session['phase'];
 if ( is_login() == false ) {
 	header('Location: ' . $g_scripturl);
 }
-$in['username'] = $_SESSION['access_token']['screen_name'];
+//$in['username'] = $_SESSION['access_token']['screen_name'];
 
 //phaseがdealでなかったらtopへ
 if ( $phase != 'deal' ) {

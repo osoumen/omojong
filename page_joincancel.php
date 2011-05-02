@@ -34,7 +34,7 @@ if ($c_username == $session['leadername']) {
 }
 
 //メンバーリストから取り除く
-$sql = sprintf( "DELETE FROM %s WHERE username = '%s';", $members_table_name, $c_username );
+$sql = sprintf( "DELETE FROM %s WHERE username = '%s'", $members_table_name, $c_username );
 $query = mysql_query( $sql, $link );
 
 header('Location: ' . $g_scripturl);

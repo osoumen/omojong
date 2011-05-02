@@ -7,7 +7,7 @@ $smarty->display( $g_tpl_path . 'header.tpl' );
 ?>
 <div id="content_left">
 <?php
-$myname = $_SESSION['access_token']['screen_name'];
+$myname = htmlspecialchars( $_SESSION['access_token']['screen_name'] );
 
 echo '<div class="general_container">';
 echo "<h2>$myname さんが参加中</h2>";

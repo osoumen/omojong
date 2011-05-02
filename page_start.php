@@ -42,39 +42,52 @@ if ( isset($in['confirm']) ) {
 	}
 	elseif (ctype_digit($in['ninzuu']) == FALSE) {
 		$err_str = '人数には数値を指定してください。';
+		unset( $in['ninzuu'] );
 	}
 	elseif ($in['ninzuu'] < 2) {
 		$err_str = '２人以上の人数が必要です。';
 	}
 	elseif (ctype_digit($in['ninzuu_max']) == FALSE) {
 		$err_str = '人数には数値を指定してください。';
+		unset( $in['ninzuu_max'] );
 	}
 	elseif ($in['ninzuu_max'] < $in['ninzuu']) {
 		$err_str = '最大人数が最少人数より少ないです。';
 	}
 	elseif (ctype_digit($in['maisuu']) == FALSE) {
 		$err_str = '枚数には数値を指定してください。';
+		unset( $in['maisuu'] );
 	}
 	elseif ($in['maisuu'] < 4) {
 		$err_str = '枚数が少なすぎます。';
 	}
 	elseif (ctype_digit($in['change_quant']) == FALSE) {
 		$err_str = '交換可能回数は数値で指定してください。';
+		unset( $in['change_quant'] );
 	}
 	elseif ($in['change_quant'] < 0) {
 		$err_str = '交換可能回数の数値が不正です。';
+		unset( $in['change_quant'] );
 	}
 	elseif (ctype_digit($in['change_amount']) == FALSE) {
 		$err_str = '交換可能枚数は数値で指定してください。';
+		unset( $in['change_amount'] );
 	}
 	elseif ($in['change_amount'] < 0) {
 		$err_str = '交換可能枚数の数値が不正です。';
+		unset( $in['change_amount'] );
 	}
 	if ($in['ninzuu_max'] == '') {
 		$in['ninzuu_max'] = $in['ninzuu'];
 	}
 	if ($in['maisuu'] == '') {
 		$in['maisuu'] = 10;
+	}
+	if ( ctype_digit($in['allow_disclose']) == FALSE ) {
+		$err_str = '入力値が範囲外です。';
+	}
+	if ( ctype_digit($in['friends_only']) == FALSE ) {
+		$err_str = '入力値が範囲外です。';
 	}
 }
 

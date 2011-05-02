@@ -7,9 +7,16 @@ require_once 'common.php';
 $link = connect_db();
 
 $in = $_REQUEST;
+$in['answer'] = htmlspecialchars($in['answer']);
 
 //無入力はエラー
 if ( empty($in[$gameid_param_name]) || empty($in['answer']) ) {
+	echo 'error!: '.$in['answer'];
+	exit;
+}
+
+//数字以外が入っていたらエラー
+if ( !ctype_digit($in[$gameid_param_name]) ) {
 	echo 'error!: '.$in['answer'];
 	exit;
 }

@@ -10,6 +10,14 @@ $session = array();
 
 $in = array_merge( $_POST, $_GET );
 
+//--エラーチェック--
+if ( ctype_digit( $in['ansnum'] ) == FALSE ) {
+	error("送信内容が不正です。");
+}
+if ( ctype_digit( $in[$pastlog_param_name] ) == FALSE ) {
+	error("送信内容が不正です。");
+}
+
 //過去データへの投票の場合
 if ( isset($in[$pastlog_param_name]) ) {
 	$kaitou_table_name = $pastlog_table_name . '_' . $in[$pastlog_param_name];
@@ -22,11 +30,6 @@ elseif ( isset($in[$gameid_param_name]) ) {
 */
 else {
 	error("対象が指定されていません。");
-}
-
-//--エラーチェック--
-if ( ctype_digit( $in['ansnum'] ) == FALSE ) {
-	error("投票は数値を指定してください。");
 }
 
 //解答ファイル中の得票数をインクリメントする

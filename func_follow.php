@@ -20,7 +20,8 @@ if ( is_login() == false ) {
 //認証情報を利用してフォローを行う
 $error = follow_id( $id, $_SESSION['access_token']['oauth_token'],$_SESSION['access_token']['oauth_token_secret']);
 if ( $error ) {
-	error('Twitterのエラーのため、処理出来ませんでした。('.$error.')');
+	//error('Twitterのエラーのため、処理出来ませんでした。('.$error.')');
+	error('Twitterのエラーのため、処理出来ませんでした。');
 }
 
 //直前のページに戻る

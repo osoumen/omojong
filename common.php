@@ -9,7 +9,7 @@ function connect_db() {
 	$g_dbpassword = 'korogottu';
 
 	if ( !$link = mysql_connect( $dbServer, $g_dbuser, $g_dbpassword ) ) {
-		die('データベースに接続できませんでした');
+		die('接続できませんでした');
 	}
 	mysql_select_db( G_DATABASE, $link );
 	$sql = "SET NAMES utf8";
@@ -41,7 +41,7 @@ function get_disclosed_session_key( $link ) {
 function get_new_session_key( $link, $leader_name ) {
 	$session_key = 99999;
 	//セッションテーブル内にleader_nameがあればそのセッションのキーを返す
-	$sql = sprintf( "SELECT * FROM session WHERE leadername = %s", $leader_name );
+	$sql = sprintf( "SELECT * FROM session WHERE leadername = %s", mysql_escape_string($leader_name) );
 	$query = mysql_query( $sql, $link );
 	if ( $query ) {
 		$exists = mysql_num_rows( $query );
@@ -99,6 +99,7 @@ function load_session_table( $link ) {
 	}
 	
 	//セッション情報を読み込む
+	$session_key = mysql_escape_string( $session_key );
 	$sql = sprintf( "SELECT * FROM session WHERE session_key = %s", $session_key );
 	$query = mysql_query( $sql, $link );
 	if ( !$query || mysql_num_rows( $query ) == 0 ) {
@@ -444,6 +445,18 @@ function is_login() {
 	if (empty($_SESSION['access_token']) || empty($_SESSION['access_token']['oauth_token']) || empty($_SESSION['access_token']['oauth_token_secret'])) {
 		$is_login = false;
 	}
+	
+	$to = new TwitterOAuth(CONSUMER_KEY,CONSUMER_SECRET,
+	$_SESSION['access_token']['oauth_token'],$_SESSION['access_token']['oauth_token_secret']);
+	
+	$count = 0;
+	$req = $to->OAuthRequest("https://twitter.com/statuses/home_timeline.xml","POST",array("count"=>$count));
+	$xml = simplexml_load_string($req);
+print_r( $xml );
+	if ( isset( $xml->error ) ) {
+		$is_login = false;
+	}
+
 	return $is_login;
 }
 
@@ -709,6 +722,7 @@ function redirect_to_prevpage() {
 	global $g_scripturl;
 	//直前のページに戻る
 	if ( isset( $_SERVER['HTTP_REFERER'] ) ) {
+		//改行コードを削除
 		$auth_back_url = str_replace(array("\r\n","\r","\n"), '', $_SERVER['HTTP_REFERER']);
 		header('Location: ' . $auth_back_url);
 	}

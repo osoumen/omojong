@@ -5,8 +5,6 @@ require_once 'common.php';
 
 dl('mecab.so');
 
-//$in = array_merge( $_POST, $_GET );
-
 //データベースに接続
 $link = connect_db();
 
@@ -83,24 +81,8 @@ else {
 }
 
 //Twitterから単語を取得
-//if ( $allow_addword == 0 ) {
-	add_word_from_twitter( $link, $words_table_name );
-//}
+add_word_from_twitter( $link, $words_table_name );
 
-//ウェルカム通知
-/*
-if ($usenotification0) {
-	if ( $use_useraccount_for_mension ) {
-		$error　=　commit_mention( $in['username'], $notifymsg0 . $session['session_key'], $_SESSION['access_token']['oauth_token'],$_SESSION['access_token']['oauth_token_secret']);
-	}
-	else {
-		$error　=　commit_mention( $in['username'], $notifymsg0 . $session['session_key'] );
-	}
-	if ( $error ) {
-		error('Twitterのエラーのため、発言出来ませんでした。('.$error.')');
-	}
-}
-*/
 //セッション情報をストア
 $session['phase'] = $phase;
 store_session_table( $link, $session );

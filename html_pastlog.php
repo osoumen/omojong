@@ -17,10 +17,13 @@ if ( $in[$pastlog_param_name] == 'new' ) {
 }
 else {
 	$num = $in[$pastlog_param_name];
+	if ( !ctype_digit( $num ) ) {
+		error( '指定されたログがありません。');
+	}
 }
 
 if ( $latest_pastlog < 0 ) {
-	error( 'ログがまだありません。');
+	error( '指定されたログがありません。');
 }
 
 //ヘッダー

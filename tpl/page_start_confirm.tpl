@@ -34,12 +34,12 @@
 <input type="hidden" name="change_quant" value="{$in.change_quant}">
 <input type="hidden" name="change_amount" value="{$in.change_amount}">
 {if isset($in.allow_disclose)}
-<input type="hidden" name="allow_disclose" value="{$in.allow_disclose}">
+<input type="hidden" name="allow_disclose" value="1">
 {else}
 <input type="hidden" name="allow_disclose" value="0">
 {/if}
 {if isset($in.friends_only)}
-<input type="hidden" name="friends_only" value="{$in.friends_only}">
+<input type="hidden" name="friends_only" value="1">
 {else}
 <input type="hidden" name="friends_only" value="0">
 {/if}

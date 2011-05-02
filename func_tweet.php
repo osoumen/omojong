@@ -27,7 +27,7 @@ if ( is_login() == false ) {
 }
 
 //メッセージに内容を付加してツイートを行う
-$tweet = $in['entry_content'] . $in['tweet_msg'];
+$tweet = htmlspecialchars( $in['entry_content'] . $in['tweet_msg'] );
 $error = post_tweet( $tweet, $_SESSION['access_token']['oauth_token'],$_SESSION['access_token']['oauth_token_secret']);
 if ( $error ) {
 	error('Twitterのエラーのため、発言出来ませんでした。('.$error.')');

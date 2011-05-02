@@ -17,7 +17,7 @@ if ( empty( $session ) ) {
 if ( mb_strlen( $in['word'] ) == 0 ) {
 	error("文字が入力されていません。");
 }
-$newword = $in['word'];
+$newword = mysql_real_escape_string( $in['word'] );
 
 //以前に同じ単語が入れられていないかチェック
 if ( isset( $in['forceadd'] ) == FALSE ) {

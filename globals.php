@@ -97,5 +97,5 @@ $kaitou_table_name = 'kaitou';
 $pastlog_table_name = 'pastlog';
 
 session_start();
-$g_screen_name = isset($_SESSION['access_token']['screen_name']) ? $_SESSION['access_token']['screen_name'] : '';
+$g_screen_name = isset($_SESSION['access_token']['screen_name']) ? htmlspecialchars($_SESSION['access_token']['screen_name']) : '';
 $smarty->assign( 'g_screen_name', $g_screen_name );

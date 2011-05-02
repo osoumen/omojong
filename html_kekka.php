@@ -11,7 +11,8 @@ $is_exist_pastlog = is_exist_table( $link, $table_name );
 load_members( $link, $members, $stock, $changerest, $change_amount );
 
 //参加者名を取得
-$c_username = isset($_SESSION['access_token']['screen_name']) ? $_SESSION['access_token']['screen_name'] : '';
+$c_username = isset($_SESSION['access_token']['screen_name']) ? htmlspecialchars($_SESSION['access_token']['screen_name']) : '';
+
 
 //結果ページのnumを求める
 $num = explode( '_', $kaitou_table_name );
