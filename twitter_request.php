@@ -15,7 +15,7 @@ switch ($connection->http_code) {
   case 200:  
 	//Twitter戻りURLをセット
 	if ( isset( $_SERVER['HTTP_REFERER'] ) ) {
-		$_SESSION['auth_back_url'] = $_SERVER['HTTP_REFERER'];
+		$_SESSION['auth_back_url'] = str_replace(array("\r\n","\r","\n"), '', $_SERVER['HTTP_REFERER']);
 	}
     //twitterの認証ページへ
     $url = $connection->getAuthorizeURL($token);

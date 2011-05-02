@@ -709,7 +709,7 @@ function redirect_to_prevpage() {
 	global $g_scripturl;
 	//直前のページに戻る
 	if ( isset( $_SERVER['HTTP_REFERER'] ) ) {
-		$auth_back_url = $_SERVER['HTTP_REFERER'];
+		$auth_back_url = str_replace(array("\r\n","\r","\n"), '', $_SERVER['HTTP_REFERER']);
 		header('Location: ' . $auth_back_url);
 	}
 	else {
