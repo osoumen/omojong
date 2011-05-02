@@ -6,7 +6,7 @@
 <p>Twitterのmentionを使用して他のメンバーに知らせることが出来ます。</p>
 <p>あなたのアカウントから以下の宛先ににmentionを送ります。</p>
 {foreach from="$to" item="value"}
-@{$value}<br />
+<p>@{$value}</p>
 {/foreach}
 <div class="twitter_input">
 <form class="twitter_form" action="page_msg_send.php" method="post">

@@ -19,17 +19,17 @@ $phase = $session['phase'];
 if ( is_login() == false ) {
 	header('Location: ' . $g_scripturl);
 }
-$in['username'] = $_SESSION['access_token']['screen_name'];
+$myname = $_SESSION['access_token']['screen_name'];
 
 load_members( $link, $members, $stock, $changerest, $change_amount );
 
-if ( in_array($in['username'], $members) ) {
+if ( in_array($myname, $members) ) {
 	error("既に参加しています。");
 }
 
 //開始した人のフォロワーかどうか調べる
 if ( $session['friends_only'] ) {
-	$is_follower = is_follower( $in['username'], $session,
+	$is_follower = is_follower( $myname, $session,
 	$_SESSION['access_token']['oauth_token'],$_SESSION['access_token']['oauth_token_secret'] );
 	if ( $is_follower !== true ) {
 		message( '参加', $session['leadername'] . "さんのフォロアーのみに制限されています。");
@@ -40,10 +40,10 @@ $is_last = '';
 
 if ($phase == 'sanka') {
 	//メンバーに追加
-	array_push( $members, $in['username'] );
-	$stock[$in['username']] = '';
-	$changerest[$in['username']] = $session['change_quant'];
-	$change_amount[$in['username']] = $session['change_amount'];
+	array_push( $members, $myname );
+	$stock[$myname] = '';
+	$changerest[$myname] = $session['change_quant'];
+	$change_amount[$myname] = $session['change_amount'];
 	
 	//通常の参加
 	//人数が集まったなら札配りモードへ移行、その後投稿モードへ移行
@@ -69,12 +69,12 @@ elseif (($phase == 'toukou') and (count($members) < $session['ninzuu_max']) ) {
 	if ( count($wordnumber) < 2 ) {
 		error("残り単語数が２に満たないので参加できません。");
 	}
-	$stock[$in['username']] = implode(',', array_splice($wordnumber, 0, $session['maisuu']));
+	$stock[$myname] = implode(',', array_splice($wordnumber, 0, $session['maisuu']));
 	
 	//メンバーに追加
-	array_push( $members, $in['username'] );
-	$changerest[$in['username']] = $session['change_quant'];
-	$change_amount[$in['username']] = $session['change_amount'];
+	array_push( $members, $myname );
+	$changerest[$myname] = $session['change_quant'];
+	$change_amount[$myname] = $session['change_amount'];
 }
 else {
 	error("現在は参加を受け付けていません。");
@@ -102,7 +102,12 @@ if ( $is_last ) {
 	$post_token = generate_post_token();
 	$_SESSION['post_token'] = $post_token;
 
-	$to = $members;
+	$to = array();
+	foreach ( $members as $memb ) {
+		if ( $memb != $myname ) {
+			$to[] = $memb;
+		}
+	}
 	
 	$smarty->assign( 'default_msg', $default_msg );
 	$smarty->assign( 'post_msg', $post_msg );

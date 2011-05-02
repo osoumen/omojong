@@ -86,7 +86,12 @@ else {
 		$post_token = generate_post_token();
 		$_SESSION['post_token'] = $post_token;
 	
-		$to = $members;
+		$to = array();
+		foreach ( $members as $memb ) {
+			if ( $memb != $c_username ) {
+				$to[] = $memb;
+			}
+		}
 		
 		$smarty->assign( 'default_msg', $default_msg );
 		$smarty->assign( 'post_msg', $post_msg );
