@@ -607,7 +607,7 @@ function add_word_from_twitter( $link, $words_table_name ) {
 
 function write_urltweet( $url, $session_key ) {
 	$page_url = $url . '?p=' . $session_key;
-	echo "<p><a href=\"http://twitter.com/share\" class=\"twitter-share-button\" data-url=\"$page_url\" data-text=\"\" data-count=\"none\" data-via=\"tsubmemo\" data-related=\"osoumen:作った人\" data-lang=\"ja\">Tweet</a><script type=\"text/javascript\" src=\"http://platform.twitter.com/widgets.js\"></script></p>";
+	echo "<p><a href=\"http://twitter.com/share\" class=\"twitter-share-button\" data-url=\"$page_url\" data-text=\"\" data-count=\"none\" data-related=\"osoumen:作った人\" data-lang=\"ja\">Tweet</a><script type=\"text/javascript\" src=\"http://platform.twitter.com/widgets.js\"></script></p>";
 }
 
 function write_members_html( $members, $stock, $myname ) {
