@@ -53,7 +53,7 @@ body {
 	font-size: 0.9em;
 	font-family: "Arial", sans-serif;
 	color: #333;
-	background-color: #ffeeee;
+	background-color: #dfe6df;
 	margin: 0px;
 }
  
@@ -97,10 +97,10 @@ li {
 }
 
 .input_form {
-	border-radius: 6px;		/* CSS3 */
-	-moz-border-radius: 6px;	 /* Firefox */
-	-webkit-border-radius: 6px; /* Safari,Chrome */
-	border: 1px #444444 solid;	  /* 枠線の装飾 */
+	border-radius: 20px;		/* CSS3 */
+	-moz-border-radius: 20px;	 /* Firefox */
+	-webkit-border-radius: 20px; /* Safari,Chrome */
+	border: 8px #eef0ee solid;	  /* 枠線の装飾 */
 	background-color: #FFFFFF;	/* 背景色 */
 	text-align: left;
 	min-width: 400px;
@@ -151,16 +151,20 @@ a {
 }
 
 .general_container {
-	border-radius: 6px;		/* CSS3 */
-	-moz-border-radius: 6px;	 /* Firefox */
-	-webkit-border-radius: 6px; /* Safari,Chrome */
-	border: 1px #444444 solid;	  /* 枠線の装飾 */
+	border-radius: 20px;		/* CSS3 */
+	-moz-border-radius: 20px;	 /* Firefox */
+	-webkit-border-radius: 20px; /* Safari,Chrome */
+	border: 8px #eef0ee solid;	  /* 枠線の装飾 */
 	background-color: #FFFFFF;	/* 背景色 */
 	padding: 10px;
 	margin: 10px 10px;
 }
 
 .general_container h2 {
+	text-align: center;
+}
+
+.general_container p {
 	text-align: center;
 }
 
@@ -211,11 +215,10 @@ textarea {
 }
 
 #log_navi {
-	border-radius: 8px;		/* CSS3 */
-	-moz-border-radius: 8px;	 /* Firefox */
-	-webkit-border-radius: 8px; /* Safari,Chrome */
-	
-	border: 1px #444444 solid;	  /* 枠線の装飾 */
+	border-radius: 20px;		/* CSS3 */
+	-moz-border-radius: 20px;	 /* Firefox */
+	-webkit-border-radius: 20px; /* Safari,Chrome */
+	border: 8px #eef0ee solid;	  /* 枠線の装飾 */
 	background-color: #FFFFFF;	/* 背景色 */
 	margin: 10px 10px;
 
@@ -254,7 +257,7 @@ textarea {
 	position: relative;
 	clear: both;
 	width: 100%;
-	background-color: #FF6699;
+	background-color: #5b726b;
 	color: #ffffff;
 	text-align: left;
 	font-size: 0.8em;
@@ -262,11 +265,10 @@ textarea {
 }
 
 #pre_footer {
-	border-radius: 8px;		/* CSS3 */
-	-moz-border-radius: 8px;	 /* Firefox */
-	-webkit-border-radius: 8px; /* Safari,Chrome */
-	
-	border: 1px #444444 solid;	  /* 枠線の装飾 */
+	border-radius: 20px;		/* CSS3 */
+	-moz-border-radius: 20px;	 /* Firefox */
+	-webkit-border-radius: 20px; /* Safari,Chrome */
+	border: 8px #eef0ee solid;	  /* 枠線の装飾 */
 	background-color: #FFFFFF;	/* 背景色 */
 	margin: 10px 10px;
 
@@ -363,10 +365,10 @@ textarea {
 	}
 
 .answer_form {
-	border-radius: 6px;		/* CSS3 */
-	-moz-border-radius: 6px;	 /* Firefox */
-	-webkit-border-radius: 6px; /* Safari,Chrome */
-	border: 1px #444444 solid;	  /* 枠線の装飾 */
+	border-radius: 20px;		/* CSS3 */
+	-moz-border-radius: 20px;	 /* Firefox */
+	-webkit-border-radius: 20px; /* Safari,Chrome */
+	border: 8px #eef0ee solid;	  /* 枠線の装飾 */
 	background-color: #FFFFFF;	/* 背景色 */
 	padding:5px 20px;
 	margin: 10px;
@@ -401,10 +403,10 @@ textarea {
 	}
 
 .change_form {
-	border-radius: 6px;		/* CSS3 */
-	-moz-border-radius: 6px;	 /* Firefox */
-	-webkit-border-radius: 6px; /* Safari,Chrome */
-	border: 1px #444444 solid;	  /* 枠線の装飾 */
+	border-radius: 20px;		/* CSS3 */
+	-moz-border-radius: 20px;	 /* Firefox */
+	-webkit-border-radius: 20px; /* Safari,Chrome */
+	border: 8px #eef0ee solid;	  /* 枠線の装飾 */
 	background-color: #FFFFFF;	/* 背景色 */
 	padding:5px 20px;
 	margin: 10px;
@@ -423,11 +425,10 @@ textarea {
 	}
 
 .pastlog_content {
-	border-radius: 8px;		/* CSS3 */
-	-moz-border-radius: 8px;	 /* Firefox */
-	-webkit-border-radius: 8px; /* Safari,Chrome */
-	
-	border: 1px #444444 solid;	  /* 枠線の装飾 */
+	border-radius: 20px;		/* CSS3 */
+	-moz-border-radius: 20px;	 /* Firefox */
+	-webkit-border-radius: 20px; /* Safari,Chrome */
+	border: 8px #eef0ee solid;	  /* 枠線の装飾 */
 	background-color: #FFFFFF;	/* 背景色 */
 	padding: 10px;
 	margin: 10px 10px;

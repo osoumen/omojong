@@ -50,11 +50,11 @@ else {
 				$memberlist_list[] = $memberlist;
 			}
 		}
-		if ( count($session_key_list) > 0 ) {
+		//if ( count($session_key_list) > 0 ) {
 			//自分が参加しているリストを表示する
 			include 'html_sanka_list.php';
 			exit;
-		}
+		//}
 	}
 }
 

@@ -9,27 +9,33 @@ $smarty->display( $g_tpl_path . 'header.tpl' );
 <?php
 $myname = htmlspecialchars( $_SESSION['access_token']['screen_name'] );
 
-echo '<div class="general_container">';
-echo "<h2>$myname さんが参加中</h2>";
-for ($i=0; $i<count($session_key_list); $i++) {
-	echo '<a href="' . $g_script . '?p=' . $session_key_list[$i] . '">';
+if ( count($session_key_list) > 0 ) {
+	echo '<div class="general_container">';
+	echo "<h2>$myname さんが参加中</h2>";
+	for ($i=0; $i<count($session_key_list); $i++) {
+		echo '<a href="' . $g_script . '?p=' . $session_key_list[$i] . '">';
+		
+		$caption = '';
+		if ( $phase_list[$i] == 'sanka' ) {
+			$caption = '参加募集中';
+		}
+		if ( $phase_list[$i] == 'toukou' ) {
+			$caption = '解答中';
+		}
+		if ( $phase_list[$i] == 'kekka' ) {
+			$caption = '終了';
+		}
+		write_members_only_html($memberlist_list[$i], $myname, NULL, $caption);
 	
-	$caption = '';
-	if ( $phase_list[$i] == 'sanka' ) {
-		$caption = '参加募集中';
+		echo '</a>';
 	}
-	if ( $phase_list[$i] == 'toukou' ) {
-		$caption = '解答中';
-	}
-	if ( $phase_list[$i] == 'kekka' ) {
-		$caption = '終了';
-	}
-	write_members_only_html($memberlist_list[$i], $myname, NULL, $caption);
-
-	echo '</a>';
+	echo '</div>';
 }
-echo '</div>';
-
+else {
+	echo '<div class="general_container">';
+	echo '<a href="page_start.php"><h2>新しく始める</h2></a>';
+	echo '</div>';
+}
 echo '<div class="member">';
 echo '<h4>最近始めたユーザー</h4>';
 echo '<ul>';
