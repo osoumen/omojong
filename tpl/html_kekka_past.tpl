@@ -16,8 +16,8 @@
 <input type="hidden" name="post_token" value="{$post_token}"/>
 <input type="hidden" name="tweet_msg" value="{$tweet_msg}"/>
 <textarea onKeyup="mojirest(value,{$ansindex},'{$tweet_msg}')" class="twitter-field" name="entry_content" tabindex=3 rows="2" cols="50"></textarea>
-<span id="msg{$ansindex}">残り</span>
-<input id="twitter-button{$ansindex}" type="submit" disabled="disabled" value="コメントをツイート">
+<span id="msg{$ansindex}">残り</span><br />
+<input id="twitter-button{$ansindex}" type="submit" disabled="disabled" value="ツイート">
 </form>
 <div class="post_msg">+ {$tweet_msg}</div>
 {else}
