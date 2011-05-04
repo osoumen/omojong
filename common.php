@@ -756,7 +756,7 @@ function write_pastlog_nav( $link, $current_num, $pastlog_table_name, $pages=20 
 }
 
 function generate_post_token() {
-	$seed = $_SERVER['REMOTE_ADDR'] . date('c');
+	$seed = $_SERVER['REMOTE_ADDR'] . microtime() . 'aigam';
 	$post_token = hash('ripemd160', $seed);
 	return $post_token;
 }

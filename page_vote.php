@@ -10,6 +10,7 @@ $session = array();
 
 $in = array_merge( $_POST, $_GET );
 
+
 //--エラーチェック--
 if ( ctype_digit( $in['ansnum'] ) == FALSE ) {
 	error("送信内容が不正です。");
@@ -33,11 +34,14 @@ else {
 }
 
 //解答ファイル中の得票数をインクリメントする
-$sql = sprintf( "UPDATE %s SET votes = votes + 1 WHERE id = %d", $kaitou_table_name, $in['ansnum'] );
-$query = mysql_query( $sql, $link );
-if ( !$query ) {
-	error("範囲外の解答を指定しています。");
+if ( isset( $_SESSION['post_token'] ) && $_SESSION['post_token'] === $in['token'] ) {
+	$sql = sprintf( "UPDATE %s SET votes = votes + IF (votes < 999,1,0) WHERE id = %d", $kaitou_table_name, $in['ansnum'] );
+	$query = mysql_query( $sql, $link );
+	if ( !$query ) {
+		error("範囲外の解答を指定しています。");
+	}
 }
+unset( $_SESSION['post_token'] );
 
 //投票した解答を得る
 $sql = sprintf( "SELECT content,author,votes FROM %s WHERE id = %d", $kaitou_table_name, $in['ansnum'] );
