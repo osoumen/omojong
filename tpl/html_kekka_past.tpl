@@ -1,6 +1,6 @@
 <div class="pastlog_content">
 <div class="creater_name">
-{$kaitousya}
+<span id="{$ansindex}">{$kaitousya}</span>
 </div>
 <div class="ans_present">{$sentence}</div>
 <span class="date_present">{$date}</span>
