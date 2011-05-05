@@ -1,4 +1,5 @@
 <?php
+error_reporting(0);
 
 $g_title = 'つぶや記念日(β)';		// タイトル
 $g_script = './';
