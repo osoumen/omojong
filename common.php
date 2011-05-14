@@ -763,3 +763,15 @@ function generate_post_token() {
 	$post_token = hash('ripemd160', $seed);
 	return $post_token;
 }
+
+function is_expired( $datetime ) {
+	$date = strptime($datetime, "%Y-%m-%d %H:%M:%S");
+	$end_time = mktime($date['tm_hour'],$date['tm_min'],$date['tm_sec'],$date['tm_mon']+1,$date['tm_mday'],$date['tm_year']-100);
+
+	if ( $end_time < time() ) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}

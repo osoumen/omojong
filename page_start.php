@@ -219,7 +219,7 @@ else {
 			$session['friends_only'] = false;
 		}
 		//3日後の日付を代入
-		$session['end_time'] = date("Y-m-d H:i:s",　time() + (3 * 24 * 60 * 60));
+		$session['end_time'] = date("Y-m-d H:i:s", time() + (3 * 24 * 60 * 60));
 
 		$members[0] = $player_name;
 		$stock[$player_name] = '';

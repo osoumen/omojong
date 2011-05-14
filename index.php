@@ -59,6 +59,26 @@ else {
 }
 
 if ( $is_login ) {
+	if ( $phase == 'toukou' ) {
+		if ( is_expired( $session['end_time'] ) ) {
+			load_members( $link, $members, $stock, $changerest, $change_amount );
+			foreach ( $members as $memb ) {
+				//持ち札を空にする
+				$stock[$memb] = '';
+				//交換回数を０にする
+				$changerest[$memb] = 0;
+				$change_amount[$memb] = 0;
+			}
+			$phase = $session['phase'] = 'kekka';
+			//解答をログへ移動
+			$table_name = push_kaitou_table_pastlog( $link, $kaitou_table_name );
+			$kaitou_table_name = $table_name;
+			store_session_table( $link, $session );
+			store_members( $link, $members, $stock, $changerest, $change_amount );
+			//終了を通知
+		}
+	}
+
 	switch ( $phase ) {
 		case 'sanka':
 			include 'html_sanka.php';
