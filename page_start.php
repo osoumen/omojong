@@ -136,7 +136,7 @@ if ( isset($in['confirm']) == FALSE || $err_str != '' ) {
 		$in['allow_disclose'] = 1;
 	}
 	if ( !isset($in['end_date']) ) {
-		$in['end_date'] = date("Y-m-d");
+		$in['end_date'] = date("Y-m-d", time() + 60 * 60 * 24 * 3);
 	}
 	if ( !isset($in['end_hour']) ) {
 		$in['end_hour'] = 0;
