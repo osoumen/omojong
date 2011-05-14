@@ -39,7 +39,7 @@ if ( mb_strlen($stock[$myname]) == 0 ) {
 //リーダーであるか
 $all = false;
 if ( isset( $in['all'] ) ) {
-	if ( $in['all'] === 1 ) {
+	if ( $in['all'] == 1 ) {
 		//解答〆切出来るのは開始した人だけ
 		if ( $myname === $session['leadername'] ) {
 			$all = true;

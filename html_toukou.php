@@ -14,7 +14,7 @@ $totalwords = load_words_table( $link, $words );
 load_members( $link, $members, $stock, $changerest, $change_amount );
 
 //参加者名を取得
-$c_username = isset($_SESSION['access_token']['screen_name']) ? $_SESSION['access_token']['screen_name'] : '';
+$myname = isset($_SESSION['access_token']['screen_name']) ? $_SESSION['access_token']['screen_name'] : '';
 
 //ヘッダー
 $pagetitle = '解答中';
@@ -23,27 +23,28 @@ $smarty->display( $g_tpl_path . 'header.tpl' );
 
 echo '<div id="content_left">';
 //参加者一覧表示
-write_members_html( $members, $stock, $c_username );
+write_members_html( $members, $stock, $myname );
 
 echo '<div id="user_navi">';
 
-if ( in_array($c_username, $members) ) {
-	if ( $stock[$c_username] !== '' ) {
+if ( in_array($myname, $members) ) {
+	if ( $stock[$myname] !== '' ) {
 		echo "<a href=\"page_giveup.php?confirm=$g_giveup_confirm\"><p>解答を終わりにする</p></a>";
+		echo '<p>終了すると他の人の解答を見られます。</p>';
 		$end_time = $session['end_time'];
 		echo "<p>解答期限</p><p>$end_time</p>";
 	}
 	else {
-		echo "<p>$c_username さんはもう解答できません。</p>";
+		echo "<p>$myname さんはもう解答できません。</p>";
 	}
 	
-	if ( $c_username == $session['leadername'] ) {
+	if ( $myname == $session['leadername'] ) {
 		echo "<a href=\"page_giveup.php?confirm=$g_giveup_confirm&all=1\"><p>解答を締め切る</p></a>";
 	}
 }
 else {
 	//参加者以外
-	write_sanka_navi( $session, $members, $c_username );
+	write_sanka_navi( $session, $members, $myname );
 }
 //このページへのリンク
 write_urltweet( $g_scripturl, $session['session_key'] );
@@ -132,23 +133,30 @@ function input_changeword( word,scr_word ) {
 </script>
 <div id="content_right">
 <?php
-if ( in_array($c_username, $members) ) {
+if ( in_array($myname, $members) ) {
 	//参加者である
 	
 	//解答したものを表示
-	$sql = sprintf( "SELECT content FROM %s WHERE author = '%s'", $kaitou_table_name, $c_username );
-	$query = mysql_query( $sql, $link );
-	$answers = array();
-	while ( $row = @mysql_fetch_array( $query, MYSQL_NUM ) ) {
-		array_push( $answers, $row[0] );
+	foreach ( $members as $memb ) {
+		if ( $memb == $myname || $stock[$myname] === '') {
+			if ( $memb != $myname && $stock[$memb] !== '' ) {
+				continue;
+			}
+			$sql = sprintf( "SELECT content FROM %s WHERE author = '%s'", $kaitou_table_name, $memb );
+			$query = mysql_query( $sql, $link );
+			$answers = array();
+			while ( $row = @mysql_fetch_array( $query, MYSQL_NUM ) ) {
+				array_push( $answers, $row[0] );
+			}
+			$smarty->assign( 'c_username', $memb );
+			$smarty->assign( 'answers', $answers );
+			$smarty->display( $g_tpl_path . 'html_answers.tpl' );
+		}
 	}
-	$smarty->assign( 'c_username', $c_username );
-	$smarty->assign( 'answers', $answers );
-	$smarty->display( $g_tpl_path . 'html_answers.tpl' );
 	
-	if ( $stock[$c_username] !== '' ) {
+	if ( $stock[$myname] !== '' ) {
 		//持ち札の一覧を表示
-		$stock_array = explode( ',', $stock[$c_username] );
+		$stock_array = explode( ',', $stock[$myname] );
 		$word_array = array();
 		foreach ( $stock_array as $num ) {
 			array_push( $word_array, $words[$num] );
@@ -159,9 +167,9 @@ if ( in_array($c_username, $members) ) {
 	}
 		
 	//交換回数が残っている
-	if ( $changerest[$c_username] > 0 && $change_amount[$c_username] ) {
-		$smarty->assign( 'c_rest', $changerest[$c_username] );
-		$smarty->assign( 'c_amount', $change_amount[$c_username] );
+	if ( $changerest[$myname] > 0 && $change_amount[$myname] ) {
+		$smarty->assign( 'c_rest', $changerest[$myname] );
+		$smarty->assign( 'c_amount', $change_amount[$myname] );
 		$smarty->display( $g_tpl_path . 'html_change_form.tpl' );
 	}
 }
