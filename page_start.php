@@ -77,6 +77,25 @@ if ( isset($in['confirm']) ) {
 		$err_str = '交換可能枚数の数値が不正です。';
 		unset( $in['change_amount'] );
 	}
+	elseif ( strptime($in['end_date'], "%Y-%m-%d") == FALSE ) {
+		$err_str = '日付のフォーマットが間違っています。';
+		unset( $in['end_date'] );
+	}
+	elseif (ctype_digit($in['end_hour']) == FALSE) {
+		$err_str = '時刻は数値で指定してください。';
+		unset( $in['end_hour'] );
+	}
+	elseif ($in['end_hour'] > 23) {
+		$err_str = '時刻の範囲が間違っています。';
+		unset( $in['end_hour'] );
+	}
+	else {
+		$date = strptime($in['end_date'] . ' ' . $in['end_hour'] . ':00:00', "%Y-%m-%d %H:%M:%S");
+		$timestamp = mktime($date['tm_hour'],$date['tm_min'],$date['tm_sec'],$date['tm_mon']+1,$date['tm_mday'],$date['tm_year']-100);
+		if ( $timestamp < time() ) {
+			$err_str = '現在の時刻以降の期限を指定して下さい。';
+		}
+	}
 	if ($in['ninzuu_max'] == '') {
 		$in['ninzuu_max'] = $in['ninzuu'];
 	}
@@ -115,6 +134,12 @@ if ( isset($in['confirm']) == FALSE || $err_str != '' ) {
 	}
 	if ( !isset($in['allow_disclose']) ) {
 		$in['allow_disclose'] = 1;
+	}
+	if ( !isset($in['end_date']) ) {
+		$in['end_date'] = date("Y-m-d");
+	}
+	if ( !isset($in['end_hour']) ) {
+		$in['end_hour'] = 0;
 	}
 	
 	$pagetitle = '新しく始める';
@@ -176,19 +201,58 @@ if ( isset($in['confirm']) == FALSE || $err_str != '' ) {
 		'20'=>'２０語以内'
 	);
 	
+	$end_date_options = array();
+	for ( $days=0; $days<8; $days++ ) {
+		$in_date = date("Y-m-d", time() + 60 * 60 * 24 * $days);
+		$end_date_options[$in_date] = date("Y年m月d日", time() + 60 * 60 * 24 * $days);
+	}
+	
+	$end_hour_options = array(
+		'0'=>'0:00',
+		'1'=>'1:00',
+		'2'=>'2:00',
+		'3'=>'3:00',
+		'4'=>'4:00',
+		'5'=>'5:00',
+		'6'=>'6:00',
+		'7'=>'7:00',
+		'8'=>'8:00',
+		'9'=>'9:00',
+		'10'=>'10:00',
+		'11'=>'11:00',
+		'12'=>'12:00',
+		'13'=>'13:00',
+		'14'=>'14:00',
+		'15'=>'15:00',
+		'16'=>'16:00',
+		'17'=>'17:00',
+		'18'=>'18:00',
+		'19'=>'19:00',
+		'20'=>'20:00',
+		'21'=>'21:00',
+		'22'=>'22:00',
+		'23'=>'23:00'
+	);
+	
 	$smarty->assign( 'ninzuu_options', $ninzuu_options );
 	$smarty->assign( 'maisuu_options', $maisuu_options );
 	$smarty->assign( 'change_quant_options', $change_quant_options );
 	$smarty->assign( 'change_amount_options', $change_amount_options );
+	$smarty->assign( 'end_date_options', $end_date_options );
+	$smarty->assign( 'end_hour_options', $end_hour_options );
 
 	$smarty->display( $g_tpl_path . 'page_start.tpl' );
 }
 else {
 	//入力値に問題が無いので、確認画面を表示する
 	if ( $in['confirm'] != 0 ) {
+		$date = explode( '-', $in['end_date'] );
+		$datetext = sprintf("%4d年%d月%d日 %02d:00",$date[0],$date[1],$date[2],$in['end_hour']);
+		
 		$pagetitle = '新しく始める';
 		$smarty->assign( 'pagetitle', $pagetitle );
 		$smarty->assign( 'in', $in );
+		$smarty->assign( 'datetext', $datetext );
 		$smarty->display( $g_tpl_path . 'page_start_confirm.tpl' );
 	}
 	else {
@@ -221,8 +285,8 @@ else {
 		else {
 			$session['friends_only'] = false;
 		}
-		//3日後の日付を代入
-		$session['end_time'] = date("Y-m-d H:i:s", time() + (3 * 24 * 60 * 60));
+		//日付を代入
+		$session['end_time'] = sprintf("%s %02d:00:00",$in['end_date'],$in['end_hour']);
 
 		$members[0] = $player_name;
 		$stock[$player_name] = '';

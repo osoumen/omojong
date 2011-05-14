@@ -9,6 +9,8 @@
 <dd>{$in.maisuu}語</dd>
 <dt>単語交換回数</dt>
 <dd>{$in.change_quant}回まで{$in.change_amount}語以内</dd>
+<dt>解答期限</dt>
+<dd>{$datetext}</dd>
 <dt>公開／非公開</dt>
 <dd>
 {if isset($in.allow_disclose) && ($in.allow_disclose != 0)}
@@ -33,6 +35,8 @@
 <input type="hidden" name="maisuu" value="{$in.maisuu}">
 <input type="hidden" name="change_quant" value="{$in.change_quant}">
 <input type="hidden" name="change_amount" value="{$in.change_amount}">
+<input type="hidden" name="end_date" value="{$in.end_date}">
+<input type="hidden" name="end_hour" value="{$in.end_hour}">
 {if isset($in.allow_disclose)}
 <input type="hidden" name="allow_disclose" value="1">
 {else}

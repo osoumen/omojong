@@ -41,7 +41,15 @@
 </select>
 </dd>
 <dt>解答期限</dt>
-<dd>期限が過ぎると自動的に終了し、解答された分の結果が公開されます。<dd>
+<dd>1週間以内の日付と時刻を指定して下さい。期限が過ぎると自動的に終了し、解答された分の結果が公開されます。<dd>
+<dd>
+<select name="end_date">
+{html_options options=$end_date_options selected=$in.end_date}
+</select>
+<select name="end_hour">
+{html_options options=$end_hour_options selected=$in.end_hour}
+</select>
+</dd>
 <dt>公開／非公開</dt>
 <dd>「新着リストに公開する」に設定すると、あなたが開始した事を全体に公開します。</dd>
 <dd>
