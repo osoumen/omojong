@@ -30,13 +30,15 @@ echo '<div id="user_navi">';
 if ( in_array($c_username, $members) ) {
 	if ( $stock[$c_username] !== '' ) {
 		echo "<a href=\"page_giveup.php?confirm=$g_giveup_confirm\"><p>解答を終わりにする</p></a>";
+		$end_time = $session['end_time'];
+		echo "<p>解答期限</p><p>$end_time</p>";
 	}
 	else {
 		echo "<p>$c_username さんはもう解答できません。</p>";
 	}
 	
 	if ( $c_username == $session['leadername'] ) {
-		echo '<a href="page_start_confirm.php?p=' . $session['session_key'] . '"><p>始めからやる</p></a>';
+		echo "<a href=\"page_giveup.php?confirm=$g_giveup_confirm&all=1\"><p>解答を締め切る</p></a>";
 	}
 }
 else {

@@ -23,35 +23,66 @@ load_members( $link, $members, $stock, $changerest, $change_amount );
 
 $err_str = '';
 $in = array_merge( $_POST, $_GET );
-$c_username = isset($_SESSION['access_token']['screen_name']) ? $_SESSION['access_token']['screen_name'] : '';
+$myname = isset($_SESSION['access_token']['screen_name']) ? $_SESSION['access_token']['screen_name'] : '';
 
 //--エラーチェック--
 if ( $session['phase'] !== 'toukou' ) {
 	error("現在解答を受け付けていません。");
 }
-if ( in_array($c_username, $members) == FALSE ) {
+if ( in_array($myname, $members) == FALSE ) {
 	error("参加していません。");
 }
 //持ち札があるか
-if ( mb_strlen($stock[$c_username]) == 0 ) {
-	error( $c_username . 'さんの解答は終了しています');
+if ( mb_strlen($stock[$myname]) == 0 ) {
+	error( $myname . 'さんの解答は終了しています');
+}
+//リーダーであるか
+$all = false;
+if ( isset( $in['all'] ) ) {
+	if ( $in['all'] === 1 ) {
+		//解答〆切出来るのは開始した人だけ
+		if ( $myname === $session['leadername'] ) {
+			$all = true;
+		}
+		else {
+			error( 'そのページは開くことが出来ません。');
+		}
+	}
+	else {
+		error( 'そのページは開くことが出来ません。');
+	}
 }
 
 $is_last = '';
 
 //ページを表示
 if ( isset($in['confirm']) ) {
-	$pagetitle = '解答の終了';
-	$smarty->assign( 'pagetitle', $pagetitle );
-	$smarty->display( $g_tpl_path . 'page_giveup_confirm.tpl' );
+	if ( $all ) {
+		$pagetitle = '解答を締め切る';
+		$smarty->assign( 'pagetitle', $pagetitle );
+		$smarty->display( $g_tpl_path . 'page_force_end_confirm.tpl' );
+	}
+	else {
+		$pagetitle = '解答の終了';
+		$smarty->assign( 'pagetitle', $pagetitle );
+		$smarty->display( $g_tpl_path . 'page_giveup_confirm.tpl' );
+	}
 }
 else {
-	//持ち札を空にする
-	$stock[$c_username] = '';
-	
-	//交換回数を０にする
-	$changerest[$c_username] = 0;
-	$change_amount[$c_username] = 0;
+	if ( $all ) {
+		foreach ( $members as $memb ) {
+			//持ち札を空にする
+			$stock[$memb] = '';
+			//交換回数を０にする
+			$changerest[$memb] = 0;
+			$change_amount[$memb] = 0;
+		}
+	}
+	else {
+		$stock[$myname] = '';
+		$changerest[$myname] = 0;
+		$change_amount[$myname] = 0;
+	}
 	
 	//全員の解答が終了したか調べてモード遷移を行う
 	$remain = 0;
@@ -88,7 +119,7 @@ else {
 	
 		$to = array();
 		foreach ( $members as $memb ) {
-			if ( $memb != $c_username ) {
+			if ( $memb != $myname ) {
 				$to[] = $memb;
 			}
 		}

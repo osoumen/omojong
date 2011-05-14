@@ -126,6 +126,7 @@ function load_session_table( $link ) {
 	$kaitou_table_name = $row['kaitou_table_name'];
 	$session['allow_disclose'] = $row['allow_disclose'];
 	$session['friends_only'] = $row['friends_only'];
+	$session['end_time'] = $row['end_time'];
 	
 	return $session;
 }
@@ -157,7 +158,8 @@ function store_session_table( $link, $session ) {
 			members_table_name text,
 			kaitou_table_name text,
 			allow_disclose bool,
-			friends_only bool
+			friends_only bool,
+			end_time datetime
 			)');
 	$query = mysql_query( $sql, $link );
 	
@@ -166,7 +168,7 @@ function store_session_table( $link, $session ) {
 	$query = mysql_query( $sql, $link );
 	
 	//セッション情報を書き込む
-	$sql = sprintf( "INSERT INTO session VALUES( '%s', '%s', '%s', %d, %d, %d, %d, %d, '%s', '%s', '%s', %d, %d )",
+	$sql = sprintf( "INSERT INTO session VALUES( '%s', '%s', '%s', %d, %d, %d, %d, %d, '%s', '%s', '%s', %d, %d, '%s' )",
 	$session['leadername'],
 	$session['session_key'],
 	$session['phase'],
@@ -179,7 +181,8 @@ function store_session_table( $link, $session ) {
 	$members_table_name,
 	$kaitou_table_name,
 	$session['allow_disclose'],
-	$session['friends_only']
+	$session['friends_only'],
+	$session['end_time']
 	);
 	$query = mysql_query( $sql, $link );
 }
