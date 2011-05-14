@@ -40,6 +40,8 @@
 {html_options options=$change_amount_options selected=$in.change_amount}
 </select>
 </dd>
+<dt>解答期限</dt>
+<dd>期限が過ぎると自動的に終了し、解答された分の結果が公開されます。<dd>
 <dt>公開／非公開</dt>
 <dd>「新着リストに公開する」に設定すると、あなたが開始した事を全体に公開します。</dd>
 <dd>

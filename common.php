@@ -400,21 +400,29 @@ function push_kaitou_table_pastlog( $link, $table_name ) {
 	
 	//table_nameが存在しているかチェック
 	if ( is_exist_table( $link, $table_name ) ) {
-		//最近の過去ログの値をインクリメントする
-		$sql = 'UPDATE global SET latest_pastlog = latest_pastlog+1';
+		$sql = sprintf("SELECT * FROM %s", $table_name);
 		$query = mysql_query( $sql, $link );
-		
-		//インクリメント後の値を取得する
-		$sql = sprintf( "SELECT * FROM global" );
-		$query = mysql_query( $sql, $link );
-		while ( $row = @mysql_fetch_array( $query, MYSQL_ASSOC ) ) {
-			$numlogs = $row['latest_pastlog'];
+		if ( !$query || mysql_num_rows( $query ) == 0 ) {
+			$sql = sprintf("DROP TABLE %s", $table_name);
+			$query = mysql_query( $sql, $link );
 		}
-		
-		//テーブルを過去ログに移動する
-		$new_table_name = sprintf( '%s_%d', $pastlog_table_name, $numlogs );
-		$sql = sprintf( "ALTER TABLE %s RENAME TO %s", $table_name, $new_table_name );
-		$query = mysql_query( $sql, $link );
+		else {
+			//最近の過去ログの値をインクリメントする
+			$sql = 'UPDATE global SET latest_pastlog = latest_pastlog+1';
+			$query = mysql_query( $sql, $link );
+			
+			//インクリメント後の値を取得する
+			$sql = sprintf( "SELECT * FROM global" );
+			$query = mysql_query( $sql, $link );
+			while ( $row = @mysql_fetch_array( $query, MYSQL_ASSOC ) ) {
+				$numlogs = $row['latest_pastlog'];
+			}
+			
+			//テーブルを過去ログに移動する
+			$new_table_name = sprintf( '%s_%d', $pastlog_table_name, $numlogs );
+			$sql = sprintf( "ALTER TABLE %s RENAME TO %s", $table_name, $new_table_name );
+			$query = mysql_query( $sql, $link );
+		}
 	}
 	//移動後のテーブル名を返す
 	return $new_table_name;

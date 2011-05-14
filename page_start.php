@@ -113,6 +113,9 @@ if ( isset($in['confirm']) == FALSE || $err_str != '' ) {
 	if ( !isset($in['change_amount']) ) {
 		$in['change_amount'] = 8;
 	}
+	if ( !isset($in['allow_disclose']) ) {
+		$in['allow_disclose'] = 1;
+	}
 	
 	$pagetitle = '新しく始める';
 	$smarty->assign( 'pagetitle', $pagetitle );

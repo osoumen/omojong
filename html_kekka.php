@@ -15,8 +15,13 @@ $c_username = isset($_SESSION['access_token']['screen_name']) ? htmlspecialchars
 
 
 //結果ページのnumを求める
-$num = explode( '_', $kaitou_table_name );
-$num = $num[1];
+if ( $kaitou_table_name ) {
+	$num = explode( '_', $kaitou_table_name );
+	$num = $num[1];
+}
+else {
+	$num = -1;
+}
 
 //ヘッダー
 $pagetitle = '終了';
@@ -30,7 +35,10 @@ write_members_html( $members, $stock, $c_username );
 
 echo '<div id="user_navi">';
 
-echo '<a href="' .$g_script. '?' .$pastlog_param_name.'=' . $num . '"><p class="kekka_btn">結果を見る</p></a>';
+//解答が一つも無い場合は結果を見るボタンを出さない
+if ( $num != -1 ) {
+	echo '<a href="' .$g_script. '?' .$pastlog_param_name.'=' . $num . '"><p class="kekka_btn">結果を見る</p></a>';
+}
 
 echo '<a href="page_start.php?p=' . $session['session_key'] . '"><p>始めからやる</p></a>';
 
