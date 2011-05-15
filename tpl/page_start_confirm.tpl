@@ -4,11 +4,15 @@
 <h3>以下の条件で始めますか？</h3>
 <dl>
 <dt>参加メンバー</dt>
-<dd>{$in.members}</dd>
+{foreach from="$init_members" item="value"}
+<dd>@{$value}</dd>
+{/foreach}
+<!--
 <dt>参加人数</dt>
 <dd>{$in.ninzuu}人〜{$in.ninzuu_max}人</dd>
 <dt>使用単語数</dt>
 <dd>{$in.maisuu}語</dd>
+-->
 <dt>単語交換回数</dt>
 <dd>{$in.change_quant}回まで{$in.change_amount}語以内</dd>
 <dt>解答期限</dt>

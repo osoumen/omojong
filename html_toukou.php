@@ -39,7 +39,7 @@ if ( in_array($myname, $members) ) {
 	}
 	
 	if ( $myname == $session['leadername'] ) {
-		echo "<a href=\"page_giveup.php?confirm=$g_giveup_confirm&all=1\"><p>解答を締め切る</p></a>";
+		echo "<a href=\"page_giveup.php?confirm=$g_giveup_confirm&all=1\"><p>締め切る</p></a>";
 	}
 }
 else {

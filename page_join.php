@@ -30,6 +30,9 @@ if ( in_array($myname, $members) ) {
 //開始した人のフォロワーかどうか調べる
 if ( $session['friends_only'] ) {
 	$is_follower = is_follower( $myname, $session['leadername'] );
+	if ( $is_follower == 'error' ) {
+		message( '参加', "現在Twitterが利用できません。");
+	}
 	if ( $is_follower !== true ) {
 		message( '参加', $session['leadername'] . "さんのフォロアーのみに制限されています。");
 	}

@@ -27,6 +27,11 @@ if ( is_login() == false ) {
 
 $err_str = '';
 $in = array_merge( $_POST, $_GET );
+
+if ( isset( $in['as_values_members'] ) ) {
+	$in['members'] = $in['as_values_members'];
+}
+
 $player_name = $_SESSION['access_token']['screen_name'];
 
 if ( ($session['phase'] == 'sanka' || $session['phase'] == 'toukou') && $player_name != $session['leadername'] ) {
@@ -43,7 +48,7 @@ if ( !isset($in['ninzuu']) ) {
 	$in['ninzuu'] = '3';
 }
 if ( !isset($in['ninzuu_max']) ) {
-	$in['ninzuu_max'] = '10';
+	$in['ninzuu_max'] = '100';
 }
 if ( !isset($in['maisuu']) ) {
 	$in['maisuu'] = '12';
@@ -133,18 +138,22 @@ if ( isset( $in['friends_only'] ) ) {
 		$err_str = '入力値が範囲外です。2';
 	}
 }
-$init_members = explode( ',', $in['members'] );
-foreach ( $init_members as $memb ) {
+$init_members_temp = explode( ',', $in['members'] );
+$init_members = array();
+foreach ( $init_members_temp as $memb ) {
 	//指定したメンバーが全員自分をフォローしているかチェック
 	if ( $memb ) {
-		$is_follower = is_follower( $memb, $player_name );
-		if ( !$is_follower ) {
-			$err_str = $memb.'さんはあなたをフォローしていません。';
-			break;
-		}
-		if ( $is_follower === 'error' ) {
-			$err_str = '指定されたメンバーは追加できません。';
-			break;
+		if ( !in_array($memb, $init_members) ) {
+			$is_follower = is_follower( $memb, $player_name );
+			if ( !$is_follower ) {
+				$err_str = $memb.'さんはあなたをフォローしていません。';
+				break;
+			}
+			if ( $is_follower === 'error' ) {
+				$err_str = '指定されたメンバーは追加できません。';
+				break;
+			}
+			$init_members[] = $memb;
 		}
 	}
 }
@@ -267,6 +276,7 @@ else {
 		$smarty->assign( 'pagetitle', $pagetitle );
 		$smarty->assign( 'in', $in );
 		$smarty->assign( 'datetext', $datetext );
+		$smarty->assign( 'init_members', $init_members );
 		$smarty->display( $g_tpl_path . 'page_start_confirm.tpl' );
 	}
 	else {
@@ -304,10 +314,12 @@ else {
 
 		//メンバーの初期化
 		$members[0] = $player_name;
-		$init_members = explode( ',', $in['members'] );
+		//$init_members = explode( ',', $in['members'] );
 		foreach ( $init_members as $memb ) {
 			if ( $memb ) {
-				$members[] = $memb;
+				if ( !in_array($memb, $members) ) {
+					$members[] = $memb;
+				}
 			}
 		}
 		foreach ( $members as $memb ) {

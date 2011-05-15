@@ -6,8 +6,11 @@
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <link rel="stylesheet" href="{$g_css_url}" type="text/css" />
+<link rel="stylesheet" href="css/autoSuggest.css" type="text/css" />
 <script src="js/jquery.js"></script>
 <script src="js/mojilen.js"></script>
+<script src="js/jquery.alphanumeric.pack.js"></script>
+<script src="js/jquery.autoSuggest.packed.js"></script>
 {if empty($pagetitle)}
 <title>{$g_title}</title>
 {else}

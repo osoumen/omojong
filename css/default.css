@@ -475,6 +475,13 @@ textarea {
 	clear: both;
 }
 
+.tw_img {
+	float: left;
+	height: 48px;
+	width: 48px;
+}
+
+
 .clearfix:after {
 	content: ".";
 	display: block;

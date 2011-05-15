@@ -10,8 +10,12 @@
 <input type="hidden" name="confirm" value="{$g_start_confirm}">
 <dl>
 <dt>参加メンバー</dt>
-<dd>参加して欲しい人をあなたをフォローしている人から選んで下さい。</dd>
-<dd><input type="text" name="members" value="{$in.members}"></dd>
+<dd>
+あなたのフォロワーから、参加させたい人を追加してください。
+メンバー全員の最新の100発言から、ランダムに単語を拾います。途中参加した人からは単語を取得しません。
+</dd>
+<dd><input type="text" name="members" class="member_input" value="{$in.members}" /></dd>
+<!--
 <dt>参加人数</dt>
 <dd>必要人数と最大人数を設定します。必要人数が集まると解答出来るようになります。
 集まった時点での参加者の発言を取得します。それ以降の途中参加者の単語は取得しません。</dd>
@@ -31,10 +35,11 @@
 {html_options options=$maisuu_options selected=$in.maisuu}
 </select>
 </dd>
+-->
 <dt>単語交換回数</dt>
-<dd>配られたカードの交換回数を設定できます。
+<dd>単語カードの交換回数を設定します。
 交換回数が残っていても、最大語数を交換すると交換できなくなります。
-また、語数が残っていても、回数を使い切ると交換できなくなります。</dd>
+語数が残っていても、回数を使い切ると交換できなくなります。</dd>
 <dd>
 <select name="change_quant">
 {html_options options=$change_quant_options selected=$in.change_quant}
@@ -44,7 +49,7 @@
 </select>
 </dd>
 <dt>解答期限</dt>
-<dd>1週間以内の日付と時刻を指定して下さい。期限が過ぎると自動的に終了し、そこまでの結果が公開されます。<dd>
+<dd>期限が過ぎると自動的に終了し、結果が公開されます。1週間以内の日付と時刻を指定して下さい。<dd>
 <dd>
 <select name="end_date">
 {html_options options=$end_date_options selected=$in.end_date}
@@ -65,7 +70,7 @@ checked='checked'
 >
 新着リストに公開する
 </dd>
-<dd>あなたをフォローしている人だけ参加できるようにします。</dd>
+<dd>あなたのフォロワーだけ途中参加できるようにします。</dd>
 <dd>
 <input type='checkbox' name='friends_only' value='1' 
 {if isset($in.friends_only)}
@@ -81,6 +86,28 @@ checked='checked'
 </form>
 </div>
 </div>
+<script type="text/javascript">
+$(function(){
+	$('.member_input').alphanumeric({ allow:"_," });
+	$('.member_input').autoSuggest("data_follows.php", {
+	asHtmlID: 'members',
+	neverSubmit: true,
+	minChars: 1,
+	matchCase: true,
+	startText: 'フォロワーIDを入力',
+	emptyText: 'IDが見つかりませんでした',
+	keyDelay: 10,
+	formatList: function(data, elem){
+		var my_image = data.image;
+		var new_elem = elem.html(
+		'<img class="tw_img" src="' + data.image + '" />' +
+		data.name + ' (' + data.value + ')<span class="clearfix"></span>'
+		);
+		return new_elem;
+		}
+	} );
+});
+</script>
 <div id="pre_footer">
 <a href="{$g_script}" target=_top>戻る</a>
 </div>
