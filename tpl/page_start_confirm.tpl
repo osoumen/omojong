@@ -32,8 +32,15 @@
 誰でも参加可能
 {/if}
 </dd>
+<dt>ダイレクトメッセージ</dt>
+<dd>以下のメッセージでメンバーに知らせます。</dd>
 </dl>
 <form action="page_start.php" method="post">
+<div class="twitter_input">
+<textarea onKeyup="mojilen(value,0,'{$post_msg}')" class="twitter-field" name="entry_content" tabindex=3 rows="2" cols="40">{$default_msg}</textarea>
+<div class="post_msg">+ {$post_msg}</div>
+<span id="msg0"></span>
+</div>
 <input type="hidden" name="members" value="{$in.members}">
 <input type="hidden" name="mode" value="start">
 <input type="hidden" name="confirm" value="0">
@@ -54,7 +61,7 @@
 {else}
 <input type="hidden" name="friends_only" value="0">
 {/if}
-<input type="submit" class="right_btn" name="submit" value="ＯＫ">
+<input id="twitter-button0" type="submit" class="right_btn" name="submit" value="ＯＫ">
 </form>
 </div>
 </div>

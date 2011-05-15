@@ -256,13 +256,18 @@ function get_availablewordlist( $link, $members, $stock, $totalwords ) {
 	return $wordnumber;
 }
 
-function commit_mention($mlad,$inmsg,$access_token=ACCESS_TOKEN,$access_token_secret=ACCESS_TOKEN_SECRET) {
+function commit_mention($mlad,$inmsg,$access_token=ACCESS_TOKEN,$access_token_secret=ACCESS_TOKEN_SECRET, $is_dm=NULL) {
 	$error = '';
 	// OAuthオブジェクト生成
 	$to = new TwitterOAuth(CONSUMER_KEY,CONSUMER_SECRET,$access_token,$access_token_secret);
 	
 	// 投稿
-	$notify_msg = '@' . $mlad . $inmsg;
+	if ( $is_dm ) {
+		$notify_msg = 'd ' . $mlad . $inmsg;
+	}
+	else {
+		$notify_msg = '@' . $mlad . $inmsg;
+	}
 	$req = $to->OAuthRequest("https://twitter.com/statuses/update.xml","POST",array("status"=>$notify_msg));
 	$xml = simplexml_load_string($req);
 	if ( isset( $xml->error ) ) {
@@ -783,5 +788,33 @@ function is_expired( $datetime ) {
 	}
 	else {
 		return false;
+	}
+}
+
+function multi_tweet( $to_array, $myname, $entry_content, $post_msg, $token, $token_secret, $use_dm=NULL ) {
+	foreach ( $to_array as $memb ) {
+		$error = '';
+		if ( $memb != $myname ) {
+			//合計文字数140文字をオーバーしていたら本文を縮める
+			if ( $use_dm ) {
+				$pre = '@';
+			}
+			else {
+				$pre = 'd ';
+			}
+			$max_len = 140 - mb_strlen( $pre . $memb . $post_msg );
+			$inmsg = mb_strimwidth( $entry_content, 0, $max_len, '…' );
+			$msg = $inmsg . $post_msg;
+		
+			//if ( $use_useraccount_for_mension ) {
+				$error = commit_mention( $memb, $msg, $token,$token_secret,$use_dm);
+			//}
+			//else {
+			//	$error = commit_mention( $memb, $msg );
+			//}
+		}
+		if ( $error ) {
+			error('Twitterのエラーのため処理されませんでした。('.$error.')');
+		}
 	}
 }

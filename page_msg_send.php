@@ -35,25 +35,8 @@ $myname = $_SESSION['access_token']['screen_name'];
 
 load_members( $link, $members, $stock, $changerest, $change_amount );
 
-foreach ( $members as $memb ) {
-	$error = '';
-	if ( $memb != $myname ) {
-		//合計文字数140文字をオーバーしていたら本文を縮める
-		$max_len = 140 - mb_strlen( '@' . $memb . $in['post_msg'] );
-		$inmsg = mb_strimwidth( $in['entry_content'], 0, $max_len, '…' );
-		$msg = $inmsg . $in['post_msg'];
-	
-		if ( $use_useraccount_for_mension ) {
-			$error = commit_mention( $memb, $msg, $_SESSION['access_token']['oauth_token'],$_SESSION['access_token']['oauth_token_secret']);
-		}
-		else {
-			$error = commit_mention( $memb, $msg );
-		}
-	}
-	if ( $error ) {
-		error('Twitterのエラーのため処理されませんでした。('.$error.')');
-	}
-}
+multi_tweet( $members, $myname, $in['entry_content'], $in['post_msg'],
+$_SESSION['access_token']['oauth_token'], $_SESSION['access_token']['oauth_token_secret'] );
 
 //ページを表示
 $pagetitle = 'メッセージの送信';

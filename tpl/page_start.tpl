@@ -13,12 +13,13 @@
 <dd>
 あなたのフォロワーから、参加させたい人を追加してください。
 メンバー全員の最新の100発言から、ランダムに単語を拾います。途中参加した人からは単語を取得しません。
-</dd>
+開始すると、自動的にあなたからメンバーにDMでお知らせをします。</dd>
 <dd><input type="text" name="members" class="member_input" value="{$in.members}" /></dd>
 <!--
 <dt>参加人数</dt>
 <dd>必要人数と最大人数を設定します。必要人数が集まると解答出来るようになります。
-集まった時点での参加者の発言を取得します。それ以降の途中参加者の単語は取得しません。</dd>
+集まった時点での参加者の発言を取得します。それ以降の途中参加者の単語は取得しません。
+</dd>
 <dd>
 <select name="ninzuu">
 {html_options options=$ninzuu_options selected=$in.ninzuu}

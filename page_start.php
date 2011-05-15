@@ -277,6 +277,10 @@ else {
 		$smarty->assign( 'in', $in );
 		$smarty->assign( 'datetext', $datetext );
 		$smarty->assign( 'init_members', $init_members );
+		$post_msg = ' ' . $g_scripturl . '?p=' . $session['session_key'] . ' by ' . $g_title;
+		$smarty->assign( 'post_msg', $post_msg );
+		$default_msg = $notifymsg0;
+		$smarty->assign( 'default_msg', $default_msg );
 		$smarty->display( $g_tpl_path . 'page_start_confirm.tpl' );
 	}
 	else {
@@ -314,7 +318,6 @@ else {
 
 		//メンバーの初期化
 		$members[0] = $player_name;
-		//$init_members = explode( ',', $in['members'] );
 		foreach ( $init_members as $memb ) {
 			if ( $memb ) {
 				if ( !in_array($memb, $members) ) {
@@ -391,6 +394,14 @@ else {
 		//クッキーを発行
 		setcookie( $gameid_param_name, $session['session_key'], time() + 3600 * 24 * 75 );	//75日有効
 		
+		//DMでお知らせ
+		if ( isset( $in['entry_content'] ) ) {
+		$in['entry_content'] = ' ' . $in['entry_content'];
+		$post_msg = ' ' . $g_scripturl . '?p=' . $session['session_key'];
+		multi_tweet( $init_members, $player_name, $in['entry_content'], $post_msg,
+		$_SESSION['access_token']['oauth_token'], $_SESSION['access_token']['oauth_token_secret'], 1 );
+		}
+
 		//ページを表示
 		header('Location: ' . $g_scripturl);
 		//$pagetitle = '新しく始める';
