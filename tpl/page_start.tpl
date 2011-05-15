@@ -9,6 +9,9 @@
 <input type="hidden" name="mode" value="start">
 <input type="hidden" name="confirm" value="{$g_start_confirm}">
 <dl>
+<dt>参加メンバー</dt>
+<dd>参加して欲しい人をあなたをフォローしている人から選んで下さい。</dd>
+<dd><input type="text" name="members" value="{$in.members}"></dd>
 <dt>参加人数</dt>
 <dd>必要人数と最大人数を設定します。必要人数が集まると解答出来るようになります。
 集まった時点での参加者の発言を取得します。それ以降の途中参加者の単語は取得しません。</dd>
@@ -41,7 +44,7 @@
 </select>
 </dd>
 <dt>解答期限</dt>
-<dd>1週間以内の日付と時刻を指定して下さい。期限が過ぎると自動的に終了し、解答された分の結果が公開されます。<dd>
+<dd>1週間以内の日付と時刻を指定して下さい。期限が過ぎると自動的に終了し、そこまでの結果が公開されます。<dd>
 <dd>
 <select name="end_date">
 {html_options options=$end_date_options selected=$in.end_date}

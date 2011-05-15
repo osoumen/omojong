@@ -3,6 +3,8 @@
 <div class="input_form">
 <h3>以下の条件で始めますか？</h3>
 <dl>
+<dt>参加メンバー</dt>
+<dd>{$in.members}</dd>
 <dt>参加人数</dt>
 <dd>{$in.ninzuu}人〜{$in.ninzuu_max}人</dd>
 <dt>使用単語数</dt>
@@ -28,6 +30,7 @@
 </dd>
 </dl>
 <form action="page_start.php" method="post">
+<input type="hidden" name="members" value="{$in.members}">
 <input type="hidden" name="mode" value="start">
 <input type="hidden" name="confirm" value="0">
 <input type="hidden" name="ninzuu" value="{$in.ninzuu}">

@@ -301,12 +301,12 @@ function follow_id($id,$access_token,$access_token_secret) {
 	return $error;
 }
 
-function is_follower( $myname, $session,$access_token,$access_token_secret ) {
+function is_follower( $myname, $leadername ) {
 	$is_friend = '';
 	// OAuthオブジェクト生成
-	$to = new TwitterOAuth(CONSUMER_KEY,CONSUMER_SECRET,$access_token,$access_token_secret);
+	$to = new TwitterOAuth(CONSUMER_KEY,CONSUMER_SECRET,ACCESS_TOKEN, ACCESS_TOKEN_SECRET);
 
-	$req = $to->OAuthRequest("http://api.twitter.com/1/friendships/exists.xml","GET",array("user_a"=>$myname,"user_b"=>$session['leadername']));
+	$req = $to->OAuthRequest("http://api.twitter.com/1/friendships/exists.xml","GET",array("user_a"=>$myname,"user_b"=>$leadername));
 	$xml = (array)simplexml_load_string($req);
 	if ( empty($xml[0]) ) {
 		$is_friend = 'error';
@@ -472,7 +472,7 @@ function is_login() {
 	return $is_login;
 }
 
-function add_word_from_twitter( $link, $words_table_name ) {
+function add_word_from_twitter( $link, $words_table_name, $screen_name=NULL ) {
 	//形態素解析エンジンの初期化
 	$mecab = new MeCab_Tagger();
 	
@@ -482,9 +482,12 @@ function add_word_from_twitter( $link, $words_table_name ) {
 	//$_SESSION['access_token']['oauth_token'],$_SESSION['access_token']['oauth_token_secret']);
 	
 	//発言取得
+	if ( empty( $screen_name ) ) {
+		$screen_name = $_SESSION['access_token']['screen_name'];
+	}
 	$tw_count = 100;
 	//$since = date('r', time() - (75 * 24 * 60 * 60));
-	$req = $to->OAuthRequest("https://twitter.com/statuses/user_timeline.xml","GET", array('screen_name' => $_SESSION['access_token']['screen_name'], 'count' => $tw_count));
+	$req = $to->OAuthRequest("https://twitter.com/statuses/user_timeline.xml","GET", array('screen_name' => $screen_name, 'count' => $tw_count));
 	$xml = simplexml_load_string($req);
 	
 	if ( isset( $xml->error ) ) {
@@ -689,8 +692,7 @@ function write_sanka_navi( $session, $members, $myname ) {
 	//リーダーをフォローしているかどうか調べる
 	$is_follower = true;
 	if ( $session['friends_only'] ) {
-		$is_follower = is_follower( $myname, $session,
-		$_SESSION['access_token']['oauth_token'],$_SESSION['access_token']['oauth_token_secret'] );
+		$is_follower = is_follower( $myname, $session['leadername'] );
 	}
 	if ( $is_follower === 'error' ) {
 		echo '<p>現在Twitterが利用できません。</p>';

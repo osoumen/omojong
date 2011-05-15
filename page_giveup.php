@@ -32,10 +32,7 @@ if ( $session['phase'] !== 'toukou' ) {
 if ( in_array($myname, $members) == FALSE ) {
 	error("参加していません。");
 }
-//持ち札があるか
-if ( mb_strlen($stock[$myname]) == 0 ) {
-	error( $myname . 'さんの解答は終了しています');
-}
+
 //リーダーであるか
 $all = false;
 if ( isset( $in['all'] ) ) {
@@ -50,6 +47,12 @@ if ( isset( $in['all'] ) ) {
 	}
 	else {
 		error( 'そのページは開くことが出来ません。');
+	}
+}
+else {
+	//持ち札があるか
+	if ( mb_strlen($stock[$myname]) == 0 ) {
+		error( $myname . 'さんの解答は終了しています');
 	}
 }
 

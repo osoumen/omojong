@@ -33,113 +33,127 @@ if ( ($session['phase'] == 'sanka' || $session['phase'] == 'toukou') && $player_
 	error('開始者以外は中断できません。');
 }
 
-//確認時の処理
-if ( isset($in['confirm']) ) {
-	$totalwords = load_words_table( $link, $words );
-	
-	if ($in['ninzuu'] == '') {
-		$err_str = '人数のパラメータがありません。';
+//$totalwords = load_words_table( $link, $words );
+
+//初期値
+if ( !isset($in['members']) ) {
+	$in['members'] = '';
+}
+if ( !isset($in['ninzuu']) ) {
+	$in['ninzuu'] = '3';
+}
+if ( !isset($in['ninzuu_max']) ) {
+	$in['ninzuu_max'] = '10';
+}
+if ( !isset($in['maisuu']) ) {
+	$in['maisuu'] = '12';
+}
+if ( !isset($in['change_quant']) ) {
+	$in['change_quant'] = '3';
+}
+if ( !isset($in['change_amount']) ) {
+	$in['change_amount'] = '8';
+}
+if ( !isset($in['end_date']) ) {
+	$in['end_date'] = date("Y-m-d", time() + 60 * 60 * 24 * 3);	//デフォルトは3日後
+}
+if ( !isset($in['end_hour']) ) {
+	$in['end_hour'] = '0';
+}
+$in['members'] = htmlspecialchars($in['members'], ENT_QUOTES);
+
+//エラーチェック
+if ($in['ninzuu'] == '') {
+	$err_str = '人数のパラメータがありません。';
+}
+elseif (ctype_digit($in['ninzuu']) == FALSE) {
+	$err_str = '人数には数値を指定してください。';
+	unset( $in['ninzuu'] );
+}
+elseif ($in['ninzuu'] < 2) {
+	$err_str = '２人以上の人数が必要です。';
+}
+elseif (ctype_digit($in['ninzuu_max']) == FALSE) {
+	$err_str = '人数には数値を指定してください。';
+	unset( $in['ninzuu_max'] );
+}
+elseif ($in['ninzuu_max'] < $in['ninzuu']) {
+	$err_str = '最大人数が最少人数より少ないです。';
+}
+elseif (ctype_digit($in['maisuu']) == FALSE) {
+	$err_str = '枚数には数値を指定してください。';
+	unset( $in['maisuu'] );
+}
+elseif ($in['maisuu'] < 4) {
+	$err_str = '枚数が少なすぎます。';
+}
+elseif (ctype_digit($in['change_quant']) == FALSE) {
+	$err_str = '交換可能回数は数値で指定してください。';
+	unset( $in['change_quant'] );
+}
+elseif ($in['change_quant'] < 0) {
+	$err_str = '交換可能回数の数値が不正です。';
+	unset( $in['change_quant'] );
+}
+elseif (ctype_digit($in['change_amount']) == FALSE) {
+	$err_str = '交換可能枚数は数値で指定してください。';
+	unset( $in['change_amount'] );
+}
+elseif ($in['change_amount'] < 0) {
+	$err_str = '交換可能枚数の数値が不正です。';
+	unset( $in['change_amount'] );
+}
+elseif ( strptime($in['end_date'], "%Y-%m-%d") == FALSE ) {
+	$err_str = '日付のフォーマットが間違っています。';
+	unset( $in['end_date'] );
+}
+elseif (ctype_digit($in['end_hour']) == FALSE) {
+	$err_str = '時刻は数値で指定してください。';
+	unset( $in['end_hour'] );
+}
+elseif ($in['end_hour'] > 23 || $in['end_hour'] < 0) {
+	$err_str = '時刻の範囲が間違っています。';
+	unset( $in['end_hour'] );
+}
+else {
+	//未来の日付かどうかをチェック
+	$date = strptime($in['end_date'] . ' ' . $in['end_hour'] . ':00:00', "%Y-%m-%d %H:%M:%S");
+	$timestamp = mktime($date['tm_hour'],$date['tm_min'],$date['tm_sec'],$date['tm_mon']+1,$date['tm_mday'],$date['tm_year']-100);
+	if ( $timestamp < time() ) {
+		$err_str = '現在の時刻以降の期限を指定して下さい。';
 	}
-	elseif (ctype_digit($in['ninzuu']) == FALSE) {
-		$err_str = '人数には数値を指定してください。';
-		unset( $in['ninzuu'] );
+}
+if ( isset( $in['allow_disclose'] ) ) {
+	if ( ctype_digit($in['allow_disclose']) == FALSE ) {
+		$err_str = '入力値が範囲外です。';
 	}
-	elseif ($in['ninzuu'] < 2) {
-		$err_str = '２人以上の人数が必要です。';
+}
+if ( isset( $in['friends_only'] ) ) {
+	if ( ctype_digit($in['friends_only']) == FALSE ) {
+		$err_str = '入力値が範囲外です。2';
 	}
-	elseif (ctype_digit($in['ninzuu_max']) == FALSE) {
-		$err_str = '人数には数値を指定してください。';
-		unset( $in['ninzuu_max'] );
-	}
-	elseif ($in['ninzuu_max'] < $in['ninzuu']) {
-		$err_str = '最大人数が最少人数より少ないです。';
-	}
-	elseif (ctype_digit($in['maisuu']) == FALSE) {
-		$err_str = '枚数には数値を指定してください。';
-		unset( $in['maisuu'] );
-	}
-	elseif ($in['maisuu'] < 4) {
-		$err_str = '枚数が少なすぎます。';
-	}
-	elseif (ctype_digit($in['change_quant']) == FALSE) {
-		$err_str = '交換可能回数は数値で指定してください。';
-		unset( $in['change_quant'] );
-	}
-	elseif ($in['change_quant'] < 0) {
-		$err_str = '交換可能回数の数値が不正です。';
-		unset( $in['change_quant'] );
-	}
-	elseif (ctype_digit($in['change_amount']) == FALSE) {
-		$err_str = '交換可能枚数は数値で指定してください。';
-		unset( $in['change_amount'] );
-	}
-	elseif ($in['change_amount'] < 0) {
-		$err_str = '交換可能枚数の数値が不正です。';
-		unset( $in['change_amount'] );
-	}
-	elseif ( strptime($in['end_date'], "%Y-%m-%d") == FALSE ) {
-		$err_str = '日付のフォーマットが間違っています。';
-		unset( $in['end_date'] );
-	}
-	elseif (ctype_digit($in['end_hour']) == FALSE) {
-		$err_str = '時刻は数値で指定してください。';
-		unset( $in['end_hour'] );
-	}
-	elseif ($in['end_hour'] > 23) {
-		$err_str = '時刻の範囲が間違っています。';
-		unset( $in['end_hour'] );
-	}
-	else {
-		$date = strptime($in['end_date'] . ' ' . $in['end_hour'] . ':00:00', "%Y-%m-%d %H:%M:%S");
-		$timestamp = mktime($date['tm_hour'],$date['tm_min'],$date['tm_sec'],$date['tm_mon']+1,$date['tm_mday'],$date['tm_year']-100);
-		if ( $timestamp < time() ) {
-			$err_str = '現在の時刻以降の期限を指定して下さい。';
+}
+$init_members = explode( ',', $in['members'] );
+foreach ( $init_members as $memb ) {
+	//指定したメンバーが全員自分をフォローしているかチェック
+	if ( $memb ) {
+		$is_follower = is_follower( $memb, $player_name );
+		if ( !$is_follower ) {
+			$err_str = $memb.'さんはあなたをフォローしていません。';
+			break;
 		}
-	}
-	if ($in['ninzuu_max'] == '') {
-		$in['ninzuu_max'] = $in['ninzuu'];
-	}
-	if ($in['maisuu'] == '') {
-		$in['maisuu'] = 10;
-	}
-	if ( isset( $in['allow_disclose'] ) ) {
-		if ( ctype_digit($in['allow_disclose']) == FALSE ) {
-			$err_str = '入力値が範囲外です。';
-		}
-	}
-	if ( isset( $in['friends_only'] ) ) {
-		if ( ctype_digit($in['friends_only']) == FALSE ) {
-			$err_str = '入力値が範囲外です。';
+		if ( $is_follower === 'error' ) {
+			$err_str = '指定されたメンバーは追加できません。';
+			break;
 		}
 	}
 }
 
 //初見もしくは、設定値にエラーがある場合
 if ( isset($in['confirm']) == FALSE || $err_str != '' ) {
-	$in['username'] = $player_name;
-	if ( !isset($in['ninzuu']) ) {
-		$in['ninzuu'] = 3;
-	}
-	if ( !isset($in['ninzuu_max']) ) {
-		$in['ninzuu_max'] = 10;
-	}
-	if ( !isset($in['maisuu']) ) {
-		$in['maisuu'] = 12;
-	}
-	if ( !isset($in['change_quant']) ) {
-		$in['change_quant'] = 3;
-	}
-	if ( !isset($in['change_amount']) ) {
-		$in['change_amount'] = 8;
-	}
+	//$in['username'] = $player_name;
 	if ( !isset($in['allow_disclose']) ) {
 		$in['allow_disclose'] = 1;
-	}
-	if ( !isset($in['end_date']) ) {
-		$in['end_date'] = date("Y-m-d", time() + 60 * 60 * 24 * 3);
-	}
-	if ( !isset($in['end_hour']) ) {
-		$in['end_hour'] = 0;
 	}
 	
 	$pagetitle = '新しく始める';
@@ -288,10 +302,19 @@ else {
 		//日付を代入
 		$session['end_time'] = sprintf("%s %02d:00:00",$in['end_date'],$in['end_hour']);
 
+		//メンバーの初期化
 		$members[0] = $player_name;
-		$stock[$player_name] = '';
-		$changerest[$player_name] = $in['change_quant'];
-		$change_amount[$player_name] = $in['change_amount'];
+		$init_members = explode( ',', $in['members'] );
+		foreach ( $init_members as $memb ) {
+			if ( $memb ) {
+				$members[] = $memb;
+			}
+		}
+		foreach ( $members as $memb ) {
+			$stock[$memb] = '';
+			$changerest[$memb] = $in['change_quant'];
+			$change_amount[$memb] = $in['change_amount'];
+		}
 		
 		//単語テーブル、参加者テーブル、解答リストテーブル名を決める
 		$words_table_name = sprintf( 'words_%s', $new_session_key );
@@ -331,9 +354,9 @@ else {
 		$query = mysql_query( $sql, $link );
 		
 		//Twitterから単語を取得
-		//if ( $allow_addword == 0 ) {
-			add_word_from_twitter( $link, $words_table_name );
-		//}
+		foreach ( $members as $memb ) {
+			add_word_from_twitter( $link, $words_table_name, $memb );
+		}
 		
 		//ウェルカム通知
 		/*
@@ -349,7 +372,7 @@ else {
 			}
 		}
 		*/
-		$session['phase'] = 'sanka';
+		$session['phase'] = 'deal';
 		store_session_table( $link, $session );
 		store_members( $link, $members, $stock, $changerest, $change_amount );
 		
