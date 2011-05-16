@@ -631,7 +631,7 @@ function write_urltweet( $url, $session_key ) {
 
 function write_members_html( $members, $stock, $myname ) {
 	echo '<div class="member">';
-	echo '<h4>解答中</h4>';
+	echo '<h4>未解答</h4>';
 	echo '<ul>';
 	foreach ( $members as $memb ) {
 		if ($memb === $myname) {
@@ -646,7 +646,7 @@ function write_members_html( $members, $stock, $myname ) {
 		}
 	}
 	echo '</ul>';
-	echo '<h4>解答終了</h4>';
+	echo '<h4>解答済み</h4>';
 	echo '<ul>';
 	foreach ( $members as $memb ) {
 		if ($memb === $myname) {

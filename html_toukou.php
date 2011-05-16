@@ -29,17 +29,17 @@ echo '<div id="user_navi">';
 
 if ( in_array($myname, $members) ) {
 	if ( $stock[$myname] !== '' ) {
-		echo "<a href=\"page_giveup.php?confirm=$g_giveup_confirm\"><p>解答を終わりにする</p></a>";
+		echo "<a href=\"page_giveup.php?confirm=$g_giveup_confirm\"><p>自分の解答を終わる</p></a>";
 		echo '<p>終了すると他の人の解答を見られます。</p>';
-		$end_time = $session['end_time'];
-		echo "<p>解答期限</p><p>$end_time</p>";
 	}
 	else {
 		echo "<p>$myname さんはもう解答できません。</p>";
 	}
+	$end_time = $session['end_time'];
+	echo "<p>解答期限</p><p>$end_time</p>";
 	
 	if ( $myname == $session['leadername'] ) {
-		echo "<a href=\"page_giveup.php?confirm=$g_giveup_confirm&all=1\"><p>締め切る</p></a>";
+		echo "<a href=\"page_giveup.php?confirm=$g_giveup_confirm&all=1\"><p>解答を締め切る</p></a>";
 	}
 }
 else {
