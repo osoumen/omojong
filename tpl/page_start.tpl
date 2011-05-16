@@ -60,6 +60,7 @@
 </select>
 </dd>
 <dt>公開／非公開</dt>
+<!--
 <dd>「新着リストに公開する」に設定すると、あなたが開始した事を全体に公開します。</dd>
 <dd>
 <input type='checkbox' name='allow_disclose' value='1' 
@@ -71,7 +72,8 @@ checked='checked'
 >
 新着リストに公開する
 </dd>
-<dd>あなたのフォロワーだけ途中参加できるようにします。</dd>
+-->
+<dd>あなたのフォロワーだけ途中参加できるようにします。また、開始した事を新着リストに公開しません。</dd>
 <dd>
 <input type='checkbox' name='friends_only' value='1' 
 {if isset($in.friends_only)}

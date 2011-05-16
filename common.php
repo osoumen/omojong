@@ -38,7 +38,7 @@ function get_disclosed_session_key( $link ) {
 	return $disclosed_session_key;
 }
 
-function get_new_session_key( $link, $leader_name ) {
+function get_new_session_key( $link, $leader_name, $update=1 ) {
 	$session_key = 99999;
 	//セッションテーブル内にleader_nameがあればそのセッションのキーを返す
 	$sql = sprintf( "SELECT * FROM session WHERE leadername = %s", mysql_escape_string($leader_name) );
@@ -62,8 +62,10 @@ function get_new_session_key( $link, $leader_name ) {
 			$session_key = $row['total'];
 		}
 		$session_key++;
-		$sql = "UPDATE global SET total = $session_key";
-		$query = mysql_query( $sql, $link );
+		if ( $update ) {
+			$sql = "UPDATE global SET total = $session_key";
+			$query = mysql_query( $sql, $link );
+		}
 	}
 
 	return $session_key;

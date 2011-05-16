@@ -18,6 +18,7 @@
 <dt>解答期限</dt>
 <dd>{$datetext}</dd>
 <dt>公開／非公開</dt>
+<!--
 <dd>
 {if isset($in.allow_disclose) && ($in.allow_disclose != 0)}
 新着リストに公開する
@@ -25,6 +26,7 @@
 新着リストに公開しない
 {/if}
 </dd>
+-->
 <dd>
 {if isset($in.friends_only) && ($in.friends_only != 0)}
 参加をfollowerのみに制限する
@@ -51,11 +53,13 @@
 <input type="hidden" name="change_amount" value="{$in.change_amount}">
 <input type="hidden" name="end_date" value="{$in.end_date}">
 <input type="hidden" name="end_hour" value="{$in.end_hour}">
+<!--
 {if isset($in.allow_disclose)}
 <input type="hidden" name="allow_disclose" value="1">
 {else}
 <input type="hidden" name="allow_disclose" value="0">
 {/if}
+-->
 {if isset($in.friends_only)}
 <input type="hidden" name="friends_only" value="1">
 {else}

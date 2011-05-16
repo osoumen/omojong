@@ -277,7 +277,13 @@ else {
 		$smarty->assign( 'in', $in );
 		$smarty->assign( 'datetext', $datetext );
 		$smarty->assign( 'init_members', $init_members );
-		$post_msg = ' ' . $g_scripturl . '?p=' . $session['session_key'] . ' by ' . $g_title;
+		if ( $session ) {
+			$new_session_key = $session['session_key'];
+		}
+		else {
+			$new_session_key = get_new_session_key( $link, $player_name, 0 );	//アップデートしない
+		}
+		$post_msg = ' ' . $g_scripturl . '?p=' . $new_session_key . ' by ' . $g_title;
 		$smarty->assign( 'post_msg', $post_msg );
 		$default_msg = $notifymsg0;
 		$smarty->assign( 'default_msg', $default_msg );
