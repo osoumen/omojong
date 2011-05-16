@@ -29,6 +29,8 @@ if ( $latest_pastlog < 0 ) {
 //ヘッダー
 $pagetitle = 'これまでに作成された文を見る';
 $smarty->assign( 'pagetitle', $pagetitle );
+$g_js_url[] = 'js/mojilen.js';
+$smarty->assign( 'g_js_url', $g_js_url );
 $smarty->display( $g_tpl_path . 'header.tpl' );
 ?>
 <script src="http://widgets.twimg.com/j/2/widget.js"></script>
@@ -62,7 +64,6 @@ while ( $row = mysql_fetch_array( $query, MYSQL_NUM ) ) {
 	$hyousuu = $row[3];
 	$date = $row[4];
 	$wj_search = sprintf( '%s?%s=%d#%d%s', $g_scripturl, $pastlog_param_name, $num, $ansindex, $hash_tag );
-//	$tweet_msg = urlencode(' ＜' . $sentence . '＞ ' . $wj_search );
 	$tweet_msg = ' ＜' . $sentence . '＞ ' . $wj_search;
 	
 	$smarty->assign( 'pastno', $num );

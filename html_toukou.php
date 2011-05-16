@@ -19,6 +19,8 @@ $myname = isset($_SESSION['access_token']['screen_name']) ? $_SESSION['access_to
 //ヘッダー
 $pagetitle = '解答中';
 $smarty->assign( 'pagetitle', $pagetitle );
+$g_js_url[] = 'js/jquery.js';
+$smarty->assign( 'g_js_url', $g_js_url );
 $smarty->display( $g_tpl_path . 'header.tpl' );
 
 echo '<div id="content_left">';

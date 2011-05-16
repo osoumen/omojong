@@ -16,9 +16,6 @@ $g_maxwords = 0;			//保持する単語の最大数　超えると古いもの�
 
 $g_hot_votes = 5;		//投票がこの数を超えたらtweetする
 
-//スタイルシートの設定
-$g_css_url = 'css/default.css';
-
 //データベース名
 define('G_DATABASE', 'omojong');
 
@@ -80,7 +77,6 @@ $smarty->assign( 'header_path', 'tpl/header.tpl' );
 $smarty->assign( 'footer_path', 'tpl/footer.tpl' );
 
 $smarty->assign( 'g_title', $g_title );
-$smarty->assign( 'g_css_url', $g_css_url );
 $smarty->assign( 'g_script', $g_script );
 $smarty->assign( 'g_scripturl', $g_scripturl );
 
@@ -90,6 +86,24 @@ $smarty->assign( 'g_giveup_confirm', $g_giveup_confirm );
 
 $smarty->assign( 'gameid_param_name', $gameid_param_name );
 $smarty->assign( 'pastlog_param_name', $pastlog_param_name );
+
+//スタイルシート
+$g_css_url = array();
+$g_css_url[] = 'css/default.css';
+/*
+$g_css_url[] = 'css/autoSuggest.css';
+*/
+$smarty->assign( 'g_css_url', $g_css_url );
+
+//Javascript
+$g_js_url = array();
+/*
+$g_js_url[] = 'js/jquery.js';
+$g_js_url[] = 'js/mojilen.js';
+$g_js_url[] = 'js/jquery.alphanumeric.pack.js';
+$g_js_url[] = 'js/jquery.autoSuggest.packed.js';
+*/
+$smarty->assign( 'g_js_url', $g_js_url );
 
 //各データへのテーブル名
 $words_table_name = 'words';

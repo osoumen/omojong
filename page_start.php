@@ -254,6 +254,13 @@ if ( isset($in['confirm']) == FALSE || $err_str != '' ) {
 	$smarty->assign( 'end_date_options', $end_date_options );
 	$smarty->assign( 'end_hour_options', $end_hour_options );
 
+	$g_css_url[] = 'css/autoSuggest.css';
+	$smarty->assign( 'g_css_url', $g_css_url );
+	$g_js_url[] = 'js/jquery.js';
+	$g_js_url[] = 'js/jquery.alphanumeric.pack.js';
+	$g_js_url[] = 'js/jquery.autoSuggest.packed.js';
+	$smarty->assign( 'g_js_url', $g_js_url );
+
 	$smarty->display( $g_tpl_path . 'page_start.tpl' );
 }
 else {
@@ -277,6 +284,11 @@ else {
 		$smarty->assign( 'post_msg', $post_msg );
 		$default_msg = $notifymsg0;
 		$smarty->assign( 'default_msg', $default_msg );
+		
+		$g_js_url[] = 'js/jquery.js';
+		$g_js_url[] = 'js/mojilen.js';
+		$smarty->assign( 'g_js_url', $g_js_url );
+		
 		$smarty->display( $g_tpl_path . 'page_start_confirm.tpl' );
 	}
 	else {
