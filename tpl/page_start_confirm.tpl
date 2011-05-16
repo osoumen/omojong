@@ -3,7 +3,9 @@
 <div class="input_form">
 <h3>以下の条件で始めますか？</h3>
 <dl>
+{if ($init_members)}
 <dt>参加メンバー</dt>
+{/if}
 {foreach from="$init_members" item="value"}
 <dd>@{$value}</dd>
 {/foreach}
@@ -20,11 +22,12 @@
 <dt>公開／非公開</dt>
 <dd>
 {if isset($in.friends_only) && ($in.friends_only != 0)}
-参加をfollowerのみに制限する
+非公開にする
 {else}
-誰でも参加可能
+誰でも途中参加が可能
 {/if}
 </dd>
+{if ($init_members)}
 <dt>ダイレクトメッセージ</dt>
 <dd>以下のメッセージでメンバーに知らせます。</dd>
 </dl>
@@ -34,6 +37,9 @@
 <div class="post_msg">+ {$post_msg}</div>
 <span id="msg0"></span>
 </div>
+{else}
+</dl>
+{/if}
 <input type="hidden" name="members" value="{$in.members}">
 <input type="hidden" name="mode" value="start">
 <input type="hidden" name="confirm" value="0">
@@ -54,6 +60,6 @@
 </div>
 </div>
 <div id="pre_footer">
-<a href="{$g_script}" target=_top>戻る</a>
+<a href="page_start.php" target=_top>戻る</a>
 </div>
 {include file={$footer_path}}

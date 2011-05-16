@@ -60,7 +60,7 @@
 </select>
 </dd>
 <dt>公開／非公開</dt>
-<dd>あなたのフォロワーだけ途中参加できるようにします。また、開始した事を新着リストに公開しません。</dd>
+<dd>あなたのフォロワーだけしか途中参加できないようにします。設定すると、開始した事を新着リストに公開しません。</dd>
 <dd>
 <input type='checkbox' name='friends_only' value='1' 
 {if isset($in.friends_only)}
@@ -69,7 +69,7 @@ checked='checked'
 {/if}
 {/if}
 >
-参加をfollowerのみに制限する
+非公開にする
 </dd>
 </dl>
 <input class="right_btn" type="submit" name="submit" value="この条件で始める">
