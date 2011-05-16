@@ -28,7 +28,7 @@ function is_exist_table( $link, $table_name ) {
 function get_disclosed_session_key( $link ) {
 	$disclosed_session_key = array();
 	
-	$sql = 'SELECT * FROM session WHERE allow_disclose = 1 ORDER BY session_key DESC LIMIT 20';
+	$sql = 'SELECT * FROM session WHERE friends_only = 0 ORDER BY session_key DESC LIMIT 20';
 	$query = mysql_query( $sql, $link );
 	if ( $query ) {
 		while ( $row = @mysql_fetch_array( $query, MYSQL_ASSOC ) ) {
@@ -126,7 +126,6 @@ function load_session_table( $link ) {
 	$words_table_name = $row['words_table_name'];
 	$members_table_name = $row['members_table_name'];
 	$kaitou_table_name = $row['kaitou_table_name'];
-	$session['allow_disclose'] = $row['allow_disclose'];
 	$session['friends_only'] = $row['friends_only'];
 	$session['end_time'] = $row['end_time'];
 	
@@ -159,7 +158,6 @@ function store_session_table( $link, $session ) {
 			words_table_name text,
 			members_table_name text,
 			kaitou_table_name text,
-			allow_disclose bool,
 			friends_only bool,
 			end_time datetime
 			)');
@@ -170,7 +168,7 @@ function store_session_table( $link, $session ) {
 	$query = mysql_query( $sql, $link );
 	
 	//セッション情報を書き込む
-	$sql = sprintf( "INSERT INTO session VALUES( '%s', '%s', '%s', %d, %d, %d, %d, %d, '%s', '%s', '%s', %d, %d, '%s' )",
+	$sql = sprintf( "INSERT INTO session VALUES( '%s', '%s', '%s', %d, %d, %d, %d, %d, '%s', '%s', '%s', %d, '%s' )",
 	$session['leadername'],
 	$session['session_key'],
 	$session['phase'],
@@ -182,7 +180,6 @@ function store_session_table( $link, $session ) {
 	$words_table_name,
 	$members_table_name,
 	$kaitou_table_name,
-	$session['allow_disclose'],
 	$session['friends_only'],
 	$session['end_time']
 	);

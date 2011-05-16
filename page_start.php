@@ -128,14 +128,9 @@ else {
 		$err_str = '現在の時刻以降の期限を指定して下さい。';
 	}
 }
-if ( isset( $in['allow_disclose'] ) ) {
-	if ( ctype_digit($in['allow_disclose']) == FALSE ) {
-		$err_str = '入力値が範囲外です。';
-	}
-}
 if ( isset( $in['friends_only'] ) ) {
 	if ( ctype_digit($in['friends_only']) == FALSE ) {
-		$err_str = '入力値が範囲外です。2';
+		$err_str = '入力値が範囲外です。';
 	}
 }
 $init_members_temp = explode( ',', $in['members'] );
@@ -160,11 +155,6 @@ foreach ( $init_members_temp as $memb ) {
 
 //初見もしくは、設定値にエラーがある場合
 if ( isset($in['confirm']) == FALSE || $err_str != '' ) {
-	//$in['username'] = $player_name;
-	if ( !isset($in['allow_disclose']) ) {
-		$in['allow_disclose'] = 1;
-	}
-	
 	$pagetitle = '新しく始める';
 	$smarty->assign( 'pagetitle', $pagetitle );
 	$smarty->assign( 'in', $in );
@@ -307,12 +297,6 @@ else {
 		$session['maisuu'] = $in['maisuu'];
 		$session['change_quant'] = $in['change_quant'];
 		$session['change_amount'] = $in['change_amount'];
-		if ( isset($in['allow_disclose']) ) {
-			$session['allow_disclose'] = $in['allow_disclose'];
-		}
-		else {
-			$session['allow_disclose'] = false;
-		}
 		if ( isset($in['friends_only']) ) {
 			$session['friends_only'] = $in['friends_only'];
 		}
