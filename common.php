@@ -491,8 +491,8 @@ function add_word_from_twitter( $link, $words_table_name, $screen_name=NULL ) {
 	}
 	$tw_count = 100;
 	//$since = date('r', time() - (75 * 24 * 60 * 60));
-	$req = $to->OAuthRequest("https://twitter.com/statuses/user_timeline.xml","GET", array('screen_name' => $screen_name, 'count' => $tw_count));
-	$xml = simplexml_load_string($req);
+	$req = $to->OAuthRequest("https://twitter.com/statuses/user_timeline.json","GET", array('screen_name' => $screen_name, 'count' => $tw_count));
+	$xml = json_decode($req);
 	
 	if ( isset( $xml->error ) ) {
 		$error = $xml->error;
@@ -502,7 +502,7 @@ function add_word_from_twitter( $link, $words_table_name, $screen_name=NULL ) {
 	$stored_words = array();
 	
 	//取得発言を解析し、単語抽出
-	foreach ($xml->status as $status) {
+	foreach ($xml as $status) {
 		$str = $status->text; // 呟き
 		
 		//mention,ハッシュタグを削除
@@ -567,7 +567,9 @@ function add_word_from_twitter( $link, $words_table_name, $screen_name=NULL ) {
 				{
 					if ( $continued_word )
 					{
-						array_push( $stored_words, $continued_word );
+						if (!in_array($continued_word, $stored_words)) {
+							$stored_words[] = $continued_word;
+						}
 						$continued_word = '';
 					}
 				}
@@ -587,7 +589,9 @@ function add_word_from_twitter( $link, $words_table_name, $screen_name=NULL ) {
 				{
 					if ( $continued_word )
 					{
-						array_push( $stored_words, $continued_word );
+						if (!in_array($continued_word, $stored_words)) {
+							$stored_words[] = $continued_word;
+						}
 						$continued_word = '';
 					}
 				}
@@ -607,18 +611,18 @@ function add_word_from_twitter( $link, $words_table_name, $screen_name=NULL ) {
 	$totalwords = 0;
 	foreach ($stored_words as $newword) {	
 		//以前に同じ単語が入れられていないかチェック
-		$sql = sprintf( "SELECT word FROM %s WHERE word = '%s'", $words_table_name, $newword );
-		$query = mysql_query( $sql, $link );
-		$found = mysql_num_rows( $query );
+	//	$sql = sprintf( "SELECT word FROM %s WHERE word = '%s'", $words_table_name, $newword );
+	//	$query = mysql_query( $sql, $link );
+	//	$found = mysql_num_rows( $query );
 		//既にある単語は追加しない
-		if ( $found == 0 ) {
+	//	if ( $found == 0 ) {
 			//単語をデータベースに書き込む
 			$sql = sprintf( "INSERT INTO %s (word, date) VALUES ('%s', NOW())", $words_table_name, $newword );
 			$query = mysql_query( $sql, $link );
 			if ( $query ) {
 				$totalwords++;
 			}
-		}
+	//	}
 	}
 	return $totalwords;
 }
