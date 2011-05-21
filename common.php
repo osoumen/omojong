@@ -267,8 +267,8 @@ function commit_mention($mlad,$inmsg,$access_token=ACCESS_TOKEN,$access_token_se
 	else {
 		$notify_msg = '@' . $mlad . $inmsg;
 	}
-	$req = $to->OAuthRequest("https://twitter.com/statuses/update.xml","POST",array("status"=>$notify_msg));
-	$xml = simplexml_load_string($req);
+	$req = $to->OAuthRequest("https://twitter.com/statuses/update.json","POST",array("status"=>$notify_msg));
+	$xml = json_decode($req);
 	if ( isset( $xml->error ) ) {
 		$error = $xml->error;
 	}
@@ -282,8 +282,8 @@ function post_tweet($inmsg,$access_token,$access_token_secret) {
 	
 	// 投稿
 	$notify_msg = $inmsg;	
-	$req = $to->OAuthRequest("https://twitter.com/statuses/update.xml","POST",array("status"=>$notify_msg));
-	$xml = simplexml_load_string($req);
+	$req = $to->OAuthRequest("https://twitter.com/statuses/update.json","POST",array("status"=>$notify_msg));
+	$xml = json_decode($req);
 	if ( isset( $xml->error ) ) {
 		$error = $xml->error;
 	}
@@ -296,8 +296,8 @@ function follow_id($id,$access_token,$access_token_secret) {
 	$to = new TwitterOAuth(CONSUMER_KEY,CONSUMER_SECRET,$access_token,$access_token_secret);
 	
 	// フォロー
-	$req = $to->OAuthRequest("https://api.twitter.com/1/friendships/create.xml","POST",array("id"=>$id));
-	$xml = simplexml_load_string($req);
+	$req = $to->OAuthRequest("https://api.twitter.com/1/friendships/create.json","POST",array("id"=>$id));
+	$xml = json_decode($req);
 
 	if ( isset( $xml->error ) ) {
 		$error = $xml->error;
@@ -310,13 +310,13 @@ function is_follower( $myname, $leadername ) {
 	// OAuthオブジェクト生成
 	$to = new TwitterOAuth(CONSUMER_KEY,CONSUMER_SECRET,ACCESS_TOKEN, ACCESS_TOKEN_SECRET);
 
-	$req = $to->OAuthRequest("http://api.twitter.com/1/friendships/exists.xml","GET",array("user_a"=>$myname,"user_b"=>$leadername));
-	$xml = (array)simplexml_load_string($req);
-	if ( empty($xml[0]) ) {
+	$req = $to->OAuthRequest("http://api.twitter.com/1/friendships/exists.json","GET",array("user_a"=>$myname,"user_b"=>$leadername));
+	$xml = (array)json_decode($req);
+	if ( isset($xml->error) ) {
 		$is_friend = 'error';
 	}
 	else {
-		$is_friend = ($xml[0]==='true')?true:false;
+		$is_friend = ($req==='true')?true:false;
 	}
 	return $is_friend;
 }
@@ -466,8 +466,8 @@ function is_login() {
 		$to = new TwitterOAuth(CONSUMER_KEY,CONSUMER_SECRET,
 		$_SESSION['access_token']['oauth_token'],$_SESSION['access_token']['oauth_token_secret']);
 		$count = 0;
-		$req = $to->OAuthRequest("https://twitter.com/statuses/home_timeline.xml","GET",array("count"=>$count));
-		$xml = simplexml_load_string($req);
+		$req = $to->OAuthRequest("https://twitter.com/statuses/home_timeline.json","GET",array("count"=>$count));
+		$xml = json_decode($req);
 		if ( isset( $xml->error ) ) {
 			$is_login = false;
 		}
@@ -793,9 +793,10 @@ function multi_tweet( $to_array, $myname, $entry_content, $post_msg, $token, $to
 			//}
 		}
 		if ( $error ) {
-			error('Twitterのエラーのため処理されませんでした。('.$error.')');
+			return $error;
 		}
 	}
+	return $error;
 }
 
 function write_json_result( $json_data ) {

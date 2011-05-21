@@ -9,14 +9,14 @@ $in = $_REQUEST;
 $in['entry_content'] = ' ' . $in['entry_content'];
 
 if ( empty( $_SESSION['is_last'] ) ) {
-	header('Location: ' . $g_scripturl);
+	echo 'エラーが発生しました。';
+	exit;
 }
-unset( $_SESSION['is_last'] );
 
 if ( empty( $_SESSION['post_token'] ) || $_SESSION['post_token'] !== $in['post_token'] ) {
-	error('Twitterへの投稿が出来ませんでした');
+	echo 'ログインされていません。';
+	exit;
 }
-unset( $_SESSION['post_token'] );
 
 //データベースに接続
 $link = connect_db();
@@ -24,21 +24,28 @@ $link = connect_db();
 //いきなりこのページを開いたらtopへ
 $session = load_session_table( $link );
 if ( empty( $session ) ) {
-	header('Location: ' . $g_scripturl);
+	echo 'ログインされていません。';
+	exit;
 }
 
 //ログインしてなかったらtopに飛ぶ
 if ( is_login() == false ) {
-	header('Location: ' . $g_scripturl);
+	echo 'ログインされていません。';
+	exit;
 }
 $myname = $_SESSION['access_token']['screen_name'];
 
 load_members( $link, $members, $stock, $changerest, $change_amount );
 
-multi_tweet( $members, $myname, $in['entry_content'], $in['post_msg'],
+$result = multi_tweet( $members, $myname, $in['entry_content'], $in['post_msg'],
 $_SESSION['access_token']['oauth_token'], $_SESSION['access_token']['oauth_token_secret'] );
 
-//ページを表示
-$pagetitle = 'メッセージの送信';
-$smarty->assign( 'pagetitle', $pagetitle );
-$smarty->display( $g_tpl_path . 'page_msg_send.tpl' );
+//メッセージを表示
+if ( $result ) {
+	echo 'Twitterのエラーのためツイートできませんでした。('.$result.')';
+}
+else {
+	unset( $_SESSION['is_last'] );
+	unset( $_SESSION['post_token'] );
+	echo 'ok';
+}

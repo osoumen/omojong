@@ -486,7 +486,17 @@ textarea {
 	width: 48px;
 }
 
+#twitter_form {
+	font-size: 0.8em;
+	text-align: left;
+}
+
 #progress {
+	display: none;
+	text-align: center;
+}
+
+#progress_ok {
 	display: none;
 	text-align: center;
 }

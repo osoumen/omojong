@@ -70,12 +70,12 @@ $('#twitter-button0').click(function() {
 </dd>
 {if ($init_members)}
 <dt>ダイレクトメッセージの送信</dt>
-<dd>以下のメッセージでメンバーに知らせます。</dd>
+<dd>このDMでメンバーに知らせます。</dd>
 <dd><div class="general_container">{$default_msg} {$post_msg}</div></dd>
 {/if}
 </dl>
 <button id="twitter-button0" class="right_btn">ＯＫ</button>
-<div id="progress">ツイート取得中...<img src="img/progress.gif" width=64 height="32" /></div>
+<div id="progress"><p>ツイートを分析中...</p><img src="img/progress.gif" width=64 height="32" /></div>
 </div>
 </div>
 <div id="pre_footer">

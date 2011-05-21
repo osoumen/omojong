@@ -399,13 +399,5 @@ else {
 
 		//結果を出力
 		echo 'ok';
-		
-		//ページを表示
-		//header('Location: ' . $g_scripturl);
-		//$pagetitle = '新しく始める';
-		//$smarty->assign( 'pagetitle', $pagetitle );
-		//$smarty->assign( 'in', $in );
-		//$smarty->assign( 'allow_addword', $allow_addword );
-		//$smarty->display( $g_tpl_path . 'page_start_success.tpl' );
 	}
 }

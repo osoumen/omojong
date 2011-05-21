@@ -163,7 +163,7 @@ else {
 		$smarty->assign( 'post_msg', $post_msg );
 		$smarty->assign( 'post_token', $post_token );
 		$smarty->assign( 'to', $to );
-		$g_js_url[] = 'js/mojilen.js';
+		$g_js_url[] = 'js/jquery.js';
 		$smarty->assign( 'g_js_url', $g_js_url );
 		$smarty->display( $g_tpl_path . 'page_send_mention.tpl' );
 	}
