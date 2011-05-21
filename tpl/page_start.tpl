@@ -1,7 +1,7 @@
 {include file={$header_path}}
 <div id="content_main">
 {if $err_str != ''}
-<p><span class="err_msg">{$err_str}</span></p>
+<div class="err_msg">{$err_str}</div>
 {/if}
 <div class="input_form">
 <h3>ルールを設定してください。</h3>
@@ -85,7 +85,7 @@ $(function(){
 		asHtmlID: 'members',
 		neverSubmit: true,
 		minChars: 1,
-		matchCase: true,
+		matchCase: false,
 		startText: 'フォロワーIDを入力',
 		emptyText: '見つかりませんでした',
 		keyDelay: 20,

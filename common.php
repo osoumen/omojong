@@ -821,3 +821,9 @@ function multi_tweet( $to_array, $myname, $entry_content, $post_msg, $token, $to
 		}
 	}
 }
+
+function write_json_result( $json_data ) {
+	header("Content-type: application/json");
+	echo json_encode($json_data);
+	exit;
+}

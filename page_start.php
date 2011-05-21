@@ -280,7 +280,7 @@ else {
 		else {
 			$new_session_key = get_new_session_key( $link, $player_name, 0 );	//アップデートしない
 		}
-		$post_msg = ' ' . $g_scripturl . '?p=' . $new_session_key . ' by ' . $g_title;
+		$post_msg = ' ' . $g_scripturl . '?p=' . $new_session_key;
 		$smarty->assign( 'post_msg', $post_msg );
 		$default_msg = $notifymsg0;
 		$smarty->assign( 'default_msg', $default_msg );
@@ -356,6 +356,10 @@ else {
 				change_amount int
 				)', $members_table_name);
 		$query = mysql_query( $sql, $link );
+		if ( $query === false ) {
+			echo '開始できませんでした。しばらくして、もう一度試してみて下さい。';
+			exit;
+		}
 		
 		$sql = sprintf( 'CREATE TABLE IF NOT EXISTS `%s` (
 				id int,
@@ -369,6 +373,10 @@ else {
 		//解答テーブルのリセット
 		$sql = sprintf( 'TRUNCATE `%s`', $kaitou_table_name );
 		$query = mysql_query( $sql, $link );
+		if ( $query === false ) {
+			echo '開始できませんでした。しばらくして、もう一度試してみて下さい。';
+			exit;
+		}
 		
 		//Twitterから単語を取得
 		foreach ( $members as $memb ) {
@@ -404,8 +412,11 @@ else {
 		$_SESSION['access_token']['oauth_token'], $_SESSION['access_token']['oauth_token_secret'], 1 );
 		}
 
+		//結果を出力
+		echo 'ok';
+		
 		//ページを表示
-		header('Location: ' . $g_scripturl);
+		//header('Location: ' . $g_scripturl);
 		//$pagetitle = '新しく始める';
 		//$smarty->assign( 'pagetitle', $pagetitle );
 		//$smarty->assign( 'in', $in );

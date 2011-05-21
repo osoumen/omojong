@@ -1,7 +1,48 @@
 {include file={$header_path}}
+<script type="text/javascript">
+$(function() {
+$('#progress')
+.ajaxStart(function() {
+	$(this).show();
+})
+.ajaxStop(function() {
+	$(this).hide();
+});
+$('#twitter-button0').click(function() {
+	$('#twitter-button0').hide("fast");
+	var post_msg = {
+	members: '{$in.members}',
+	confirm: 0,
+	ninzuu: '{$in.ninzuu}',
+	ninzuu_max: '{$in.ninzuu_max}',
+	maisuu: '{$in.maisuu}',
+	change_quant: '{$in.change_quant}',
+	change_amount: '{$in.change_amount}',
+	end_date: '{$in.end_date}',
+	end_hour: '{$in.end_hour}',
+{if isset($in.friends_only)}
+	friends_only: 1
+{else}
+	friends_only: 0
+{/if}
+	};
+	post_msg['entry_content'] = $('#twitter_input_textbox').val();
+	$.post("page_start.php", post_msg, function(text, status) {
+		if ( text == 'ok' ) {
+			document.location = "{$g_script}";
+		}
+		else {
+			$('#err_msg').html(text);
+			$('#twitter-button0').show("fast");
+		}
+	});
+});
+});
+</script>
 <div id="content_main">
 <div class="input_form">
 <h3>以下の条件で始めますか？</h3>
+<div id="err_msg"></div>
 <dl>
 {if ($init_members)}
 <dt>参加メンバー</dt>
@@ -31,32 +72,16 @@
 <dt>ダイレクトメッセージ</dt>
 <dd>以下のメッセージでメンバーに知らせます。</dd>
 </dl>
-<form action="page_start.php" method="post">
 <div class="twitter_input">
-<textarea onKeyup="mojilen(value,0,'{$post_msg}')" class="twitter-field" name="entry_content" tabindex=3 rows="2" cols="40">{$default_msg}</textarea>
+<textarea id="twitter_input_textbox" onKeyup="mojilen(value,0,'{$post_msg}')" class="twitter-field" name="entry_content" tabindex=3 rows="2" cols="40">{$default_msg}</textarea>
 <div class="post_msg">+ {$post_msg}</div>
 <span id="msg0"></span>
 </div>
 {else}
 </dl>
 {/if}
-<input type="hidden" name="members" value="{$in.members}">
-<input type="hidden" name="mode" value="start">
-<input type="hidden" name="confirm" value="0">
-<input type="hidden" name="ninzuu" value="{$in.ninzuu}">
-<input type="hidden" name="ninzuu_max" value="{$in.ninzuu_max}">
-<input type="hidden" name="maisuu" value="{$in.maisuu}">
-<input type="hidden" name="change_quant" value="{$in.change_quant}">
-<input type="hidden" name="change_amount" value="{$in.change_amount}">
-<input type="hidden" name="end_date" value="{$in.end_date}">
-<input type="hidden" name="end_hour" value="{$in.end_hour}">
-{if isset($in.friends_only)}
-<input type="hidden" name="friends_only" value="1">
-{else}
-<input type="hidden" name="friends_only" value="0">
-{/if}
-<input id="twitter-button0" type="submit" class="right_btn" name="submit" value="ＯＫ">
-</form>
+<button id="twitter-button0" class="right_btn">ＯＫ</button>
+<div id="progress"><img src="img/progress.gif" width=64 height="32" /></div>
 </div>
 </div>
 <div id="pre_footer">
