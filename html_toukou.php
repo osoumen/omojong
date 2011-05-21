@@ -19,14 +19,18 @@ $myname = isset($_SESSION['access_token']['screen_name']) ? $_SESSION['access_to
 //ヘッダー
 $pagetitle = '解答中';
 $smarty->assign( 'pagetitle', $pagetitle );
+$g_css_url[] = 'css/jquery.ui.all.css';
+$smarty->assign( 'g_css_url', $g_css_url );
 $g_js_url[] = 'js/jquery.js';
 $g_js_url[] = 'js/jquery-ui-1.8.13.custom.min.js';
 $smarty->assign( 'g_js_url', $g_js_url );
 $smarty->display( $g_tpl_path . 'header.tpl' );
 ?>
-<div id="dialog" title="ダイアログボックス" style="display : none;">
-お名前を入力してください。<br />
-<input type="text" name="yourname" id="yourname" size="20" />
+<div id="giveup_dialog" title="解答の終了" style="display : none;">
+解答を終わりにしますか？<br />
+</div>
+<div id="force_end_dialog" title="解答を締め切る" style="display : none;">
+全員の解答を締め切ってもよろしいですか？<br />
 </div>
 <?php
 echo '<div id="content_left">';
@@ -37,8 +41,8 @@ echo '<div id="user_navi">';
 
 if ( in_array($myname, $members) ) {
 	if ( $stock[$myname] !== '' ) {
-		echo "<a href=\"page_giveup.php?confirm=$g_giveup_confirm\"><p>自分の解答を終わる</p></a>";
-		echo '<p>終了すると他の人の解答を見られます。</p>';
+		echo '<p><a href="javascript:void(0);" onclick="$(\'#giveup_dialog\').dialog(\'open\');">自分の解答を終わる</a></p>';
+		echo '<p>解答すると他の人の解答を見られます。</p>';
 	}
 	else {
 		echo "<p>$myname さんはもう解答できません。</p>";
@@ -47,7 +51,7 @@ if ( in_array($myname, $members) ) {
 	echo "<p>解答期限</p><p>$end_time</p>";
 	
 	if ( $myname == $session['leadername'] ) {
-		echo "<a href=\"page_giveup.php?confirm=$g_giveup_confirm&all=1\"><p>解答を締め切る</p></a>";
+		echo '<p><a href="javascript:void(0);" onclick="$(\'#force_end_dialog\').dialog(\'open\');">解答を締め切る</a></p>';
 	}
 }
 else {
@@ -61,19 +65,36 @@ echo '</div>';
 echo '</div>';
 ?>
 <script type="text/javascript">
-$('#dialog').dialog({
+$(function() {
+$('#giveup_dialog').dialog({
 	bgiframe: true,
-	autoOpen: true,
+	autoOpen: false,
 	width: 400,
 	modal: true,
 	buttons: {
 		'OK': function() {
+			document.location = "page_giveup.php";
 		},
 		'キャンセル': function() {
+			$(this).dialog('close');
 		}
 	}
 });
-
+$('#force_end_dialog').dialog({
+	bgiframe: true,
+	autoOpen: false,
+	width: 400,
+	modal: true,
+	buttons: {
+		'OK': function() {
+			document.location = "page_giveup.php?all=1";
+		},
+		'キャンセル': function() {
+			$(this).dialog('close'); 
+		}
+	}
+});
+});
 //IE対策
 if(!Array.indexOf) {
 	Array.prototype.indexOf = function(o)

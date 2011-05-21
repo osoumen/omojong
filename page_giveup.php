@@ -59,83 +59,70 @@ else {
 $is_last = '';
 
 //ページを表示
-if ( isset($in['confirm']) ) {
-	if ( $all ) {
-		$pagetitle = '解答を締め切る';
-		$smarty->assign( 'pagetitle', $pagetitle );
-		$smarty->display( $g_tpl_path . 'page_force_end_confirm.tpl' );
-	}
-	else {
-		$pagetitle = '解答の終了';
-		$smarty->assign( 'pagetitle', $pagetitle );
-		$smarty->display( $g_tpl_path . 'page_giveup_confirm.tpl' );
+if ( $all ) {
+	foreach ( $members as $memb ) {
+		//持ち札を空にする
+		$stock[$memb] = '';
+		//交換回数を０にする
+		$changerest[$memb] = 0;
+		$change_amount[$memb] = 0;
 	}
 }
 else {
-	if ( $all ) {
-		foreach ( $members as $memb ) {
-			//持ち札を空にする
-			$stock[$memb] = '';
-			//交換回数を０にする
-			$changerest[$memb] = 0;
-			$change_amount[$memb] = 0;
-		}
-	}
-	else {
-		$stock[$myname] = '';
-		$changerest[$myname] = 0;
-		$change_amount[$myname] = 0;
-	}
-	
-	//全員の解答が終了したか調べてモード遷移を行う
-	$remain = 0;
-	foreach ( $members as $memb ) {
-		if ( $stock[$memb] ) {
-			$remain++;
-		}
-	}
-	if ($remain === 0) {
-		$session['phase'] = 'kekka';
-		if ( $usenotification2 && count($members) > 1) {
-			$is_last = 1;
-			$_SESSION['is_last'] = 1;
-		}
-		//解答をログへ移動
-		$table_name = push_kaitou_table_pastlog( $link, $kaitou_table_name );
-		$kaitou_table_name = $table_name;
-	}
-	store_session_table( $link, $session );
-	store_members( $link, $members, $stock, $changerest, $change_amount );
+	$stock[$myname] = '';
+	$changerest[$myname] = 0;
+	$change_amount[$myname] = 0;
+}
 
-	if ( $is_last ) {
-		$pagetitle = '解答の終了';
-		$smarty->assign( 'pagetitle', $pagetitle );
-		
-		$message = '全員の解答が終わりました';
-		$smarty->assign( 'message', $message );
-		
-		$default_msg = $notifymsg2;
-		$post_msg = $g_scripturl . '?p=' . $session['session_key'];
-		//投稿用トークン生成
-		$post_token = generate_post_token();
-		$_SESSION['post_token'] = $post_token;
-	
-		$to = array();
-		foreach ( $members as $memb ) {
-			if ( $memb != $myname ) {
-				$to[] = $memb;
-			}
-		}
-		
-		$smarty->assign( 'default_msg', $default_msg );
-		$smarty->assign( 'post_msg', $post_msg );
-		$smarty->assign( 'post_token', $post_token );
-		$smarty->assign( 'to', $to );
-		$g_js_url[] = 'js/jquery.js';
-		$smarty->assign( 'g_js_url', $g_js_url );
-		$smarty->display( $g_tpl_path . 'page_send_mention.tpl' );
-	}
-	else {
-		header('Location: ' . $g_scripturl);
+//全員の解答が終了したか調べてモード遷移を行う
+$remain = 0;
+foreach ( $members as $memb ) {
+	if ( $stock[$memb] ) {
+		$remain++;
 	}
 }
+if ($remain === 0) {
+	$session['phase'] = 'kekka';
+	if ( $usenotification2 && count($members) > 1) {
+		$is_last = 1;
+		$_SESSION['is_last'] = 1;
+	}
+	//解答をログへ移動
+	$table_name = push_kaitou_table_pastlog( $link, $kaitou_table_name );
+	$kaitou_table_name = $table_name;
+}
+store_session_table( $link, $session );
+store_members( $link, $members, $stock, $changerest, $change_amount );
+
+if ( $is_last ) {
+	$pagetitle = '解答の終了';
+	$smarty->assign( 'pagetitle', $pagetitle );
+	
+	$message = '全員の解答が終わりました';
+	$smarty->assign( 'message', $message );
+	
+	$default_msg = $notifymsg2;
+	$post_msg = $g_scripturl . '?p=' . $session['session_key'];
+	//投稿用トークン生成
+	$post_token = generate_post_token();
+	$_SESSION['post_token'] = $post_token;
+
+	$to = array();
+	foreach ( $members as $memb ) {
+		if ( $memb != $myname ) {
+			$to[] = $memb;
+		}
+	}
+	
+	$smarty->assign( 'default_msg', $default_msg );
+	$smarty->assign( 'post_msg', $post_msg );
+	$smarty->assign( 'post_token', $post_token );
+	$smarty->assign( 'to', $to );
+	$g_js_url[] = 'js/jquery.js';
+	$smarty->assign( 'g_js_url', $g_js_url );
+	$smarty->display( $g_tpl_path . 'page_send_mention.tpl' );
+}
+else {
+	header('Location: ' . $g_scripturl);
+}
+
