@@ -41,7 +41,7 @@ $('#twitter-button0').click(function() {
 {$default_msg} {$post_msg}
 </div>
 <button id="twitter-button0">メッセージをツイート</button>
-<div id="progress"><p>ツイート処理中...</p><img src="img/progress.gif" width=64 height="32" /></div>
+<div id="progress"><p>ツイート処理中...</p><img src="images/progress.gif" width=64 height="32" /></div>
 <div id="progress_ok">ツイートしました。</div>
 </div>
 <div id="pre_footer">

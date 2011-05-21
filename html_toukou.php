@@ -20,9 +20,15 @@ $myname = isset($_SESSION['access_token']['screen_name']) ? $_SESSION['access_to
 $pagetitle = '解答中';
 $smarty->assign( 'pagetitle', $pagetitle );
 $g_js_url[] = 'js/jquery.js';
+$g_js_url[] = 'js/jquery-ui-1.8.13.custom.min.js';
 $smarty->assign( 'g_js_url', $g_js_url );
 $smarty->display( $g_tpl_path . 'header.tpl' );
-
+?>
+<div id="dialog" title="ダイアログボックス" style="display : none;">
+お名前を入力してください。<br />
+<input type="text" name="yourname" id="yourname" size="20" />
+</div>
+<?php
 echo '<div id="content_left">';
 //参加者一覧表示
 write_members_html( $members, $stock, $myname );
@@ -55,6 +61,20 @@ echo '</div>';
 echo '</div>';
 ?>
 <script type="text/javascript">
+$('#dialog').dialog({
+	bgiframe: true,
+	autoOpen: true,
+	width: 400,
+	modal: true,
+	buttons: {
+		'OK': function() {
+		},
+		'キャンセル': function() {
+		}
+	}
+});
+
+//IE対策
 if(!Array.indexOf) {
 	Array.prototype.indexOf = function(o)
 	{

@@ -771,8 +771,8 @@ function is_expired( $datetime ) {
 }
 
 function multi_tweet( $to_array, $myname, $entry_content, $post_msg, $token, $token_secret, $use_dm=NULL ) {
+	$error = '';
 	foreach ( $to_array as $memb ) {
-		$error = '';
 		if ( $memb != $myname ) {
 			//合計文字数140文字をオーバーしていたら本文を縮める
 			if ( $use_dm ) {

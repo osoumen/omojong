@@ -14,7 +14,10 @@
 あなたのフォロワーから、参加させたい人を追加してください。
 メンバー全員の最新の100発言から、ランダムに単語を拾います。途中参加した人からは単語を取得しません。
 開始すると、自動的にあなたからメンバーにDMでお知らせをします。</dd>
-<dd><span id="member_input_area">フォロワー情報を読み込んでいます...</span></dd>
+<dd>
+<span id="member_input_area"></span>
+<div id="progress"><img src="images/progress2.gif" width=24 height="24" /></div>
+</dd>
 <!--
 <dt>参加人数</dt>
 <dd>必要人数と最大人数を設定します。必要人数が集まると解答出来るようになります。
@@ -78,27 +81,34 @@ checked='checked'
 </div>
 <script type="text/javascript">
 $(function(){
-	$.getJSON("data_follows.php", function(json) {
-		$("#member_input_area").html('<input type="text" name="members" class="member_input" />');
-		$('.member_input').alphanumeric({ allow:"_," });
-		$('.member_input').autoSuggest(json, {
-		asHtmlID: 'members',
-		neverSubmit: true,
-		minChars: 1,
-		matchCase: false,
-		startText: 'フォロワーIDを入力',
-		emptyText: '見つかりませんでした',
-		keyDelay: 20,
-		formatList: function(data, elem){
-			var my_image = data.image;
-			var new_elem = elem.html(
-			'<img class="tw_img" src="' + data.image + '" />' +
-			data.name + ' (' + data.value + ')<span class="clearfix"></span>'
-			);
-			return new_elem;
-			}
-		});		
-	});
+$('#progress')
+.ajaxStart(function() {
+	$(this).show();
+})
+.ajaxStop(function() {
+	$(this).hide();
+});
+$.getJSON("data_follows.php", function(json) {
+	$("#member_input_area").html('<input type="text" name="members" id="member_input" />');
+	$('#member_input').alphanumeric({ allow:"_," });
+	$('#member_input').autoSuggest(json, {
+	asHtmlID: 'members',
+	neverSubmit: true,
+	minChars: 1,
+	matchCase: false,
+	startText: 'フォロワーIDを入力',
+	emptyText: '見つかりませんでした',
+	keyDelay: 20,
+	formatList: function(data, elem){
+		var my_image = data.image;
+		var new_elem = elem.html(
+		'<img class="tw_img" src="' + data.image + '" />' +
+		data.name + ' (' + data.value + ')<span class="clearfix"></span>'
+		);
+		return new_elem;
+		}
+	});		
+});
 });
 </script>
 <div id="pre_footer">

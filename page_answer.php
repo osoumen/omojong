@@ -128,7 +128,7 @@ else {
 		$change_amount[$c_username] = 0;
 		
 		$session['phase'] = 'kekka';
-		if ( $usenotification2 ) {
+		if ( $usenotification2 && count($members) > 1 ) {
 			$is_last = 1;
 			$_SESSION['is_last'] = 1;
 		}
