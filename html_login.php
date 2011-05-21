@@ -15,7 +15,7 @@ $smarty->display( $g_tpl_path . 'header.tpl' );
 </div>
 </div>
 <div id="pre_footer">
-<a href="<?php echo $g_script.'?'.$pastlog_param_name.'=new';?>">これまでに作成された文を見る</a>
+<a href="<?php echo $g_script.'?'.$pastlog_param_name.'=new';?>">つぶメモナイズされた文を見る</a>
 </div>
 </div>
 <?php

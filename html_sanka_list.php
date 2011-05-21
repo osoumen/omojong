@@ -30,7 +30,7 @@ if ( count($session_key_list) > 0 ) {
 }
 else {
 	echo '<div class="general_container">';
-	echo '<a href="page_start.php"><h2>新しく始める</h2></a>';
+	echo '<a href="page_start.php"><h2>つぶメモナイズする</h2></a>';
 	echo '</div>';
 }
 echo '<div class="member">';
@@ -48,7 +48,7 @@ echo '</div>';
 ?>
 </div>
 <div id="pre_footer">
-<a href="<?php echo $g_script.'?'.$pastlog_param_name.'=new';?>">これまでに作成された文を見る</a>
+<a href="<?php echo $g_script.'?'.$pastlog_param_name.'=new';?>">つぶメモナイズされた文を見る</a>
 </div>
 <?php
 //フッター

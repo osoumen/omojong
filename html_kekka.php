@@ -40,7 +40,7 @@ if ( $num != -1 ) {
 	echo '<a href="' .$g_script. '?' .$pastlog_param_name.'=' . $num . '"><p class="kekka_btn">結果を見る</p></a>';
 }
 
-echo '<a href="page_start.php?p=' . $session['session_key'] . '"><p>始めからやる</p></a>';
+echo '<a href="page_start.php?p=' . $session['session_key'] . '"><p>もう一度やる</p></a>';
 
 //ツイートボタン
 write_urltweet( $g_scripturl, $session['session_key'] );
@@ -95,7 +95,7 @@ echo '<div id="pre_footer">';
 
 //過去の記録へのリンク
 if ( $is_exist_pastlog ) {
-	echo '<a href="'.$g_script.'?' . $pastlog_param_name. '=new">これまでに作成された文を見る</a>';
+	echo '<a href="'.$g_script.'?' . $pastlog_param_name. '=new">つぶメモナイズされた文を見る</a>';
 }
 
 echo '</div>';
