@@ -6,7 +6,7 @@ $smarty->display( $g_tpl_path . 'header.tpl' );
 ?>
 <div id="content_main">
 <div class="general_container">
-あなたやあなたのフォロワーがTwitterでつぶやいた発言からランダムに取り出した単語を並べ替えて、短歌や川柳のような文を作成するサイトです。
+あなたやあなたのフォロワーがTwitterでつぶやいた発言からランダムに取り出した単語を並べ替えて、文を作る言葉遊びサイトです。
 </div>
 <div class="general_container">
 <h3>参加するには</h3>

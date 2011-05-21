@@ -24,11 +24,6 @@ if ( isset($in[$pastlog_param_name]) ) {
 	$kaitou_table_name = $pastlog_table_name . '_' . $in[$pastlog_param_name];
 }
 //結果発表中のデータへの投票の場合
-/*
-elseif ( isset($in[$gameid_param_name]) ) {
-	$session = load_session_table( $link );
-}
-*/
 else {
 	error("対象が指定されていません。");
 }

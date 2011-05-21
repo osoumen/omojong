@@ -4,16 +4,6 @@
 <button onclick="input_changeword({$stock_array[list]},'{$word_array[list]}')" class="change_word">
 {$word_array[list]}
 </button>
-<!--
-<a href="javascript:input_changeword({$stock_array[list]},'{$word_array[list]}')">
-<span class="change_word">{$word_array[list]}</span>
-</a>
--->
-{/section}
-<!--
-<a href="javascript:reset_change()">[クリア]</a>
-<a href="javascript:submit_change()">[交換]</a><br />
--->
 <div id="change_input"></div>
 <button onclick="reset_change()">クリア</button>
 <button onclick="submit_change()">交換</button><br />

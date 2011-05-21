@@ -51,32 +51,6 @@ echo '</div>';
 
 echo '<div id="content_right">';
 
-//結果表示
-/*
-if ( $g_kekkasort ) {
-	$sql = "SELECT id,content,author,votes FROM $kaitou_table_name ORDER BY votes DESC";
-}
-else {
-	$sql = "SELECT id,content,author,votes FROM $kaitou_table_name";
-}
-$query = mysql_query( $sql, $link );
-while ( $row = mysql_fetch_array( $query, MYSQL_NUM ) ) {
-	$ansindex = $row[0];
-	$sentence = $row[1];
-	$kaitousya = $row[2];
-	$hyousuu = $row[3];
-	$tweet_msg = urlencode(' 『' . $sentence . '』by @' . $kaitousya . ' ');
-	
-	$smarty->assign( 'session_key', $session['session_key'] );
-	$smarty->assign( 'ansindex', $ansindex );
-	$smarty->assign( 'sentence', $sentence );
-	$smarty->assign( 'kaitousya', $kaitousya );
-	$smarty->assign( 'hyousuu', $hyousuu );
-	$smarty->assign( 'tweet_msg', $tweet_msg );
-	$smarty->display( $g_tpl_path . 'html_kekka.tpl' );
-}
-*/
-
 if ( $allow_addword ) {
 	$words = array();
 	$totalwords = load_words_table( $link, $words );
