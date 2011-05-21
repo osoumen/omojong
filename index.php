@@ -80,10 +80,6 @@ if ( $is_login ) {
 	}
 
 	switch ( $phase ) {
-		case 'sanka':
-			include 'html_sanka.php';
-			break;
-			
 		case 'deal':
 			//札を配るページへリダイレクト
 			$host  = $_SERVER['HTTP_HOST'];

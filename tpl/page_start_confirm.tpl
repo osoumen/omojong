@@ -21,12 +21,12 @@ $('#twitter-button0').click(function() {
 	end_date: '{$in.end_date}',
 	end_hour: '{$in.end_hour}',
 {if isset($in.friends_only)}
-	friends_only: 1
+	friends_only: 1,
 {else}
-	friends_only: 0
+	friends_only: 0,
 {/if}
+	entry_content: '{$default_msg}'
 	};
-	post_msg['entry_content'] = $('#twitter_input_textbox').val();
 	$.post("page_start.php", post_msg, function(text, status) {
 		if ( text == 'ok' ) {
 			document.location = "{$g_script}";
@@ -69,19 +69,13 @@ $('#twitter-button0').click(function() {
 {/if}
 </dd>
 {if ($init_members)}
-<dt>ダイレクトメッセージ</dt>
+<dt>ダイレクトメッセージの送信</dt>
 <dd>以下のメッセージでメンバーに知らせます。</dd>
-</dl>
-<div class="twitter_input">
-<textarea id="twitter_input_textbox" onKeyup="mojilen(value,0,'{$post_msg}')" class="twitter-field" name="entry_content" tabindex=3 rows="2" cols="40">{$default_msg}</textarea>
-<div class="post_msg">+ {$post_msg}</div>
-<span id="msg0"></span>
-</div>
-{else}
-</dl>
+<dd><div class="general_container">{$default_msg} {$post_msg}</div></dd>
 {/if}
+</dl>
 <button id="twitter-button0" class="right_btn">ＯＫ</button>
-<div id="progress"><img src="img/progress.gif" width=64 height="32" /></div>
+<div id="progress">ツイート取得中...<img src="img/progress.gif" width=64 height="32" /></div>
 </div>
 </div>
 <div id="pre_footer">

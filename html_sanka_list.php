@@ -16,16 +16,13 @@ if ( count($session_key_list) > 0 ) {
 		echo '<a href="' . $g_script . '?p=' . $session_key_list[$i] . '">';
 		
 		$caption = '';
-		if ( $phase_list[$i] == 'sanka' ) {
-			$caption = '参加募集中';
-		}
 		if ( $phase_list[$i] == 'toukou' ) {
 			$caption = '解答中';
 		}
 		if ( $phase_list[$i] == 'kekka' ) {
 			$caption = '終了';
 		}
-		write_members_only_html($memberlist_list[$i], $myname, NULL, $caption);
+		write_members_only_html($memberlist_list[$i], $myname, $caption);
 	
 		echo '</a>';
 	}

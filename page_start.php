@@ -34,7 +34,7 @@ if ( isset( $in['as_values_members'] ) ) {
 
 $player_name = $_SESSION['access_token']['screen_name'];
 
-if ( ($session['phase'] == 'sanka' || $session['phase'] == 'toukou') && $player_name != $session['leadername'] ) {
+if ( ($session['phase'] == 'toukou') && $player_name != $session['leadername'] ) {
 	error('開始者以外は中断できません。');
 }
 
@@ -286,7 +286,6 @@ else {
 		$smarty->assign( 'default_msg', $default_msg );
 		
 		$g_js_url[] = 'js/jquery.js';
-		$g_js_url[] = 'js/mojilen.js';
 		$smarty->assign( 'g_js_url', $g_js_url );
 		
 		$smarty->display( $g_tpl_path . 'page_start_confirm.tpl' );
@@ -383,20 +382,6 @@ else {
 			add_word_from_twitter( $link, $words_table_name, $memb );
 		}
 		
-		//ウェルカム通知
-		/*
-		if ( $usenotification0 ) {
-			if ( $use_useraccount_for_mension ) {
-				$error = commit_mention( $player_name, $notifymsg0 . $session['session_key'], $_SESSION['access_token']['oauth_token'],$_SESSION['access_token']['oauth_token_secret']);
-			}
-			else {
-				$error = commit_mention( $player_name, $notifymsg0 . $session['session_key'] );
-			}
-			if ( $error ) {
-				error('Twitterのエラーのため、発言出来ませんでした。('.$error.')');
-			}
-		}
-		*/
 		$session['phase'] = 'deal';
 		store_session_table( $link, $session );
 		store_members( $link, $members, $stock, $changerest, $change_amount );

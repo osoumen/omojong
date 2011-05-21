@@ -1,7 +1,7 @@
 <?php
 //error_reporting(0);
 
-$g_title = 'つぶや記念日(β)';		// タイトル
+$g_title = 'つぶメモナイザー';		// タイトル
 $g_script = './';
 
 $g_scripturl = 'http://tsubmemo.com/';
@@ -41,10 +41,7 @@ $allow_addword = 0;
 $hash_tag = ' #tsubmemo';
 
 //参加したときの通知の内容
-$notifymsg0 = '【' .$g_title. '】あなたを参加メンバーに選びました。他の参加者はこちら ';
-
-//参加人数が集まったときの通知の内容
-$notifymsg1 = '【' .$g_title. '】人数が集まりました。解答できます！';
+$notifymsg0 = '【' .$g_title. '】あなたを参加メンバーに選びました。参加者はこちら ';
 
 //解答が終わったときの通知の内容
 $notifymsg2 = '【' .$g_title. '】解答が締め切られました。結果を見られます！';

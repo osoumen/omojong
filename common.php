@@ -667,7 +667,7 @@ function write_members_html( $members, $stock, $myname ) {
 	echo '</div>';
 }
 
-function write_members_only_html( $members, $myname, $session=NULL, $caption=NULL ) {
+function write_members_only_html( $members, $myname, $caption=NULL ) {
 	echo '<div class="member">';
 	if ( $caption ) {
 		echo "<h4>$caption</h4>";
@@ -679,11 +679,6 @@ function write_members_only_html( $members, $myname, $session=NULL, $caption=NUL
 	foreach ( $members as $memb ) {
 		if ($memb === $myname) {
 			$nametext = '<span class="its_me">' . $memb . '</span>';
-			if ( $session ) {
-				if ( $myname !== $session['leadername'] ) {
-					echo '<a id="joincancel" href="page_joincancel.php">キャンセル</a>';
-				}
-			}
 		}
 		else {
 			$nametext = $memb;
@@ -707,26 +702,7 @@ function write_sanka_navi( $session, $members, $myname ) {
 		return;
 	}
 
-	if ( $session['phase'] == 'sanka' ) {
-		//残り参加人数表示
-		$rest = $session['ninzuu'] - count( $members );
-		if ( $rest > 0 ) {
-			echo "<p>あと$rest 人の参加が必要です。</p>";
-		}
-		
-		if ( !in_array($myname, $members) ) {
-			if ( $is_follower ) {
-				//参加者以外の場合
-				echo '<a href="page_join.php"><p>参加する</p></a>';
-			}
-			else {
-				echo '<p>参加するには<a href="func_follow.php?' . $gameid_param_name . '=';
-				echo $session['session_key'] . '">';
-				echo $session['leadername'] .'さんをフォロー</a>してください。</p>';
-			}
-		}
-	}
-	elseif ( $session['phase'] == 'toukou' ) {
+	if ( $session['phase'] == 'toukou' ) {
 		if ( count( $members ) < $session['ninzuu_max'] ) {
 			if ( $is_follower ) {
 				echo '<a href="page_join.php"><p>途中参加する</p></a>';
