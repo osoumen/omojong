@@ -816,6 +816,16 @@ function get_latest_pastlog_no( $link ) {
 
 function rec_loginuser( $link, $screen_name )
 {
-	$sql = sprintf( "INSERT INTO visitors (user, timestamp) VALUES ('%s', NOW())", $screen_name );
+	$sql = 'SELECT * FROM visitors ORDER BY timestamp DESC LIMIT 1';
 	$query = mysql_query( $sql, $link );
+	$last_login = '';
+	if ( $query ) {
+		while ( $row = @mysql_fetch_array( $query, MYSQL_ASSOC ) ) {
+			$last_login = $row['user'];
+		}
+	}
+	if ( $screen_name != $last_login ) {
+		$sql = sprintf( "INSERT INTO visitors (user, timestamp) VALUES ('%s', NOW())", $screen_name );
+		$query = mysql_query( $sql, $link );
+	}
 }
