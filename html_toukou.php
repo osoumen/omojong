@@ -26,11 +26,8 @@ $g_js_url[] = 'js/jquery-ui-1.8.13.custom.min.js';
 $smarty->assign( 'g_js_url', $g_js_url );
 $smarty->display( $g_tpl_path . 'header.tpl' );
 ?>
-<div id="giveup_dialog" title="解答の終了" style="display : none;">
-解答を終わりにしますか？<br />
-</div>
-<div id="force_end_dialog" title="解答を締め切る" style="display : none;">
-全員の解答を締め切ってもよろしいですか？<br />
+<div id="dialog" title="" style="display : none;">
+<div id="dialog_msg"></div>
 </div>
 <?php
 echo '<div id="content_left">';
@@ -41,7 +38,7 @@ echo '<div id="user_navi">';
 
 if ( in_array($myname, $members) ) {
 	if ( $stock[$myname] !== '' ) {
-		echo '<p><a href="javascript:void(0);" onclick="$(\'#giveup_dialog\').dialog(\'open\');">自分の解答を終わる</a></p>';
+		echo '<p><a href="javascript:void(0);" onclick="show_giveup_dialog();">自分の解答を終わる</a></p>';
 		echo '<p>解答すると他の人の解答を見られます。</p>';
 	}
 	else {
@@ -51,7 +48,7 @@ if ( in_array($myname, $members) ) {
 	echo "<p>解答期限</p><p>$end_time</p>";
 	
 	if ( $myname == $session['leadername'] ) {
-		echo '<p><a href="javascript:void(0);" onclick="$(\'#force_end_dialog\').dialog(\'open\');">解答を締め切る</a></p>';
+		echo '<p><a href="javascript:void(0);" onclick="show_force_end_dialog();">解答を締め切る</a></p>';
 	}
 }
 else {
@@ -66,35 +63,44 @@ echo '</div>';
 ?>
 <script type="text/javascript">
 $(function() {
-$('#giveup_dialog').dialog({
+$('#dialog').dialog({
 	bgiframe: true,
 	autoOpen: false,
 	width: 400,
-	modal: true,
+	modal: true
+});
+});
+function show_giveup_dialog() {
+	$('#dialog_msg').html('以上で解答を終わりにしますか？');
+	$('#dialog').dialog('option',{
+	title: '解答の終了',
 	buttons: {
-		'OK': function() {
-			document.location = "page_giveup.php";
+		'ＯＫ': function() {
+			document.location = 'page_giveup.php';
 		},
 		'キャンセル': function() {
 			$(this).dialog('close');
 		}
 	}
-});
-$('#force_end_dialog').dialog({
-	bgiframe: true,
-	autoOpen: false,
-	width: 400,
-	modal: true,
+	});
+	$('#dialog').dialog('open');
+}
+function show_force_end_dialog() {
+	$('#dialog_msg').html('全員の解答を締め切ってもよろしいですか？');
+	$('#dialog').dialog('option',{
+	title: '解答の締め切り',
 	buttons: {
-		'OK': function() {
-			document.location = "page_giveup.php?all=1";
+		'ＯＫ': function() {
+			document.location = 'page_giveup.php?all=1';
 		},
 		'キャンセル': function() {
-			$(this).dialog('close'); 
+			$(this).dialog('close');
 		}
 	}
-});
-});
+	});
+	$('#dialog').dialog('open');
+}
+
 //IE対策
 if(!Array.indexOf) {
 	Array.prototype.indexOf = function(o)
@@ -108,19 +114,54 @@ if(!Array.indexOf) {
 	}
 }
 function reset_input() {
-	document.answer_form.answer.value = '';
+	$('input[name=answer]').val('');
 	$("#ans_input").empty();
 	return false;
 }
 function submit_input() {
-	if ( document.answer_form.answer.value.length > 0 ) {
-		document.answer_form.submit();
+	if ( $('input[name=answer]').val().length > 0 ) {
+		var query = {confirm: 1, answer: ''};
+		query['answer'] = $('input[name=answer]').val();
+		$.getJSON(
+			"page_answer.php",
+			query,
+			function(json) {
+				if ( json['error'] != 0 ) {
+					$('#dialog_msg').html(json['status']);
+					$('#dialog').dialog('option',{
+					title: '解答',
+					buttons: {
+						'ＯＫ': function() {
+							$(this).dialog('close');
+						}
+					}
+					});
+					$('#dialog').dialog('open');
+				}
+				else {
+					$('#dialog_msg').html(json['status']);
+					$('#dialog').dialog('option',{
+					title: '解答',
+					buttons: {
+						'ＯＫ': function() {
+							$(this).dialog('close');
+							document.location = "page_answer.php?answer=" + $('input[name=answer]').val();
+						},
+						'キャンセル': function() {
+							$(this).dialog('close');
+						}
+					}
+					});
+					$('#dialog').dialog('open');
+				}
+			}
+		);
 	}
 	return false;
 }
 function input_word( word,scr_word ) {
 	var word_str = String(word);
-	var ans = document.answer_form.answer.value;
+	var ans = $('input[name=answer]').val();
 	var update = true;
 	if ( ans.length == 0 ) {
 		ans = word_str;
@@ -128,46 +169,98 @@ function input_word( word,scr_word ) {
 	else {
 		ans = ans + ',' + word_str;
 		scr_word = ' ' + scr_word;
-		var ans_array = document.answer_form.answer.value.split(',');
+		var ans_array = $('input[name=answer]').val().split(',');
 		var match = ans_array.indexOf(word_str);
 		if ( match > -1 ) {
 			update = false;
 		}
 	}
 	if ( update ) {
-		document.answer_form.answer.value = ans;
+		$('input[name=answer]').val(ans);
 		$("#ans_input").append(scr_word);
 	}
 	return false;
 }
 function reset_change() {
-	document.change_form.changelist.value = '';
+	$('input[name=changelist]').val('');
 	$("#change_input").empty();
 	return false;
 }
 function submit_change() {
-	if ( document.change_form.changelist.value.length > 0 ) {
-		document.change_form.submit();
+	if ( $('input[name=changelist]').val().length > 0 ) {
+		var query = {confirm: 1, changelist: ''};
+		query['changelist'] = $('input[name=changelist]').val();
+		$.getJSON(
+			"page_change.php",
+			query,
+			function(json) {
+				if ( json['error'] != 0 ) {
+					$('#dialog_msg').html(json['status']);
+					$('#dialog').dialog('option',{
+					title: '交換',
+					buttons: {
+						'ＯＫ': function() {
+							$(this).dialog('close');
+						}
+					}
+					});
+					$('#dialog').dialog('open');
+				}
+				else {
+					$('#dialog_msg').html(json['status']);
+					$('#dialog').dialog('option',{
+					title: '交換',
+					buttons: {
+						'ＯＫ': function() {
+							$(this).dialog('close');
+							query['confirm'] = 0;
+							$.getJSON(
+								"page_change.php",
+								query,
+								function(json_1) {
+									$('#dialog_msg').html(json_1['status']);
+									$('#dialog').dialog('option',{
+									title: '交換',
+									buttons: {
+										'ＯＫ': function() {
+											$(this).dialog('close');
+											window.location.reload();
+										}
+									}
+									});
+									$('#dialog').dialog('open');									
+								}
+							);
+						},
+						'キャンセル': function() {
+							$(this).dialog('close');
+						}
+					}
+					});
+					$('#dialog').dialog('open');
+				}
+			}
+		);
 	}
 	return false;
 }
 function input_changeword( word,scr_word ) {
 	var word_str = String(word);
-	var change = document.change_form.changelist.value;
+	var change = $('input[name=changelist]').val();
 	var update = true;
 	if ( change.length == 0 ) {
 		change = word_str;
 	}
 	else {
 		change = change + ',' + word_str;
-		var change_array = document.change_form.changelist.value.split(',');
+		var change_array = $('input[name=changelist]').val().split(',');
 		var match = change_array.indexOf(word_str);
 		if ( match > -1 ) {
 			update = false;
 		}
 	}
 	if ( update ) {
-		document.change_form.changelist.value = change;
+		$('input[name=changelist]').val(change);
 		scr_word = '<span class="change_word">' + scr_word + '</span>';
 		$("#change_input").append(scr_word);
 	}

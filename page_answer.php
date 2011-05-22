@@ -4,6 +4,8 @@ require_once 'globals.php';
 require_once 'common.php';
 
 $session = array();
+$json_data = array();
+$json_data['error'] = 0;
 
 //データベースに接続
 $link = connect_db();
@@ -14,9 +16,11 @@ if ( empty( $session ) ) {
 	header('Location: ' . $g_scripturl);
 }
 
-//ログインしてなかったらtopに飛ぶ
+//ログインしてなかったらエラー
 if ( is_login() == false ) {
-	header('Location: ' . $g_scripturl);
+	$json_data['error'] = 1;
+	$json_data['status'] = 'ログインしていません。';
+	write_json_result( $json_data );
 }
 
 load_members( $link, $members, $stock, $changerest, $change_amount );
@@ -27,43 +31,59 @@ $c_username = isset($_SESSION['access_token']['screen_name']) ? $_SESSION['acces
 
 //--エラーチェック--
 if ( $session['phase'] != 'toukou' ) {
-	error("現在解答を受け付けていません。");
+	$json_data['error'] = 1;
+	$json_data['status'] = '現在解答を受け付けていません。';
+	write_json_result( $json_data );
 }
 if ( in_array($c_username, $members) == FALSE ) {
-	error("参加していません。");
+	$json_data['error'] = 1;
+	$json_data['status'] = '参加していません。';
+	write_json_result( $json_data );
 }
 //持ち札があるか
 if ($stock[$c_username] == '') {
-	error( $c_username . 'さんの持ち札はありません');
+	$json_data['error'] = 1;
+	$json_data['status'] = $c_username . 'さんの持ち札はありません';
+	write_json_result( $json_data );
 }
 $stocklist = explode(',', $stock[$c_username] );
 //内容があるか
 if ( $in['answer'] == '') {
-	error("解答が入力されていません。");
+	$json_data['error'] = 1;
+	$json_data['status'] = '解答が入力されていません。';
+	write_json_result( $json_data );
 }
 $anslist = explode( ',', $in['answer'] );
 //数字以外が入ってないか
 foreach ( $anslist as $ansnum ) {
 	if ( ctype_digit( $ansnum ) == FALSE ) {
-		error("コンマと数字のみを入力してください。");
+		$json_data['error'] = 1;
+		$json_data['status'] = 'コンマと数字のみを入力してください。';
+		write_json_result( $json_data );
 	}
 }
 //２枚以上使っているか
 if ( count( $anslist ) < 2 ) {
-	error("２枚以上使ってください。");
+	$json_data['error'] = 1;
+	$json_data['status'] = '２枚以上使ってください。';
+	write_json_result( $json_data );
 }
 //存在しない札を入力していないか
 $words = array();
 $totalwords = load_words_table( $link, $words );
 foreach ( $anslist as $ansnum ) {
 	if ( $ansnum >= $totalwords ) {
-		error("存在しない札を入力しています。");
+		$json_data['error'] = 1;
+		$json_data['status'] = '存在しない札を入力しています。';
+		write_json_result( $json_data );
 	}
 }
 //持っていない札を入力していないか
 foreach ( $anslist as $ansnum ) {
 	if ( in_array( $ansnum, $stocklist ) == FALSE ) {
-		error("持っていない札が入力されています。");
+		$json_data['error'] = 1;
+		$json_data['status'] = '持っていない札が入力されています。';
+		write_json_result( $json_data );
 	}
 }
 //同じものを２枚以上出していないか
@@ -73,7 +93,9 @@ foreach ( $anslist as $ansnum ) {
 		if ( $ansnum == $ansnum1 ) {
 			$count++;
 			if ( $count >= 2 ) {
-				error("同じ札を２枚以上入力しています。");
+				$json_data['error'] = 1;
+				$json_data['status'] = '同じ札を２枚以上入力しています。';
+				write_json_result( $json_data );
 			}
 		}
 	}
@@ -84,13 +106,11 @@ $sentence = numlist2sentence( $anslist, $words );
 $is_last = '';
 
 //ページを表示
-if ( isset($in['confirm']) ) {
-	//確認ページを表示
-	$pagetitle = '解答の確認';
-	$smarty->assign( 'pagetitle', $pagetitle );
-	$smarty->assign( 'in', $in );
-	$smarty->assign( 'sentence', $sentence );
-	$smarty->display( $g_tpl_path . 'page_answer_confirm.tpl' );
+if ( isset($in['confirm']) && ($in['confirm']!=0) ) {
+	//確認メッセージを出力
+	$json_data['error'] = 0;
+	$json_data['status'] = "『 $sentence 』でよろしいですか？";
+	write_json_result( $json_data );
 }
 else {
 	//解答を登録
