@@ -813,3 +813,9 @@ function get_latest_pastlog_no( $link ) {
 	}
 	return $latest_pastlog;
 }
+
+function rec_loginuser( $link, $screen_name )
+{
+	$sql = sprintf( "INSERT INTO visitors (user, timestamp) VALUES ('%s', NOW())", $screen_name );
+	$query = mysql_query( $sql, $link );
+}

@@ -1,5 +1,6 @@
 <?php
 require_once 'globals.php';
+require_once 'common.php';
 require_once 'twitteroauth.php';
 
 //oauth_tokenが古くなっている場合は、topに戻る
@@ -19,6 +20,10 @@ $_SESSION['access_token'] = $access_token;
 //未認証トークンをSESSIONから削除する
 unset($_SESSION['oauth_token']);
 unset($_SESSION['oauth_token_secret']);
+
+//ログ
+$link = connect_db();
+rec_loginuser( $link, $access_token['screen_name'] );
 
 //HTTP response が 200 を返したら成功とみなし、メインページへリダイレクト
 if (200 == $connection->http_code) {
