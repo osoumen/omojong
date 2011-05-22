@@ -21,12 +21,14 @@ $_SESSION['access_token'] = $access_token;
 unset($_SESSION['oauth_token']);
 unset($_SESSION['oauth_token_secret']);
 
-//ログ
-$link = connect_db();
-rec_loginuser( $link, $access_token['screen_name'] );
-
 //HTTP response が 200 を返したら成功とみなし、メインページへリダイレクト
 if (200 == $connection->http_code) {
+	//ログ
+	$link = connect_db();
+	if ( $access_token['screen_name'] ) {
+		rec_loginuser( $link, $access_token['screen_name'] );
+	}
+
 	/* The user has been verified and the access tokens can be saved for future use */
 	$_SESSION['status'] = 'verified';
 	
