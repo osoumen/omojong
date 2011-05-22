@@ -19,8 +19,8 @@ $g_hot_votes = 5;		//投票がこの数を超えたらtweetする
 define('G_DATABASE', 'omojong');
 
 //アプリ固有トークン
-define('CONSUMER_KEY', 'oVHQOYjXkfrEOGEVdRosQ');
-define('CONSUMER_SECRET', '5Z0zGHDWqBshT1nWa3wcCB7fx69kH7cNExPPdHAGR8');
+define('CONSUMER_KEY', 'Qdq741JBvDA7X4SKiIqqg');
+define('CONSUMER_SECRET', 'p4rbzyh2efmRXxliaXHgy1CPoiCeuZ0tRnyfqBhkc');
 //アプリアカウントのアクセストークン
 define('ACCESS_TOKEN', '207520259-a5z3WtxYG807hJGT1Ulat1GUcqolTX2dUPF0oVZT');
 define('ACCESS_TOKEN_SECRET', '8c8P03bhKbOzwSnPYAxYBJZ6Hm9dscZ4Vwrffl356Pg');
