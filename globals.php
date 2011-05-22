@@ -1,7 +1,7 @@
 <?php
 //error_reporting(0);
 
-$g_title = 'つぶメモナイザー';		// タイトル
+$g_title = 'つぶメモナイザー(テスト中)';		// タイトル
 $g_script = './';
 
 $g_scripturl = 'http://tsubmemo.com/';

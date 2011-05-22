@@ -6,7 +6,7 @@ require_once 'common.php';
 $in = array_merge( $_POST, $_GET );
 
 //最新の過去ログ値を取得する
-$latest_pastlog = get_latest_pastlog_no();
+$latest_pastlog = get_latest_pastlog_no( $link );
 
 if ( $in[$pastlog_param_name] == 'new' ) {
 	$num = $latest_pastlog;
