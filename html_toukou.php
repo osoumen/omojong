@@ -66,6 +66,7 @@ $(function() {
 $('#dialog').dialog({
 	bgiframe: true,
 	autoOpen: false,
+	position: ["center", 200],
 	width: 400,
 	modal: true
 });
@@ -129,7 +130,7 @@ function submit_input() {
 				if ( json['error'] != 0 ) {
 					$('#dialog_msg').html(json['status']);
 					$('#dialog').dialog('option',{
-					title: '解答',
+					title: '解答の確認',
 					buttons: {
 						'ＯＫ': function() {
 							$(this).dialog('close');
@@ -141,7 +142,7 @@ function submit_input() {
 				else {
 					$('#dialog_msg').html(json['status']);
 					$('#dialog').dialog('option',{
-					title: '解答',
+					title: '解答の確認',
 					buttons: {
 						'ＯＫ': function() {
 							$(this).dialog('close');
@@ -197,7 +198,7 @@ function submit_change() {
 				if ( json['error'] != 0 ) {
 					$('#dialog_msg').html(json['status']);
 					$('#dialog').dialog('option',{
-					title: '交換',
+					title: 'カードの交換',
 					buttons: {
 						'ＯＫ': function() {
 							$(this).dialog('close');
@@ -209,7 +210,7 @@ function submit_change() {
 				else {
 					$('#dialog_msg').html(json['status']);
 					$('#dialog').dialog('option',{
-					title: '交換',
+					title: 'カードの交換',
 					buttons: {
 						'ＯＫ': function() {
 							$(this).dialog('close');
@@ -220,7 +221,7 @@ function submit_change() {
 								function(json_1) {
 									$('#dialog_msg').html(json_1['status']);
 									$('#dialog').dialog('option',{
-									title: '交換',
+									title: 'カードの交換',
 									buttons: {
 										'ＯＫ': function() {
 											$(this).dialog('close');
@@ -325,7 +326,7 @@ echo '</div><div id="pre_footer">';
 
 //過去の記録へのリンク
 if ( $is_exist_pastlog ) {
-	echo '<a href="'.$g_script.'?'.$pastlog_param_name.'=new">つぶメモナイズされた文を見る</a>';
+	echo '<a href="'.$g_script.'?'.$pastlog_param_name.'=new">みんながつぶメモナイズした文を見る</a>';
 }
 
 echo '</div>';

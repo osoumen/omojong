@@ -8,7 +8,6 @@ $g_scripturl = 'http://tsubmemo.com/';
 
 $g_kekkasort = 0;			//結果発表を投票数順に表示する（0なら投稿順）
 
-$g_start_confirm = 1;		//開始の確認画面を表示する？(1=YES 0=NO)
 $g_answer_confirm = 1;	//投稿の確認画面を表示する？(1=YES 0=NO)
 $g_giveup_confirm = 1;	//投了の確認画面を表示する？(1=YES 0=NO)
 
@@ -27,8 +26,6 @@ define('ACCESS_TOKEN', '207520259-a5z3WtxYG807hJGT1Ulat1GUcqolTX2dUPF0oVZT');
 define('ACCESS_TOKEN_SECRET', '8c8P03bhKbOzwSnPYAxYBJZ6Hm9dscZ4Vwrffl356Pg');
 
 //mensionによる通知を使用する(1=YES 0=NO)
-//$usenotification0 = 0;	//参加時
-$usenotification1 = 1;	//最低人数に達した時
 $usenotification2 = 1;	//全員が解答を終えた時
 
 $use_useraccount_for_mension = 1;	//通知のときに最後の人のアカウントを使用する
@@ -77,7 +74,6 @@ $smarty->assign( 'g_title', $g_title );
 $smarty->assign( 'g_script', $g_script );
 $smarty->assign( 'g_scripturl', $g_scripturl );
 
-$smarty->assign( 'g_start_confirm', $g_start_confirm );
 $smarty->assign( 'g_answer_confirm', $g_answer_confirm );
 $smarty->assign( 'g_giveup_confirm', $g_giveup_confirm );
 

@@ -7,7 +7,7 @@
 <h3>ルールを設定してください。</h3>
 <form action="page_start.php" method="post">
 <input type="hidden" name="mode" value="start">
-<input type="hidden" name="confirm" value="{$g_start_confirm}">
+<input type="hidden" name="confirm" value="1">
 <dl>
 <dt>参加メンバー</dt>
 <dd>
@@ -19,19 +19,6 @@
 <div id="progress"><img src="images/progress2.gif" width=24 height="24" /></div>
 </dd>
 <!--
-<dt>参加人数</dt>
-<dd>必要人数と最大人数を設定します。必要人数が集まると解答出来るようになります。
-集まった時点での参加者の発言を取得します。それ以降の途中参加者の単語は取得しません。
-</dd>
-<dd>
-<select name="ninzuu">
-{html_options options=$ninzuu_options selected=$in.ninzuu}
-</select>
-〜
-<select name="ninzuu_max">
-{html_options options=$ninzuu_options selected=$in.ninzuu_max}
-</select>
-</dd>
 <dt>使用単語数</dt>
 <dd>参加者にランダムに配られる単語カードの数です。カードを使い切るまで、何回でも解答することができます。</dd>
 <dd>

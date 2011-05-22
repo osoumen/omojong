@@ -6,11 +6,7 @@ require_once 'common.php';
 $in = array_merge( $_POST, $_GET );
 
 //最新の過去ログ値を取得する
-$sql = sprintf( "SELECT * FROM global" );
-$query = mysql_query( $sql, $link );
-while ( $row = @mysql_fetch_array( $query, MYSQL_ASSOC ) ) {
-	$latest_pastlog = $row['latest_pastlog'];
-}
+$latest_pastlog = get_latest_pastlog_no();
 
 if ( $in[$pastlog_param_name] == 'new' ) {
 	$num = $latest_pastlog;
@@ -27,13 +23,13 @@ if ( $latest_pastlog < 0 ) {
 }
 
 //ヘッダー
-$pagetitle = 'これまでに作成された文を見る';
+$pagetitle = '過去ログ';
 $smarty->assign( 'pagetitle', $pagetitle );
 $g_js_url[] = 'js/mojilen.js';
+$g_js_url[] = 'http://widgets.twimg.com/j/2/widget.js';
 $smarty->assign( 'g_js_url', $g_js_url );
 $smarty->display( $g_tpl_path . 'header.tpl' );
 ?>
-<script src="http://widgets.twimg.com/j/2/widget.js"></script>
 <div id="content_main">
 <?php
 //過去ログナビゲーション

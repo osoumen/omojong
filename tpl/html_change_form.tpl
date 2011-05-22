@@ -4,6 +4,7 @@
 <button onclick="input_changeword({$stock_array[list]},'{$word_array[list]}')" class="change_word">
 {$word_array[list]}
 </button>
+{/section}
 <div id="change_input"></div>
 <button onclick="reset_change()">クリア</button>
 <button onclick="submit_change()">交換</button><br />

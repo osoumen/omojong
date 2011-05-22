@@ -804,3 +804,12 @@ function write_json_result( $json_data ) {
 	echo json_encode($json_data);
 	exit;
 }
+
+function get_latest_pastlog_no( $link ) {
+	$sql = sprintf( "SELECT * FROM global" );
+	$query = mysql_query( $sql, $link );
+	while ( $row = @mysql_fetch_array( $query, MYSQL_ASSOC ) ) {
+		$latest_pastlog = $row['latest_pastlog'];
+	}
+	return $latest_pastlog;
+}
