@@ -69,7 +69,7 @@ echo '<div id="pre_footer">';
 
 //過去の記録へのリンク
 if ( $is_exist_pastlog ) {
-	echo '<a href="'.$g_script.'?' . $pastlog_param_name. '=new">みんながつぶメモナイズした文を見る</a>';
+	echo '<a href="'.$g_script.'?' . $pastlog_param_name. '=new">みんなが作成したコピーを見る</a>';
 }
 
 echo '</div>';

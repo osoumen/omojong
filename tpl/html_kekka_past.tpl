@@ -8,7 +8,7 @@
 <span class="good_num">{$hyousuu}</span>
 ・
 <a class="like_btn" href="page_vote.php?{$pastlog_param_name}={$pastno}&ansnum={$ansindex}&token={$post_token}">
-おみごと！
+いいね！
 </a>
 <div class="twitter_input">
 {if ($g_screen_name !== '')}

@@ -8,16 +8,16 @@ $smarty->display( $g_tpl_path . 'header.tpl' );
 ?>
 <div id="content_main">
 <div class="general_container">
-あなたやあなたのフォロワーがTwitterでつぶやいた発言からランダムに取り出した単語を並べ替えて、文を作る言葉遊びサイトです。
+あなたや、あなたの友人がつぶやいたかもしれない言葉を使って、誰でも簡単に素敵なコピーが作れます。
 </div>
 <div class="general_container">
-<h3>参加するには</h3>
+<h3>始めるには</h3>
 <div class="login_link">
 <a href="twitter_request.php">Twitterでログイン</a>
 </div>
 </div>
 <div class="general_container">
-<h3>みんながつぶメモナイズした文</h3>
+<h3>みんなが作成したコピー</h3>
 </div>
 <?php
 //最新の過去ログ値を取得する
@@ -53,7 +53,7 @@ if ( $latest_pastlog > 0 ) {
 }
 ?>
 <div id="pre_footer">
-<a href="<?php echo $g_script.'?'.$pastlog_param_name.'=new';?>">みんながつぶメモナイズした文をさらに見る</a>
+<a href="<?php echo $g_script.'?'.$pastlog_param_name.'=new';?>">みんなの作成したコピーをさらに見る</a>
 </div>
 </div>
 <?php

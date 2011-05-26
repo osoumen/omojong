@@ -482,8 +482,8 @@ function add_word_from_twitter( $link, $words_table_name, $screen_name=NULL ) {
 	
 	// OAuthオブジェクト生成
 	$to = new TwitterOAuth(CONSUMER_KEY,CONSUMER_SECRET,
-	ACCESS_TOKEN, ACCESS_TOKEN_SECRET);
-	//$_SESSION['access_token']['oauth_token'],$_SESSION['access_token']['oauth_token_secret']);
+	//ACCESS_TOKEN, ACCESS_TOKEN_SECRET);
+	$_SESSION['access_token']['oauth_token'],$_SESSION['access_token']['oauth_token_secret']);
 	
 	//発言取得
 	if ( empty( $screen_name ) ) {

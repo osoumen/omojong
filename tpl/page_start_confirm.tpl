@@ -45,7 +45,7 @@ $('#twitter-button0').click(function() {
 <div id="err_msg"></div>
 <dl>
 {if ($init_members)}
-<dt>参加メンバー</dt>
+<dt>共同メンバー</dt>
 {/if}
 {foreach from="$init_members" item="value"}
 <dd>@{$value}</dd>

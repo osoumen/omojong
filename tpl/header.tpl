@@ -33,5 +33,4 @@ Twitter: <span class="its_me">{$g_screen_name}</span> |
 </div>
 </div>
 <div id="post_header">
-Twitterの発言から取り出した単語を並べ替えて文を作って詠み合う言葉遊びサイトです。
-</div>
+Twitterでいつかつぶやいたかもしれない言葉を使って、誰でも簡単に素敵なコピーが作れます。</div>

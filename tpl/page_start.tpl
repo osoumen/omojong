@@ -9,11 +9,11 @@
 <input type="hidden" name="mode" value="start">
 <input type="hidden" name="confirm" value="1">
 <dl>
-<dt>参加メンバー</dt>
+<dt>共同メンバー</dt>
 <dd>
-あなたのフォロワーから、参加させたい人を追加してください。
+あなたの発言に加えて、あなたのフォロワーの発言から、単語を集めることができます。
 メンバー全員の最新の100発言から、ランダムに単語を拾います。途中参加した人からは単語を取得しません。
-開始すると、自動的にあなたからメンバーにDMでお知らせをします。</dd>
+開始すると、自動的にあなたから各メンバーにDMでお知らせをします。</dd>
 <dd>
 <span id="member_input_area"></span>
 <div id="progress"><img src="images/progress2.gif" width=24 height="24" /></div>
