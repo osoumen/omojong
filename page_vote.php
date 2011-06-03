@@ -69,7 +69,7 @@ $smarty->display( 'tpl/header.tpl' );
 <div id="content_main">
 <div class="general_container">
 <h3><?php echo $sentence; ?></h3>
-に対して「おみごと！」と言いました。<br />
+に対して「いいね！」と言いました。<br />
 </div>
 <div id="pre_footer">
 <a href="<?php echo "$g_script?$pastlog_param_name=$in[$pastlog_param_name]"; ?>" target=_top>戻る</a>
