@@ -8,7 +8,7 @@ $smarty->display( $g_tpl_path . 'header.tpl' );
 ?>
 <div id="content_main">
 <div class="general_container">
-あなたや、あなたの友人がつぶやいたかもしれない言葉を使って、誰でも簡単に素敵なコピーが作れます。
+あなたもしくはフォロワーの誰かがつぶやいたかもしれない言葉を使って、面白い文章を作って下さい。
 </div>
 <div class="general_container">
 <h3>始めるには</h3>

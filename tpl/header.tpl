@@ -33,4 +33,4 @@ Twitter: <span class="its_me">{$g_screen_name}</span> |
 </div>
 </div>
 <div id="post_header">
-Twitterでいつかつぶやいたかもしれない言葉を使って、誰でも簡単に素敵なコピーが作れます。</div>
+Twitterでいつかつぶやいたかもしれない言葉を使って、素敵なコピーを作って下さい。</div>
